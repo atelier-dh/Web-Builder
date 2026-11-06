@@ -1,0 +1,18 @@
+PANDUAN UPGRADE MOZA STUDIO ADVANCED V9 -> V10
+
+1. Backup V9 dan dokumen project terlebih dahulu.
+2. Ekstrak paket V10 dan upload SELURUH isinya (bukan hanya script baru).
+3. Hard refresh Ctrl+Shift+R, lalu buka Design Editor.
+4. Klik tombol ✓ Preflight pada toolbar.
+5. Baca ringkasan Error, Perlu dicek, dan Informasi.
+6. Filter tingkat temuan bila perlu. Catat lokasi item dan perbaiki di editor.
+7. Klik 'Cek ulang' untuk memperbarui temuan; klik CSV / JSON untuk laporan.
+8. Gunakan ✦ Audit untuk menangani referensi metadata putus.
+9. Uji Preview desktop & HP, file media, semua tombol serta koneksi asli.
+10. Setelah aman, deploy pada hosting utama.
+
+V10 sudah menyertakan seluruh tambahan V9, termasuk Content Manager.
+File referensi CSV ada di CONTOH_KONTEN_SMART_FILTER_V9.csv.
+
+Catatan: hasil Preflight tidak menjamin sistem production ready. Pengujian
+login, Supabase, RSVP/Sheets, dan publish di hosting tetap wajib dilakukan.

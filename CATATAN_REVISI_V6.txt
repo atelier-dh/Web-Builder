@@ -1,0 +1,41 @@
+MOZA STUDIO — ADVANCED V6
+Catatan revisi · 6 November 2026
+
+PERUBAHAN DALAM PAKET
+1. Nama versi pada title browser diselaraskan menjadi Advanced V6.
+2. Shared Style (Moza V3): Update style sekarang menerapkan perubahan ke elemen lain
+   yang masih menaut ke style tersebut. Elemen terkunci tidak ditimpa. Hapus style
+   juga melepas tautan metadata tanpa mengubah tampilan elemen di canvas.
+3. Responsive Auto Layout (Moza V2): Align Center dan End dalam layout horizontal
+   sekarang menghitung tinggi setiap baris sebelum menempatkan item.
+4. Komponen reusable (Moza V2): Hapus komponen merefresh canvas/editor, melepas
+   link instance, tetapi menjaga instance di canvas.
+5. Smart Filter (Moza V6): Checkbox "Tampilkan gambar konten" kini bisa digunakan.
+   Pilihan jumlah kolom desktop/HP dibulatkan ke bilangan bulat yang valid.
+6. Fitur sebelumnya dipertahankan: Accordion, Sliding Tabs, Sorting opsional,
+   Variables, Constraints, dan fitur Atelier asli.
+
+HASIL PEMERIKSAAN
+- Semua file JS tambahan lolos pemeriksaan sintaks.
+- UI editor dan modul V2–V6 berhasil dimuat pada pengujian Chromium terisolasi.
+- Smart Filter: tambah item, ganti judul, pindah urutan, sorting Tertua, filter
+  kategori Wedding, checkbox gambar, dan pengaturan kolom diuji.
+- Shared Style: terapkan -> update -> sinkron ke instance -> hapus style diuji.
+- Auto Layout: Center dan End untuk item berbeda tinggi diuji.
+- Reusable Component: buat dan hapus library, instance tetap ada, diuji.
+- Accordion dan Sliding Tabs: pemasangan widget diuji.
+
+BATAS PENGUJIAN
+- Browser diuji secara offline/terisolasi. Login, penyimpanan cloud, Supabase,
+  sinkronisasi Google Sheets, pengiriman RSVP sungguhan, dan publish hosting tidak
+  diuji karena memerlukan lingkungan server dan kredensial pengguna.
+- Widget embed interaktif dimaksudkan dicoba pada Preview / situs publik; pada
+  Canvas mode Design, klik dapat diarahkan ke pemilihan elemen oleh editor.
+- Modul moza-hybrid.js memakai JavaScript fallback jika file WASM opsional
+  tidak tersedia; fitur editor tetap dijalankan tanpa WASM.
+
+CARA DEPLOY
+- Ekstrak isi ZIP lalu unggah seluruh file di akar situs hosting statis.
+- Jaga index.html dan semua file moza-*.js serta moza-*.css pada folder yang sama.
+- Buka index.html lewat URL situs. Sebelum mengganti situs lama, simpan backup ZIP
+  versi sebelumnya dan uji pada staging/hosting tes dengan data proyek salinan.
