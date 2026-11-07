@@ -1,4 +1,4 @@
-/* Moza Studio V14.6 — native canvas table editing.
+/* Moza Studio V14.6.1 — native canvas table editing + UI layer hotfix.
    Cells are edited in place on the design canvas. Formatting and table operations
    live in the existing Properties sidebar. No table-editing modal is opened. */
 (function () {
@@ -405,8 +405,17 @@
     #right .mz146-structural{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:9px;}
     #right .mz146-footnote{margin-top:8px;color:#8390a5;font-size:9px;line-height:1.4;}
     @media(max-width:360px){#right .mz146-fields{grid-template-columns:minmax(0,1fr)}#right .mz146-actions{grid-template-columns:1fr 1fr 1fr}}
-    /* Advanced menu closes on outside interaction; keep it bounded to the viewport. */
-    #top .mz13-overflow-list{max-height:min(52vh,420px)!important;max-height:min(52dvh,420px)!important;overscroll-behavior:contain!important;}
+    /* V14.6.1: keep the Advanced dropdown above the canvas toolbars.
+       The old #top stacking level (20) was below #dock (30), so the dock
+       visibly cut through the dropdown on tablet Safari. */
+    #top{position:relative!important;z-index:1200!important;isolation:isolate!important;}
+    #top .mz13-overflow{position:relative!important;z-index:1201!important;}
+    #top .mz13-overflow-list{position:absolute!important;z-index:1202!important;right:0!important;top:calc(100% + 5px)!important;max-height:min(52vh,420px)!important;max-height:min(52dvh,420px)!important;overscroll-behavior:contain!important;}
+    body.mz146-advanced-open #dock,
+    body.mz146-advanced-open .v8-canvas-head{visibility:hidden!important;pointer-events:none!important;}
+    @media(max-width:760px){
+      #top .mz13-overflow-list{position:fixed!important;top:calc(62px + env(safe-area-inset-top))!important;right:8px!important;left:auto!important;width:min(310px,calc(100vw - 16px))!important;max-height:calc(100dvh - 82px)!important;}
+    }
   `;
   document.head.appendChild(styleTag);
 
@@ -783,17 +792,26 @@
     if (tableInput) applyTableProperty(tableInput);
   }, true);
 
-  // Close the Advanced overflow when the user moves to the canvas or another panel.
+  // Keep the Advanced dropdown visually separate and dismiss it on outside input.
+  const advancedMenu = $('#top .mz13-overflow');
+  const syncAdvancedMenuState = () => {
+    document.body.classList.toggle('mz146-advanced-open', !!advancedMenu?.open);
+  };
+  if (advancedMenu) {
+    advancedMenu.addEventListener('toggle', syncAdvancedMenuState);
+    syncAdvancedMenuState();
+  }
   function closeAdvancedOutside(event) {
     const menu = $('#top .mz13-overflow');
     if (menu?.open && !menu.contains(event.target)) menu.open = false;
   }
   document.addEventListener('pointerdown', closeAdvancedOutside, true);
   document.addEventListener('touchstart', closeAdvancedOutside, { capture: true, passive: true });
+  document.addEventListener('click', closeAdvancedOutside, true);
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
     const menu = $('#top .mz13-overflow');
-    if (menu?.open) { menu.open = false; }
+    if (menu?.open) menu.open = false;
   }, true);
   document.addEventListener('scroll', event => {
     const menu = $('#top .mz13-overflow');
@@ -815,10 +833,10 @@
   } catch (_) { /* editor may still be booting */ }
 
   window.MozaCanvasTableEditor = {
-    version: '14.6.0',
+    version: '14.6.1',
     focusTable,
     getSelection: () => ({ tableId: activeTableId, cells: clone(selectedCells), rangeMode }),
     renderCanvasTable
   };
-  console.info('[Moza V14.6] Direct canvas table editing installed.');
+  console.info('[Moza V14.6.1] Canvas table editor and Advanced menu layer fix installed.');
 })();
