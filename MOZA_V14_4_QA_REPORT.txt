@@ -1,0 +1,38 @@
+MOZA STUDIO ADVANCED V14.4 — QA SUMMARY
+
+RESULT: STATIC CHECKS PASSED; TARGETED COMPONENT TESTS PASSED.
+
+Static validation
+- External JavaScript syntax: PASS
+- Inline JavaScript syntax: PASS
+- CSS parser check: PASS
+- Duplicate static HTML IDs: 0
+- Missing local references: 0
+- Table bridge references: PASS
+- ZIP integrity: PASS
+
+Targeted browser tests
+- Effects panel appears after Properties render: PASS
+- Shadow effect applies to selected element style: PASS
+- Photo preset selection updates the existing fx filter model: PASS
+- Photo intensity reaches full grayscale at 100: PASS
+- Text outline adds text stroke: PASS
+- Text gradient angle updates fx.ta: PASS
+- Table editor receives a side-by-side live preview: PASS
+- Table preview updates after a cell input event: PASS
+- Rectangular cell merge creates a colspan in preview: PASS
+- Split removes the merge and restores the editor cells: PASS
+- Row/column selection by numeric coordinates: PASS
+- Insert row and insert column: PASS
+- Move row up: PASS
+- Font, border style, and vertical alignment update preview HTML: PASS
+- Equal-width and fit-content layout settings are supported: PASS
+
+Known validation boundary
+The production application, Google Apps Script endpoints, authentication, cloud save, and public deployment were not tested end to end. The environment blocked direct loading of the local application. Run the final deployment checks before publishing to users.
+
+Known interaction details
+- Merging combines non-empty selected cell text in the top-left cell with " / ".
+- Splitting keeps the combined text in the top-left cell and leaves the other cells empty.
+- Structural row/column changes clear existing merges to prevent invalid spans.
+- Echo and Long Shadow are CSS filter layers, not separately editable duplicate objects.

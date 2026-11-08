@@ -1,0 +1,46 @@
+MOZA STUDIO ADVANCED V14.8.4 - FIRST LOOK + STARTUP PERFORMANCE
+Upgrade base: V14.8.3 (not older versions)
+
+WHAT'S NEW
+1. Customize First Look in the Moza workspace Home and My Templates:
+   - Default start screen: Home, My Templates or My Projects.
+   - Featured templates on Home, before project cards.
+   - Pin/unpin favorite templates.
+   - Newest-first default; oldest-first, A-Z or manual up/down ordering.
+   - Grid / compact / list presentation, count, heading, subtitle and accent color.
+   - First Look preferences are saved to this browser (localStorage), not sent to cloud.
+2. Visual Smart Filter / website catalog:
+   - New 'Recently added first' default order to place newly inserted cards on top.
+   - The default sort can be set under the widget's 'Layout & Filter' settings.
+   - Fix: sorting now actually reorders visible grid cards (including pagination),
+     not merely comparing metadata without changing their display order.
+   - Existing saved cards and original ordering are kept intact.
+3. Faster workspace first screen, especially on tablet/mobile:
+   - The initial Projects/Home card list uses lightweight index metadata.
+   - Project cover thumbnails load only as cards approach the viewport,
+     with at most two thumbnail jobs active at once.
+   - This avoids parsing every project/asset immediately at startup.
+
+UPGRADE FROM V14.8.3
+Overwrite:
+  index.html
+  moza-visual-filter.js
+Add new files beside index.html:
+  moza-first-look-startup.js
+  moza-first-look-startup.css
+Keep all other .js/.css and site folders exactly as they are.
+
+NOTES
+- This is an editor/dashboard and Visual Smart Filter enhancement.
+- It does NOT reorder pages or sections in an existing project, and it does not
+  automatically change the first published page of a separate website.
+- Project data, B2, Supabase, RSVP, cloud, ZIP export and existing image assets
+  are not intentionally modified by these changes.
+- On the workspace dashboard click First Look settings; on My Templates pin
+  or rearrange items. For a website catalog, set Visual Smart Filter ->
+  Layout & Filter -> First Look / Default card order -> Recently added first.
+- First Look workspace preferences apply to this browser only.
+- Before updating production, back up the V14.8.3 repository and editable projects.
+- Local isolated browser tests passed for Home/Templates settings, pinning,
+  newest-first sorting, and Visual Smart Filter live sort. No physical tablet or
+  mobile benchmark or production GitHub Pages deployment has been performed.

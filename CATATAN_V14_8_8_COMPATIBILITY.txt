@@ -1,0 +1,13 @@
+MOZA V14.8.8 — COMPATIBILITY RECOVERY (EXPERIMENTAL)
+
+Based on V14.8.7 and compared against the exact V14.8.3 full ZIP uploaded by the user.
+
+Two replacement files:
+  moza-cross-project.js — byte-for-byte restored from user-supplied V14.8.3 (the version reported working for cross-project Preview).
+  moza-visual-filter.js — restores the V14.8.3 synchronous commit + afterEdit lifecycle, keeping more recent V14.8.4–14.8.7 widget settings (device-specific typography and sorting).
+
+DO NOT DELETE your existing project data, local browser storage, gallery photos, Uploads, Supabase, B2, RSVP or other files.
+
+Install only after backing up the repository and editable ZIPs for the linked projects. Replace these two JS files in the same GitHub folder as index.html. Do not overwrite any other app file. After committing, wait for GitHub Pages deployment, then hard refresh. Test on a copy of the projects first.
+
+Verification: source comparison, JavaScript syntax, browser-isolated edits and route events. This does NOT verify the actual large Digital Haus project or local cross-project storage; end-to-end must be tested in the user's own browser. If it fails, restore the backed up JS files and provide both editable project ZIPs and console errors for a data-specific diagnosis.

@@ -1,0 +1,56 @@
+MOZA STUDIO ADVANCED V14.1 — COPY / PASTE HOTFIX
+================================================
+Base: Moza Studio Advanced V14 Release Candidate.
+This is a narrow hotfix; no extra JavaScript or CSS dependencies.
+
+FILES CHANGED VS V14
+- index.html only
+
+WHAT WAS FIXED
+1. Ctrl+C and Ctrl+V now share the internal Atelier element clipboard.
+   Native browser clipboard retains an Atelier marker; external text/image paste
+   remains available and is not mistaken for an internal design element.
+2. Paste can target the current Desktop, Tablet, or Mobile breakpoint.
+   Source coordinates and sizes are scaled to the destination viewport.
+3. A copied element can be pasted into a section on a different page.
+   New UI: Layers / Pages -> Paste to page / section...
+   Choose destination Page, Section and Device, then Paste here.
+4. When Auto Sync is OFF, new pasted elements appear in the destination
+   device only. Existing elements on other devices are not modified.
+5. Copy/Paste for multiple elements, copied sections, pages, and Undo
+   were regression-tested. Copied pages preserve full breakpoint layouts.
+6. A copied image asset travels with the internal clipboard if the target
+   project does not already contain that asset.
+
+HOW TO UPGRADE FROM V14
+1. Backup your current GitHub index.html (or your whole repository).
+2. Upload the provided index.html to the same repository folder as the
+   existing index.html; overwrite that ONE file.
+3. KEEP all previously deployed .js, .css, images, folders, and any
+   Supabase/RSVP configuration. Do not delete or re-upload them.
+4. Commit the change, check GitHub Pages finishes deploying, then hard
+   refresh (Ctrl+Shift+R).
+5. Test in a copy of a project before replacing an active client site.
+
+USAGE
+- Copy element: select element, Ctrl+C (or editor Copy action).
+- Paste onto current page/section: navigate to destination, select the
+  section, select the intended device, Ctrl+V (or editor Paste action).
+- Explicit target: open Layers or Pages -> "Paste to page / section..."
+  and select page, section, and device.
+- Copy a section: select it -> Copy section. Paste via Ctrl+V or target menu.
+- Copy an entire page: Pages -> Copy page -> Paste page. Every device
+  version of the page is retained.
+- Auto Sync ON shares content between devices. Auto Sync OFF confines newly
+  pasted elements/sections to the target device.
+
+TESTING
+- Chromium in isolated HTML harness: Ctrl+C/Ctrl+V Desktop -> Mobile,
+  Page 1 -> Page 2, explicit target Page / Section / Tablet;
+  multiple elements, Section copy, Page copy, Undo: PASS.
+- Inline editor JavaScript: node --check PASS.
+- Full production hosting, cross-tab system clipboard, cloud sync, and
+  publish end-to-end were NOT tested here; verify on GitHub Pages staging.
+
+No RSVP, Google Sheets, Apps Script, cloud, authentication or publish
+implementation changes are included in this hotfix.

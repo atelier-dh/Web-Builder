@@ -1,0 +1,44 @@
+PANDUAN DEPLOY MOZA STUDIO ADVANCED V12
+
+1. BACKUP
+   - Backup file website V11 sebelum mengganti release.
+   - Dari Atelier, gunakan Projects > Export this project untuk mengunduh
+     backup .atelier.json. Simpan file itu secara privat.
+
+2. PASANG V12 DI STAGING
+   - Ekstrak ZIP V12, unggah seluruh isi folder ZIP ke root folder website
+     staging secara utuh (index.html dan file moza-*.js/.css di folder sama).
+   - Pastikan akses izin baca file JS/CSS tidak diblokir hosting.
+   - Lakukan hard reload jika file lama masih tersimpan di cache.
+
+3. RELEASE CENTER
+   - Buka project pada Design Editor.
+   - Klik 🚀 Release di toolbar.
+   - Periksa ringkasan Project Audit dan Preflight terlebih dahulu.
+   - Perbaiki error dan warning lewat editor atau panel detail, lalu klik
+     Periksa ulang. Release Center TIDAK memperbaiki otomatis.
+   - Jalankan Preview desktop/HP, cek link/widget, RSVP (jika dipakai),
+     simpan-buka ulang project, dan tes publish staging secara nyata.
+   - Tandai langkah yang sudah diuji (atau Tidak berlaku untuk fitur
+     yang tidak digunakan). Setelah edit dokumen, checklist reset.
+   - Klik Laporan rilis JSON untuk arsip QA ringkas.
+
+4. PENTING
+   - Status 'Checklist lokal lengkap' BUKAN persetujuan publish produksi.
+   - Cloud, RSVPs, URL dan publish hanya dapat diuji pada sistem live/staging.
+   - Checklist hanya hidup sementara di tab browser. Menutup tab akan
+     menghilangkan status checklist, tidak mengubah project.
+   - File laporan JSON bukan backup project dan tidak dapat diimpor ke editor.
+   - Jangan taruh backup .atelier.json di hosting publik.
+
+5. UJI & ROLLBACK
+   [ ] Login dan daftar project berjalan.
+   [ ] Tombol 🚀 Release muncul satu kali di Design Editor.
+   [ ] Audit/Preflight/Version Compare dan Preview bisa dibuka.
+   [ ] Export backup file Atelier berhasil; backup dapat diuji terpisah.
+   [ ] Checklist reset setelah edit; antar project tidak tercampur.
+   [ ] Pengiriman RSVP percobaan diterima dalam panel client dan tujuan sinkronisasi.
+   [ ] Save, reload, edit, media, publish/unpublish staging tidak error.
+   [ ] Tidak ada error JavaScript atau asset 404 pada staging.
+   - Jika ada regresi, kembalikan folder website V11; jangan langsung
+     mengimpor backup project kecuali memang diperlukan.
