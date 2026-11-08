@@ -1,0 +1,27 @@
+/* Moza Advanced V2: small additive controls using Atelier's original theme tokens. */
+.moza-pro-inspector{padding:13px 12px 20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;background:var(--panel);color:var(--ink)}
+.moza-pro-head{display:flex;justify-content:space-between;align-items:center;font-weight:750;font-size:13px}
+.moza-pro-head small{font-size:10px;color:var(--mut);background:var(--acc2);border-radius:999px;padding:3px 7px}
+.moza-pro-inspector .btn{white-space:normal;text-align:center;min-height:33px}
+.moza-pro-inspector .row{display:flex;flex-wrap:wrap;gap:6px;margin:3px 0}
+.moza-pro-inspector .hint{font-size:11px;color:var(--mut);margin:1px 0;line-height:1.5}
+.moza-pro-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.moza-pro-form label{font-size:11px;color:var(--mut);display:flex;flex-direction:column;gap:4px;min-width:0}
+.moza-pro-form input,.moza-pro-form select{min-width:0;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink);font-size:12px}
+.moza-pro-form .moza-inline{flex-direction:row;align-items:center;gap:8px;grid-column:1/-1}
+.moza-pro-form .moza-inline input{width:16px;height:16px;accent-color:var(--acc)}
+.moza-pro-divider{height:1px;background:var(--line)}
+.moza-pro-note{background:var(--acc2);border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0 14px}
+.moza-pro-note p{color:var(--mut);font-size:11px;margin:6px 0 10px}
+.moza-pro-note button{white-space:normal;min-height:35px}
+.moza-comp-item{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;margin:9px 0;display:flex;flex-direction:column;gap:10px}
+.moza-comp-item>b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.moza-comp-item .row{display:flex;gap:6px}
+#top [data-a="moza-components-open"]{display:inline-flex;align-items:center}
+#rail [data-a="moza-components-open"]{min-height:53px}
+@media(max-width:760px){
+ .moza-pro-inspector{padding:13px 12px 25px}
+ .moza-pro-inspector .btn,.moza-comp-item .btn,.moza-pro-note .btn{min-height:42px;touch-action:manipulation}
+ #top [data-a="moza-components-open"]{display:none}
+ #statusbar [data-a="moza-layout-start"]{font-size:11px;min-height:30px}
+}
