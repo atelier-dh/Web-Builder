@@ -1,0 +1,35 @@
+MOZA STUDIO ADVANCED V14.8.5 — SMART FILTER RESPONSIVE HOTFIX
+Base: V14.8.4 First Look + Fast Start.
+
+WHAT WAS WRONG
+The responsive transfer engine copies an element's frame position/size and generic text scale, but it does not automatically scale all font sizes, card layouts, or iframe-internal controls in Visual Smart Filter. In addition, changing a Smart Filter font-size field previously updated the shared desktop style, so edits were not device-specific. A Tablet→Mobile transfer could leave the widget wider than the Mobile canvas.
+
+CHANGES
+1. Device-specific font-size overrides for Smart Filter at Desktop / Tablet / Mobile. Editing the widget in Mobile changes only the Mobile size. Existing desktop settings remain the fallback until edited.
+2. Properties → Visual Smart Filter → Device-specific layout lets you edit width and height for the selected device.
+3. Fit widget to Mobile / Tablet width centers the selected widget and sets its width to canvas width minus 16px, without modifying Desktop geometry.
+4. Mobile card max width option: 0 for full width, or a smaller width for centered compact cards. Existing Mobile columns selection remains in Layout & Filter.
+5. Existing projects load without migration; all new properties are optional. No changes to RSVP, B2, Assets, gallery, inter-project linking or ZIP export engine.
+
+INSTALL FROM V14.8.4
+Replace ONLY `moza-visual-filter.js` in the same folder as index.html. Do not delete other files. Backup the existing source and Project Editable ZIP before editing.
+After GitHub Pages finishes deployment, hard refresh the browser (Ctrl+Shift+R).
+
+HOW TO FIX AN OVERSIZED MOBILE SMART FILTER
+1. Open the project and select Mobile in the device toolbar.
+2. Select your Smart Filter widget.
+3. In Properties → Visual Smart Filter → Device-specific layout click "Fit widget to Mobile width".
+4. If needed, edit Widget height (px) and click Apply size.
+5. In Layout & Filter choose Mobile columns (1 or 2); use "Mobile card max width" if you want a narrower card.
+6. In Design & Typography and Filter/Search, edit Mobile font sizes; they no longer overwrite Desktop.
+7. Preview on Desktop, Tablet, Mobile before publishing.
+
+LOCAL QA
+- Chromium 375px: custom mobile title size 14px; no horizontal overflow in test widget.
+- Chromium 768px: tablet title size 20px.
+- Chromium 1200px: desktop title size 25px.
+- Editing title size in Mobile retained Desktop 25px.
+- Applying Mobile width/height retained original Desktop geometry.
+- Fit Mobile set width 359px and x 8px on 375px canvas.
+- JavaScript syntax check passed and ZIP archive integrity checked.
+Not yet tested with the user's actual project data or tablet/phone device; upgrade should first be verified in a backup project.

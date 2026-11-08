@@ -1,0 +1,79 @@
+MOZA STUDIO ADVANCED V14.2.1 — PROPERTIES FOCUS HOTFIX
+====================================================
+
+PURPOSE
+Fixes the editor behavior where a Properties control can lose focus, the caret
+can jump, or the Properties panel can move after changing a value such as font
+size, typography, or component settings.
+
+ROOT CAUSE FOUND IN V14.2
+1. renderRight() rebuilds the Properties panel with innerHTML. This destroys
+   the active input/select/textarea when that render path runs.
+2. The contextual V28.3 text toolbar is recreated during renderCanvas(). Its
+   font-size and formatting change handler also redraws the Properties panel.
+3. The V14.2 patch preserved the canvas viewport scroll, but did not preserve
+   the active Properties control, its text selection, or the panel's scroll.
+
+FIX INCLUDED
+- New file: moza-focus-stability.js
+- index.html loads the new file after the other editor extensions.
+- Preserves the active Properties input/select/textarea across same-selection
+  panel redraws, using stable control attributes rather than fragile DOM paths.
+- Restores text caret/selection where the control supports it.
+- Preserves Properties scroll and expanded groups during same-selection redraws.
+- Preserves focus in the contextual text toolbar when renderCanvas recreates it.
+- Does not restore focus when the user changes the selected object, page, mode,
+  or multi-selection. This avoids stealing focus during normal navigation.
+- Does not change project data, typography values, RSVP/Supabase, cloud storage,
+  or the existing Carousel/Product Image Carousel data models.
+
+DEPLOY
+1. Back up the current V14.2 deployment and project data.
+2. Replace index.html with the one in this package.
+3. Add moza-focus-stability.js to the same folder as index.html.
+4. Keep every existing JS/CSS file and Code.gs.
+5. Deploy, then hard refresh with Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac).
+
+MANUAL REGRESSION TEST
+- Select a text element and change Typography → Size several times.
+- Change font family, weight, letter spacing, and line height.
+- Keep the Properties panel scrolled inside Typography while changing values.
+- Confirm focus remains in the field, the caret does not jump, and the panel
+  does not jump to another group.
+- Change selection on the canvas and confirm focus is not forced back to the
+  previous element's control.
+- Repeat for Product Image Carousel title/price font sizes and on Mobile.
+
+VALIDATION
+- JavaScript syntax check for the new patch.
+- JavaScript syntax checks for all external .js files in the package.
+- ZIP integrity and script-reference checks.
+- Live browser interaction, hosting-specific login, cloud, RSVP, and publishing
+  still require a staging deployment test. Use the manual regression steps above.
+
+MOZA STUDIO V14.3 — INITIAL VISUAL EDITOR ATTEMPT (SUPERSEDED BY V14.4)
+=======================================================================
+
+INITIAL ADDITIONS
+- A right-side Effects panel with Drop, Glow, and Echo shadow presets.
+- Intensity and colour controls, plus X/Y offset, blur, and spread fields.
+- An initial Table Editor preview integration.
+
+V14.3 IMPLEMENTATION LIMITATIONS IDENTIFIED DURING REVIEW
+- The table preview looked up a helper that the application did not expose, so the preview was not reliably connected to the actual table document builder.
+- The preview was not arranged as a persistent side-by-side editor/preview layout.
+- The V14.3 base table editor did not implement the merge/split actions shown in the reference screenshot.
+- The initial effect add-on wrote legacy shadow fields and did not provide persistent typed presets for the larger visual-effect library.
+
+V14.4 CORRECTION
+- V14.4 replaces the V14.3 visual-editor implementation. It connects to __mz13TableBridge, adds the side-by-side live preview, implements merge/split and row/column operations, adds appearance controls, and stores new visual presets in the element fx model. See MOZA_V14_4_RELEASE_NOTES.txt.
+
+DEPLOY
+1. Back up the currently deployed files and project data.
+2. Upload all files from the V14.4 archive, not only index.html.
+3. Keep all existing JS/CSS files and Code.gs in the same deployment folder.
+4. Hard refresh the editor after deployment.
+
+LIMITATION
+- Echo and Long Shadow are CSS filter layers, not independent duplicate objects.
+- Production hosting, cloud save, and publishing still require final staging tests.

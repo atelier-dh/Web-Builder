@@ -1,0 +1,15 @@
+MOZA STUDIO V14.5 — QA CHECK
+
+Pemeriksaan statis dan smoke test
+- JavaScript syntax check untuk kedua inline script utama: LULUS.
+- JavaScript syntax check untuk moza-v14.5-table-editor.js: LULUS.
+- Smoke test renderer untuk format merge lama {r,c,rs,cs}: LULUS.
+- Smoke test renderer untuk format merge V14.4 {r,c,rowspan,colspan}: LULUS.
+- Smoke test format per sel (font, alignment, background): LULUS.
+- Smoke test Split menampilkan kembali sel yang sebelumnya tertutup pada data merge baru: LULUS.
+- Simulasi autoplay ditolak saat page load lalu berhasil pada pointerdown pertama: LULUS.
+- Simulasi volume 0 tetap 0: LULUS.
+
+Batas verifikasi
+- Pengujian visual akhir pada Safari/iPad dan pengujian deploy GitHub Pages tetap perlu dilakukan pada perangkat/browser target.
+- Autoplay bersuara tetap mengikuti kebijakan browser. Versi ini menggunakan interaksi pengguna pertama sebagai fallback, bukan mencoba melewati kebijakan browser.

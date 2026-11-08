@@ -1,0 +1,41 @@
+/* Moza Studio V14.7.3: Etsy / Shopee photo gallery, separate from legacy Carousel. */
+.mzpg{display:flex;flex-direction:column;gap:8px;width:100%;height:100%;min-width:0;padding:6px;box-sizing:border-box;overflow:hidden;font-family:var(--mzpg-font,Inter,sans-serif)}
+.mzpg-stage{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-height:0;min-width:0}
+.mzpg-main{position:relative;display:grid;place-items:center;flex:1 1 auto;min-width:0;min-height:0;overflow:hidden;border-radius:var(--mzpg-radius,12px);background:#f5f5f6}
+.mzpg-main>img{display:block;width:100%;height:100%;object-fit:var(--mzpg-fit,contain);-webkit-user-drag:none;user-select:none}
+.mzpg-main>img[hidden]{display:none!important}
+.mzpg-placeholder{color:#64748b;text-align:center;font:600 13px/1.5 system-ui;padding:16px}
+.mzpg-arrow,.mzpg-zoom{position:absolute;z-index:2;cursor:pointer;display:grid;place-items:center;border:0;color:#242833;background:#ffffffea;box-shadow:0 2px 10px #0003}
+.mzpg-arrow{top:50%;transform:translateY(-50%);width:35px;height:35px;border-radius:50%;font:24px system-ui}
+.mzpg-arrow.prev{left:9px}.mzpg-arrow.next{right:9px}.mzpg-arrow:disabled{opacity:.3;cursor:default}
+.mzpg-zoom{right:10px;top:10px;width:30px;height:30px;border-radius:8px;font:18px system-ui}
+.mzpg-counter{position:absolute;right:10px;bottom:10px;background:#111827bf;color:white;padding:4px 9px;border-radius:40px;font:12px system-ui;pointer-events:none}
+.mzpg-thumbs{display:flex;gap:6px;overflow:auto;flex:0 0 auto;min-height:0;scrollbar-width:thin;justify-content:flex-start;max-width:100%;padding:2px}
+.mzpg-thumb{width:var(--mzpg-thumb-size,57px);height:var(--mzpg-thumb-size,57px);flex:0 0 var(--mzpg-thumb-size,57px);border:2px solid transparent;border-radius:7px;padding:2px;background:#f1f3f7;cursor:pointer;overflow:hidden}
+.mzpg-thumb[aria-current="true"]{border-color:var(--mzpg-accent,#344e83)}
+.mzpg-thumb img{width:100%;height:100%;object-fit:cover;border-radius:3px}.mzpg-thumb span{color:#93a0b6}
+.mzpg-layout-etsy .mzpg-stage{flex-direction:row-reverse}
+.mzpg-layout-etsy .mzpg-thumbs{flex-direction:column;width:calc(var(--mzpg-thumb-size,57px) + 8px);max-height:100%;overflow-y:auto;overflow-x:hidden;align-items:center;justify-content:flex-start}
+.mzpg-layout-minimal .mzpg-thumbs{display:none}
+.mzpg-dots{display:flex;justify-content:center;gap:5px}
+.mzpg-dot{border:0;border-radius:99px;width:7px;height:7px;padding:0;background:#bac4d8;cursor:pointer}
+.mzpg-dot[aria-current="true"]{width:17px;background:var(--mzpg-accent,#344e83)}
+.mzpg-details{display:flex;flex-direction:column;flex:0 0 auto;gap:3px;min-width:0}
+.mzpg-title{font-size:var(--mzpg-title-size,16px);font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.mzpg-price{font-size:var(--mzpg-price-size,14px);font-weight:600;color:var(--mzpg-accent,#344e83)}
+.mzpg-insert-card{background:#f4f0ff;border:1px solid #d9c8ff;border-radius:12px;margin:10px 0 14px;padding:12px;display:grid;gap:8px;color:#263248}
+.mzpg-insert-head{display:flex;gap:8px;align-items:center}.mzpg-insert-head span{font-size:23px}
+.mzpg-insert-head b{display:block;font-size:13px}.mzpg-insert-head small{display:block;font-size:11px;color:#59637b}
+.mzpg-insert-card p{margin:0;font-size:11px;line-height:1.5;color:#5f6682}
+.mzpg-lightbox{position:fixed;inset:0;z-index:2147483630;background:#111827ed;display:flex;align-items:center;justify-content:center;gap:10px;padding:40px 54px;box-sizing:border-box}
+.mzpg-lightbox-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 10px 50px #0004}
+.mzpg-lightbox button{border:0;cursor:pointer;display:grid;place-items:center;background:#ffffffed;color:#152033}
+.mzpg-lightbox-close{position:absolute;right:18px;top:15px;width:38px;height:38px;border-radius:50%;font:28px system-ui}
+.mzpg-lightbox-prev,.mzpg-lightbox-next{position:absolute;top:50%;transform:translateY(-50%);height:44px;width:44px;border-radius:50%;font:32px system-ui}
+.mzpg-lightbox-prev{left:12px}.mzpg-lightbox-next{right:12px}
+.mzpg-lightbox-count{position:absolute;bottom:12px;color:white;font:13px system-ui}
+#frame .mzpg button{pointer-events:none!important}#frame .mzpg,#frame .mzpg *{user-select:none}
+#frame.mz-properties-active .el,#frame.mz-properties-active .el *{animation-play-state:paused!important;transition:none!important}
+#frame,#zoomwrap{overflow-anchor:none}
+@media(max-width:640px){.mzpg-layout-etsy .mzpg-stage{flex-direction:column}.mzpg-layout-etsy .mzpg-thumbs{width:100%;max-height:unset;flex-direction:row;overflow-x:auto;overflow-y:hidden}.mzpg-arrow{width:30px;height:30px;font-size:20px}.mzpg-lightbox{padding:46px 30px}.mzpg-lightbox-prev,.mzpg-lightbox-next{width:27px;height:35px;font-size:22px}.mzpg-lightbox-prev{left:2px}.mzpg-lightbox-next{right:2px}}
+@media(prefers-reduced-motion:reduce){.mzpg *, .mzpg-lightbox *{transition:none!important;animation:none!important}}
