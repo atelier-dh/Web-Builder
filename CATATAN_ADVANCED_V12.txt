@@ -1,0 +1,63 @@
+MOZA STUDIO ADVANCED V12 — RELEASE CENTER
+6 November 2026
+
+SUMBER
+Lanjutan dari Moza Studio Advanced V11 Version Compare (seluruh fitur V6–V11 tetap dalam ZIP).
+
+FITUR V12
+1. Tombol 🚀 Release di toolbar Design Editor.
+2. Ringkasan otomatis pemeriksaan yang sudah tersedia:
+   - Project Audit V8: jumlah referensi/metadata yang perlu diperiksa;
+   - Preflight V10: jumlah error, warning, dan info.
+3. Checklist verifikasi MANUAL enam langkah: preview desktop, mobile, link/widget,
+   RSVP/form di staging, simpan-buka ulang cloud, dan publish staging.
+   Setiap langkah memiliki status Belum dicek / Sudah diuji / Tidak berlaku.
+4. Status dibedakan menjadi:
+   - Pemeriksaan belum lengkap (modul audit tidak tersedia);
+   - Ada temuan yang harus diperbaiki (audit atau error preflight);
+   - Masih perlu pemeriksaan (warning atau langkah manual belum ditandai);
+   - Checklist lokal lengkap — lanjut evaluasi staging.
+   Status TERAKHIR bukan pernyataan sistem produksi sudah terverifikasi.
+5. Checklist manual hanya disimpan sementara di memori tab browser, dipisah per
+   project, dan otomatis direset ketika isi dokumen berubah. Tidak disimpan
+   ke Supabase/Google Sheets/Storage atau ke dokumen project.
+6. Tombol pintas ke panel Project Audit, Preflight, Version Compare; tombol
+   ekspor backup JSON lama dari Atelier; tombol Preview dari Atelier.
+7. Ekspor laporan ringkas JSON berisi skor/temuan, status checklist,
+   dan keterangan batasan pemeriksaan. Tidak memuat isi elemen, daftar tamu,
+   media, maupun respons RSVP.
+8. Panel aksesibilitas: dialog, focus trap, Escape, navigasi keyboard, layout HP.
+
+BAGIAN YANG TIDAK DIUBAH
+- Seluruh addon V6–V11 JavaScript & CSS.
+- Fungsi login, API cloud, Supabase/Backblaze, Google Sheets, RSVP,
+  save, publish, upload, dan importer bawaan Atelier.
+- Tidak ada auto-publish, data repair otomatis, upload telemetry, atau
+  intersepsi alur publish. Semua status bersifat rekomendasi QA, bukan gate.
+
+CATATAN KEAMANAN
+- Laporan JSON tetap dapat memuat nama project; simpan sebagai dokumen internal.
+- Tanda 'Sudah diuji' berasal dari pilihan pengguna, bukan dari tes live otomatis.
+- Pengujian cloud, RSVP, hosting, performa dan alamat publik harus dilakukan
+  di lingkungan staging asli. Tidak ada jaminan produksi bebas bug.
+- Backup .atelier.json bawaan Atelier dapat menyimpan data privat. Jangan unggah
+  backup proyek ke web publik.
+
+FILE BERUBAH DARI V11
+- index.html: judul V12 + satu pair loader JS/CSS.
+
+FILE BARU
+- moza-release-center.js
+- moza-release-center.css
+- CATATAN_ADVANCED_V12.txt
+- PANDUAN_DEPLOY_V12.txt
+
+HASIL TES
+- Node.js: skenario status, manual checklist, pilihan N/A, invalidasi saat
+  dokumen berubah, isolasi antarproject, blocker/error, modul hilang,
+  ringkasan data privat, dan mode non-design.
+- Chromium (DOM harness): toolbar dan dialog, status otomatis, semua pilihan
+  checklist, integrasi aksi, backup, ekspor JSON, review setelah dokumen berubah,
+  Preview, Compare, Preflight, dan Escape; tidak ada JS pageerror.
+- Pemeriksaan sintaks pada seluruh JS tambahan dan integritas ZIP.
+- Perlu pengujian aplikasi utuh pada staging/hosting untuk verifikasi end-to-end.

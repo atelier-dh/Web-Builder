@@ -1,0 +1,56 @@
+MOZA STUDIO V14.5
+TABLE EDITOR + AUDIO FIRST-INTERACTION FIX
+
+Perbaikan utama
+1. Merge dan Split
+   - Merge menggunakan pilihan rentang sel berbentuk persegi panjang.
+   - Pilih sel pertama, aktifkan "Pilih rentang", lalu pilih sel terakhir.
+   - Di desktop, Shift+klik pada sel akhir juga dapat memilih rentang.
+   - Label sel menampilkan koordinat tabel dan Excel sekaligus, misalnya 1.3 · C1.
+   - Contoh: pilih C1 lalu D1 untuk menggabungkan sel 1.3 dan 1.4.
+   - Split aktif ketika sel terpilih berada di dalam area yang sudah digabung.
+   - Merge baru menyembunyikan isi sel yang tertutup, bukan menghapusnya. Split mengembalikan isi sel tersebut.
+   - Format data merge lama {r,c,rs,cs} dan {r,c,rowspan,colspan} dinormalisasi.
+   - Catatan: jika merge lama sudah menghapus isi sel tertutup, isi asli yang hilang tidak dapat dipulihkan otomatis.
+
+2. Format per sel
+   - Font, ukuran font, warna teks, warna latar, alignment horizontal dan vertikal.
+   - Padding, warna dan ketebalan border.
+   - Bold, italic, dan underline.
+   - Pengaturan berlaku untuk semua sel yang sedang dipilih.
+   - Tombol Reset menghapus format khusus dan mengembalikan sel ke format default tabel.
+
+3. Format tabel dan header
+   - Pengaturan default tabel tetap tersedia.
+   - Baris pertama dapat dijadikan header.
+   - Header dapat dipilih sekaligus dan diformat seperti sel lainnya.
+   - Font, alignment, warna latar, warna teks, dan border header dapat diatur.
+
+4. Live preview dan layout
+   - Grid editor, panel Properties, dan live preview disusun ulang agar tidak saling menumpuk.
+   - Preview mengikuti perubahan isi dan format.
+   - Layout berubah menjadi satu kolom pada layar sempit.
+   - Dialog mengikuti tinggi layar dan menyediakan area scroll terpisah.
+
+5. Properties
+   - Saat objek tabel dipilih di canvas, panel Properties menyediakan tombol Open Table Editor.
+   - Canvas tetap menjadi tampilan halaman; editor tabel dibuka dari Properties.
+
+6. Musik pada HTML hasil deploy
+   - Jika Autoplay aktif, HTML mencoba memutar musik saat halaman dimuat.
+   - Jika browser memblokir autoplay bersuara, HTML mencoba lagi pada interaksi pengguna pertama: tap, klik, sentuhan, atau tombol keyboard.
+   - Tombol musik tetap dapat digunakan untuk mematikan dan menyalakan musik.
+   - Kebijakan browser tetap berlaku. Tidak ada cara yang sah untuk memaksa audio bersuara sebelum interaksi pengguna.
+
+File tambahan
+- moza-v14.5-table-editor.js
+
+Cara deploy
+1. Ekstrak ZIP.
+2. Unggah seluruh isi folder ke root repository GitHub Pages, bukan hanya index.html.
+3. Pastikan file moza-v14.5-table-editor.js ikut terunggah.
+4. Commit dan push perubahan.
+5. Buka ulang situs dengan hard refresh atau hapus cache browser jika versi lama masih tampil.
+
+Catatan
+Tidak ada dependensi eksternal baru. Struktur data tabel lama tetap dibaca; data format per sel disimpan pada properti cellStyles.

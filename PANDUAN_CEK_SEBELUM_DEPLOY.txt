@@ -1,0 +1,22 @@
+CHECKLIST UJI MANUAL MOZA STUDIO ADVANCED V7
+
+[ ] Backup seluruh proyek dan export project bila tersedia.
+[ ] Login/logout dan buka proyek lama maupun baru.
+[ ] Komponen: Create, Insert, Update Master, Detach, Delete, Undo/Redo.
+[ ] Variant Set: Create, Add Variant, Switch, Delete salah satu master.
+[ ] Shared Style: Apply ke 2 elemen, update satu elemen, cek elemen lainnya.
+[ ] Variables: Buat token, binding, ubah mode, alias, remove, Undo/Redo.
+[ ] Constraints/Grid/Auto Layout: cek Desktop, Tablet, HP.
+[ ] Accordion: buka/tutup; Tabs: tombol, keyboard, geser di Preview.
+[ ] Smart Filter: kategori, pencarian, urutan, video, mobile, hasil kosong.
+[ ] Smart Filter lama: Update HTML Widget atau Audit Upgrade HTML widget.
+[ ] Project Audit: tinjau masalah, perbaiki metadata hanya jika diperlukan.
+[ ] Save + reload: elemen, layout, style, token, widget tetap tersimpan.
+[ ] Publish: halaman publik memuat skrip dan widget embed berjalan.
+[ ] RSVP dan Google Sheets/Supabase: submit, verifikasi data masuk,
+     hapus dan retry sync menurut fitur lama.
+[ ] Periksa console browser (F12) dan error network setelah deploy.
+
+[ ] Properties: ubah ukuran font/typografi berulang kali; fokus input, caret,
+    posisi scroll, dan grup yang terbuka harus tetap stabil.
+[ ] Pilih elemen lain setelah mengedit; fokus tidak boleh kembali ke field lama.

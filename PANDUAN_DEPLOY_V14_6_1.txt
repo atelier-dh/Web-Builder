@@ -1,0 +1,26 @@
+PANDUAN DEPLOY MOZA STUDIO V14.6.1
+
+Untuk repository GitHub Pages yang saat ini memakai paket V14.6:
+
+1. Ekstrak paket V14.6.1.
+2. Buka folder root repository GitHub Pages.
+3. Ganti index.html dengan index.html dari paket V14.6.1.
+4. Overwrite file moza-v14.6-canvas-table-editor.js dengan versi V14.6.1 dari paket.
+5. Pertahankan moza-v14.5-table-editor.js dan seluruh file CSS/JS lain yang sudah ada.
+6. Commit dan push perubahan.
+7. Setelah GitHub Pages selesai deploy, lakukan hard refresh di Safari. Jika masih memuat versi lama, tutup tab lalu buka kembali.
+
+PERUBAHAN YANG HARUS TERLIHAT
+- Menu Advanced tampil di atas toolbar canvas, bukan tertutup/terpotong oleh toolbar mengambang.
+- Toolbar canvas dan header canvas disembunyikan sementara saat menu Advanced terbuka agar tidak bertumpuk.
+- Ketuk area di luar menu atau tekan Escape untuk menutup menu. Toolbar canvas kembali muncul.
+- Tabel tetap diedit langsung pada sel di canvas. Pengaturan sel dan operasi tabel tetap berada di Properties.
+
+UJI SETELAH DEPLOY
+1. Buka Advanced dan periksa lapisan menu.
+2. Ketuk canvas di luar menu, pastikan menu tertutup.
+3. Pilih tabel dan ketik langsung pada beberapa sel.
+4. Uji format sel, merge, split, tambah/hapus baris dan kolom.
+5. Periksa Preview dan halaman staging.
+
+Catatan: source telah lolos pemeriksaan statis, tetapi perilaku live Safari iPad belum dapat diverifikasi dari lingkungan ini.

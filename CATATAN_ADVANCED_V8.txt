@@ -1,0 +1,63 @@
+MOZA STUDIO — ADVANCED V8 STABLE
+6 November 2026
+Basis: Moza_Studio_Advanced_V7_STABLE.zip
+
+FITUR BARU V8
+1. Smart Filter Pagination (opsional; NONAKTIF untuk widget lama):
+   - Checkbox Aktifkan pagination pada Properties Smart Filter.
+   - Jumlah konten per halaman: 3, 6, 9 atau 12 (default 6).
+   - Tombol Sebelumnya / Berikutnya + nomor halaman.
+   - Tombol otomatis nonaktif bila di halaman awal/akhir.
+   - Pencarian, kategori dan sorting otomatis mengembalikan halaman ke 1.
+   - Keadaan tidak ada hasil dan hitungan konten yang ditampilkan.
+2. Hitungan kategori (opsional):
+   - Checkbox Tampilkan jumlah konten per kategori, termasuk tombol Semua.
+   - Jumlah adalah total item masing-masing kategori, bukan metrik real-time.
+3. Project Audit lebih luas:
+   - Deteksi ID ganda pada Page, Section, Component, Shared Style, Variable,
+     Variant Set; tetap mendeteksi duplikasi ID elemen yang sudah ada.
+   - Deteksi siklus alias Design Variables pada mode Default/Alternate.
+   - Masalah kompleks tersebut hanya dilaporkan; TIDAK diperbaiki otomatis
+     demi menghindari kehilangan referensi yang digunakan sistem.
+4. Ekspor Audit JSON (lokal):
+   - Tombol '↓ Ekspor Audit JSON' di dialog ✦ Audit.
+   - File berisi nama proyek, waktu, ringkasan jumlah, dan daftar masalah.
+   - Tidak mengirimkan hasil ke server, tidak mengubah dokumen proyek.
+   - Nama elemen/komponen mungkin ikut tercantum dalam laporan.
+5. Aksesibilitas:
+   - Kontrol pagination berlabel, tombol memiliki status disabled,
+     ringkasan hasil dapat dibaca screen reader.
+   - Dialog audit mengelola Tab/Shift+Tab dan Escape agar fokus tetap terjaga.
+
+KOMPATIBILITAS
+- Widget Smart Filter V7 tidak otomatis dipaginasi: pagination default false.
+- Widget lama memakai HTML yang tersimpan. Untuk menerapkan fungsi V8 pada
+  Smart Filter yang sudah dibuat, pilih elemen > Properties > 'Update HTML Widget',
+  atau ✦ Audit > Upgrade HTML widget. Ini akan mengganti HTML embed buatan Moza
+  dari metadata widget. PERINGATAN: modifikasi manual pada embed HTML bisa tertimpa.
+- Backup/simpan versi proyek terlebih dahulu. Update widget menggunakan Undo native.
+- Perubahan source V8 hanya pada index.html, moza-smart-filter.js,
+  moza-quality.js dan moza-quality.css, ditambah dokumentasi ini.
+- Tidak mengubah kode dasar Atelier, akses login, Supabase, RSVP, atau publish.
+
+HASIL PENGUJIAN
+- Node --check lulus untuk semua file JavaScript Moza.
+- Chromium mock: modul V2-V8 boot; Auto Layout, responsive Grid, Components,
+  Shared Styles, Design Variables, Interactive Accordion, Sync widget lama,
+  dan Audit/repair yang tersedia dari V7 tetap lolos.
+- Chromium iframe: pagination 3 item/halaman, navigasi dan disabled states,
+  filter kategori, pencarian, sorting, empty state, kategori dengan hitungan,
+  serta kompatibilitas widget non-pagination.
+- Chromium mock: deteksi ID library ganda dan alias cycle, ekspor JSON via
+  dialog modal dan keyboard, bebas JavaScript pageerror pada pengujian mock.
+- Pengujian inline integrasi index.html menampilkan editor + 7 modul Moza,
+  tetapi browser terisolasi tidak dapat memuat hosting/local URL secara normal.
+  Satu error Invalid URL juga terjadi pada index V7 dengan metode pengujian
+  yang sama (origin about:blank), jadi tidak diklaim sebagai hasil deploy.
+
+BATASAN
+- Belum ada validasi login produksi, Supabase, pembayaran, Google Sheets,
+  RSVP nyata, upload media, publish hosting, atau sinkronisasi cloud.
+- Ekspor Audit JSON adalah laporan, BUKAN backup dokumen atau alat restorasi.
+- Audit tidak memeriksa benar-tidaknya tautan web atau akses media eksternal.
+- Jangan mengganti project produksi tanpa backup dan tes pada salinan.

@@ -1,0 +1,23 @@
+PANDUAN DEPLOY MOZA STUDIO V14.6
+
+Untuk repository yang saat ini sudah memakai V14.5:
+
+1. Ekstrak paket V14.6.
+2. Buka folder root repository GitHub Pages.
+3. Ganti index.html dengan index.html dari paket V14.6.
+4. Upload file baru moza-v14.6-canvas-table-editor.js ke root yang sama.
+5. Jangan hapus atau mengganti moza-v14.5-table-editor.js.
+6. Jangan hapus file CSS/JS lain yang sudah dipakai V14.5.
+7. Commit dan push perubahan.
+8. Setelah GitHub Pages selesai deploy, lakukan hard refresh di Safari. Jika masih memuat versi lama, tutup tab dan buka kembali.
+
+CARA MENGEDIT TABEL
+- Klik sel pada tabel di canvas untuk mengetik langsung.
+- Pilih tabel atau sel untuk membuka pengaturan di panel Properties.
+- Untuk merge: Properties > Pilih rentang sel > tap sel awal > tap sel akhir > Merge.
+- Untuk split: tap sel gabungan > Split.
+- Pengaturan font, warna, alignment, background dan border berlaku pada sel yang dipilih.
+- Untuk memindahkan atau mengubah ukuran tabel, seret bingkai atau gunakan handle objek.
+
+CATATAN
+Editor langsung hanya aktif pada Design Canvas. Preview dan website publik tetap menggunakan renderer tabel terisolasi yang sudah ada. Uji kembali di Safari iPad setelah deploy, terutama keyboard virtual, caret, dan operasi merge/split.
