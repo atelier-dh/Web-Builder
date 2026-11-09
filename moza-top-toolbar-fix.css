@@ -1,0 +1,70 @@
+/* Moza Studio V14.8.23 - top toolbar overlap fix (CSS only touches #top; no feature removed)
+   Root cause: #top.v8-top is a 3-column grid (minmax(205px,1fr) auto minmax(218px,1fr)).
+   The three groups (id / controls / actions) have a natural width of ~1457px but the columns
+   share the row by fr, so .v8-actions (flex-end) overflowed to the LEFT on top of the
+   Design/Prototype switch. On phones the flex bar (overflow:hidden) cut off Preview and the menu. */
+
+/* label helpers (JS wraps "glyph label" into .tb-i + .tb-l) */
+#top .tb-i{display:inline-block;line-height:1}
+#top .tb-l{white-space:nowrap}
+
+/* groups can never grow over each other */
+#top.v8-top .v8-id,#top.v8-top .v8-controls,#top.v8-top .v8-actions{min-width:0}
+#top.v8-top .v8-actions{flex-wrap:nowrap}
+#top.v8-top .v8-id>*,#top.v8-top .v8-controls>*,#top.v8-top .v8-actions>*{flex:0 0 auto}
+#top.v8-top .v8-id .pname{flex:0 1 auto}
+
+/* ---- Desktop 1200-1479: single row, compact (icon-only secondary buttons) ---- */
+@media(min-width:1200px) and (max-width:1599px){
+ #top.v8-top{grid-template-columns:max-content minmax(0,1fr) max-content!important;gap:8px!important;padding-inline:14px!important}
+ #top.v8-top .v8-controls{justify-content:center;gap:8px}
+ #top.v8-top .v8-id .pname{width:clamp(130px,12vw,170px)}
+ #top.v8-top .tb-l,#top.v8-top .v24-cloud-btn span{display:none}
+ #top.v8-top .v8-actions [data-a="toggle-right"],#top.v8-top .v8-actions .v24-cloud-btn,#top.v8-top .ac13-top-button{min-width:38px;padding:7px 9px}
+}
+/* 1200-1359: also icon-only Paste and logo-only brand */
+@media(min-width:1200px) and (max-width:1359px){
+ #top.v8-top .brand{font-size:0!important;gap:0}
+ #top.v8-top .brand:before{font-size:19px}
+ #top.v8-top .st30-paste-top{min-width:38px;padding-inline:9px!important}
+}
+
+/* ---- Tablet 761-1199 (two rows): 40px touch targets, no clipping ---- */
+@media(min-width:761px) and (max-width:1199px){
+ #top.v8-top{height:108px!important;grid-template-rows:50px 46px!important}
+ #top.v8-top .btn,#top.v8-top .st30-paste-top,#top.v8-top .mz13-overflow summary,#top.v8-top .v8-actions .btn,#top.v8-top .v8-undo .btn{height:40px!important;min-height:40px!important;min-width:40px}
+ #top.v8-top .pname{height:40px}
+ #top.v8-top .seg{padding:2px}
+ #top.v8-top .seg button{height:40px!important;min-height:40px!important;min-width:40px!important;padding-inline:11px}
+ #top.v8-top .v8-controls{flex-wrap:nowrap;gap:8px}
+}
+/* <=900: labels become icons (title/aria-label keep the name) */
+@media(min-width:761px) and (max-width:900px){
+ #top.v8-top .tb-l,#top.v8-top .v24-cloud-btn span{display:none}
+ #top.v8-top .brand{font-size:0!important;gap:0}
+ #top.v8-top .brand:before{font-size:19px}
+}
+
+/* ---- Phone / small tablet <=760 (flex bar): everything fits, nothing clipped ---- */
+@media(max-width:760px){
+ #top{gap:4px!important;padding:5px 6px!important}
+ #top .m-brand{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ #top .m-device{flex:0 1 auto!important;min-width:72px!important;max-width:107px;height:40px!important;min-height:40px!important}
+ #top .m-topbtn,#top .v24-cloud-btn,#top [data-a="tmenu"],#top .mz13-overflow summary{min-width:40px!important;height:40px!important;min-height:40px!important;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center}
+ #top .v24-cloud-btn{flex:0 0 40px;padding:0!important}
+ #top .v24-cloud-btn span{display:none}
+ #top .mz13-overflow{flex:0 0 auto}
+ #top .mz13-overflow summary{padding:0 9px!important;gap:4px}
+ #top .m-preview{padding:0 10px!important}
+}
+@media(max-width:600px){
+ #top .mz13-overflow summary .tb-l,#top .mz13-overflow summary>span[aria-hidden]:not(.tb-i){display:none}
+ #top .mz13-overflow summary{padding:0!important;width:40px}
+}
+@media(max-width:440px){
+ #top .m-preview .tb-l{display:none}
+ #top .m-preview{min-width:40px!important;width:40px!important;padding:0!important}
+}
+@media(max-width:419px){
+ #top .m-brand{display:none}
+}

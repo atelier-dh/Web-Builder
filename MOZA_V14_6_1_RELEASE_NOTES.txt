@@ -1,0 +1,23 @@
+MOZA STUDIO ADVANCED V14.6.1
+Canvas Table Editor + Advanced Menu Layer Hotfix
+
+WHY THIS PATCH EXISTS
+The supplied iPad Safari screenshot exposed a stacking-context defect: the Advanced dropdown was rendered inside #top (z-index 20), while the floating canvas toolbar (#dock, z-index 30) belonged to the main workspace. As a result, the canvas toolbar appeared over the dropdown and the canvas header was partially obscured.
+
+WHAT CHANGED
+1. Raised the top toolbar stacking context above the canvas workspace. The Advanced dropdown now renders above the floating canvas toolbar instead of being cut through by it.
+2. Hide the floating canvas toolbar and canvas header while the Advanced dropdown is open. They return when the menu closes.
+3. Kept the dropdown bounded to the viewport. On narrow screens it uses a fixed-position menu below the top toolbar so it is not clipped by the compact topbar.
+4. Added click-outside dismissal as a fallback alongside pointer, touch, Escape, scroll, and resize dismissal.
+5. Preserved V14.6 direct canvas table editing, V14.5 table serialization, tableData, merges, and cellStyles.
+
+DEPLOYMENT
+Replace index.html and overwrite the existing moza-v14.6-canvas-table-editor.js in the repository root with the versions in this package. Keep every other existing CSS/JS asset, including moza-v14.5-table-editor.js. Do not rename the script.
+
+EXPECTED BEHAVIOR
+- Open Advanced: its menu appears above the canvas UI; the floating canvas toolbar and canvas header temporarily hide to avoid visual collision.
+- Tap/click outside the menu or press Escape: the menu closes and the canvas controls return.
+- Tap a table cell: edit its text directly on the design canvas. Cell formatting, merge/split, and row/column controls remain in Properties.
+
+LIMITATION
+Static source checks pass. Live GitHub Pages deployment and physical iPad Safari behavior have not been verified in this environment. Test the deployed page after hard refresh.

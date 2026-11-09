@@ -1,0 +1,43 @@
+/* V4 interface is intentionally scoped. Original Atelier palette and editor styles remain intact. */
+.moza-v4{border-top:1px solid var(--line,#ddd);padding:14px 12px 24px;display:grid;gap:12px;background:var(--panel,#fff);color:var(--ink,inherit);font-size:12px}
+.moza-v4 header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.moza-v4 header b{font-size:13px}
+.moza-v4 .btn{font-size:11px;min-height:34px;white-space:normal}
+.moza-v4-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;background:var(--acc2,#f3f3f3);border-radius:10px}
+.moza-v4-tabs button{font:inherit;cursor:pointer;color:var(--ink,#222);padding:8px 5px;border:0;border-radius:7px;background:transparent}
+.moza-v4-tabs button.on{background:var(--panel,#fff);box-shadow:0 1px 4px #0001;font-weight:700}
+.moza-v4-card{display:grid;gap:9px;padding:11px;border:1px solid var(--line,#ddd);border-radius:10px;min-width:0}
+.moza-v4-card>p{margin:0;font-size:11px;color:var(--mut,#666);line-height:1.5}
+.moza-v4-label{display:grid;gap:4px;font-size:11px;color:var(--mut,#666)}
+.moza-v4-new{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.moza-v4 input,.moza-v4 select{max-width:100%;min-width:0;width:100%;border:1px solid var(--line,#ddd);border-radius:7px;background:var(--panel,#fff);padding:8px;color:var(--ink,#333);font-size:12px}
+.moza-v4-new #moza-v4-new-name{grid-column:1/-1}
+.moza-v4-token{display:grid;gap:7px;padding:8px 0;border-top:1px solid var(--line,#ddd)}
+.moza-v4-token:first-of-type{border-top:0}
+.moza-v4-token strong{font-size:11px;overflow-wrap:anywhere}
+.moza-v4-token strong small{font-weight:400;color:var(--mut,#666)}
+.moza-v4-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}
+.moza-v4-pair label{display:grid;gap:3px;font-size:10px;color:var(--mut,#666);min-width:0}
+.moza-v4-pair input{min-width:0;width:100%;font-size:11px;padding:6px 5px}
+.moza-v4-actions{display:flex;flex-wrap:wrap;gap:5px}
+.moza-v4-binding{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.moza-v4-binding span{overflow-wrap:anywhere}
+.moza-v4-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.moza-v4-metrics span{background:var(--acc2,#f5f5f5);border-radius:7px;padding:7px;display:flex;justify-content:space-between}
+.moza-v4-css{font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow-y:auto;background:var(--acc2,#f6f6f6);padding:9px;border:1px solid var(--line,#ddd);border-radius:8px}
+.moza-v4-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:flex-start;justify-content:center;padding:clamp(50px,12vh,120px) 12px 16px;background:rgba(0,0,0,.32);backdrop-filter:blur(3px)}
+.moza-v4-command{width:min(550px,100%);max-height:min(72vh,640px);display:flex;flex-direction:column;overflow:hidden;background:var(--panel,#fff);color:var(--ink,#252525);border:1px solid var(--line,#ddd);border-radius:15px;box-shadow:0 20px 60px #0003}
+.moza-v4-searchrow{display:flex;align-items:center;gap:8px;padding:13px;border-bottom:1px solid var(--line,#ddd)}
+.moza-v4-searchrow input{min-width:0;flex:1;background:transparent;border:0;outline:0;font:inherit;font-size:15px;color:inherit}
+.moza-v4-searchrow button{border:1px solid var(--line,#ddd);background:transparent;border-radius:8px;padding:6px 10px;color:inherit;cursor:pointer}
+.moza-v4-results{overflow:auto;padding:7px}
+.moza-v4-result{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:3px;width:100%;border:0;background:transparent;border-radius:8px;padding:11px 12px;color:inherit;cursor:pointer;font:inherit}
+.moza-v4-result.active,.moza-v4-result:hover{background:var(--acc2,#f3f3f3)}
+.moza-v4-result strong{font-size:13px}.moza-v4-result small{color:var(--mut,#777);font-size:11px}
+.moza-v4-empty{padding:12px;font-size:12px}
+.moza-v4-command footer{border-top:1px solid var(--line,#ddd);padding:10px 14px;color:var(--mut,#666);font-size:11px}
+@media(max-width:760px){.moza-v4 .btn,.moza-v4-tabs button{min-height:42px;touch-action:manipulation}.moza-v4-top-btn{display:none!important}.moza-v4-overlay{padding-top:30px}.moza-v4-command{max-height:85vh}}
+
+.moza-v4-jump{padding:7px 12px;border-bottom:1px solid var(--line,#ddd);background:var(--panel,#fff)}
+.moza-v4-jump .btn{width:100%;min-height:34px;text-align:center;white-space:normal}
+@media(max-width:760px){.moza-v4-jump .btn{min-height:42px}}
