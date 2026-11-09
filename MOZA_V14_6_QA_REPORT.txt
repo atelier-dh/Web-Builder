@@ -1,0 +1,22 @@
+MOZA V14.6 QA REPORT
+
+Static checks performed:
+- node --check passed for moza-v14.6-canvas-table-editor.js.
+- Confirmed index.html loads the V14.6 script after moza-v14.5-table-editor.js.
+- Confirmed V14.5 table bridge and serializer remain in the package.
+- Confirmed the new editor uses the existing tableData, merges, cellStyles and embedCode fields.
+- Confirmed the V14.6 script overrides the table modal entry points and adds the Properties inspector.
+- Confirmed Advanced menu dismissal listeners are installed for outside pointer interaction, Escape, scroll and resize.
+
+Not verified in this environment:
+- Live GitHub Pages deployment.
+- Physical iPad Safari virtual keyboard/caret behavior.
+- End-to-end visual interaction in the user's browser.
+
+Required staging checks after deployment:
+1. Create a table and type into several cells directly on canvas.
+2. Select C1 and D1 using Properties > Pilih rentang sel; merge; split; confirm both values return.
+3. Format only cell B3; confirm other cells remain unchanged.
+4. Insert and delete one row and one column; verify content and merges.
+5. Open Advanced, tap the canvas, and confirm the menu closes.
+6. Preview and publish a test page; confirm the table still renders.

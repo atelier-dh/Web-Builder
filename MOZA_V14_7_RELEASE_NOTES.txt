@@ -1,0 +1,49 @@
+MOZA STUDIO ADVANCED V14.7 — CROSS-PROJECT NAVIGATION
+BASE: Moza_Studio_Advanced_V14_6_1_REPACK.zip (user-provided)
+
+WHAT'S NEW
+1) Link to > Another Project in properties for buttons, linked images, shapes,
+   icons and navigation menu items; destination is the local project ID.
+2) Visual Smart Filter: each card link can target Another Project.
+3) Floating Assets: link to Another Project as a destination.
+4) Export Website > Combined Website ZIP: select other local projects to
+   bundle as standalone published websites in a single ZIP.
+5) Linked projects are preselected; export detects and blocks missing project
+   dependencies, instead of shipping dead links without warning.
+6) Cross-project links are generated relative to the actual project folders.
+   The root project is index.html; extra projects are in projects/slug/index.html.
+7) Media data URLs are moved into each website's own assets/ folder. ZIP uses
+   the existing Moza ZIP writer and validates media dependencies.
+8) No editable project JSON, cloud credentials or private working documents
+   are added to the public website bundle.
+
+UNCHANGED
+- Existing link to URL, Page, Section, New tab.
+- Existing standalone HTML and single-project ZIP for projects without cross links.
+- Project JSON backup / editable ZIP.
+- Existing RSVP, Supabase, B2, Google Sheets, visual canvas, cloud save.
+- All original source files except index.html and moza-visual-filter.js.
+
+NOTES AND LIMITATIONS
+- Project picker includes projects saved locally in the current browser. Open
+  cloud-only projects in the editor and save locally first to include them.
+- Cross-project navigation works after publishing the Combined Website ZIP;
+  editor's standalone Preview is not a multi-project hosting environment.
+- If the design contains an Another Project link, single-project HTML/ZIP
+  export displays a warning and asks you to use Combined Website ZIP.
+- Keep the generated folder hierarchy unchanged on GitHub Pages/hosting.
+- Linked projects are NOT merged into a single canvas or made one editable file:
+  they are separate websites under one deployed domain/folder tree.
+- Check external providers (RSVP endpoints, Google Fonts, embeds) on the
+  target hosting separately. The build was tested locally, not on user's hosting.
+
+QA
+- All external JS and main inline application scripts pass node --check.
+- Isolated Chromium test: local project selection, real UI clicks, linked
+  project exclusion warning, combined export succeeded.
+- Two-site combined ZIP: integrity passed, nested folder navigation and
+  relative reverse navigation validated.
+- Data URL asset relocation validated with a PNG in the root project.
+- Visual Smart Filter project link normalization and button HTML validated.
+- Isolated Chromium logs one pre-existing Invalid URL error unrelated to the
+  cross-project export; online provider and production hosting not tested.

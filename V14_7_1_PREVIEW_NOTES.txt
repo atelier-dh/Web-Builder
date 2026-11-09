@@ -1,0 +1,28 @@
+MOZA STUDIO ADVANCED V14.7.1 — CROSS-PROJECT PREVIEW HOTFIX
+Based strictly on V14.7 (which was based on the user-supplied V14.6.1 REPACK).
+
+UPGRADE FROM V14.7
+1. Back up your current website and project data.
+2. REPLACE ONLY moza-cross-project.js at the same location as index.html.
+3. DO NOT DELETE index.html or other JS/CSS files. No new runtime files are needed.
+4. Commit to GitHub Pages (or redeploy), then hard refresh the editor.
+
+WHAT'S NEW
+- Preview / Prototype now includes a local Project selector and Back button.
+- Normal buttons, nav links, and Smart Filter cards linked to Another Project can open that project in Preview.
+- Preview loads the linked project's pages and media from the local project list.
+- Page dropdown and Prev/Next use the currently-previewed project's pages.
+- Editing session stays on the original project; no project IDs, RSVP, Supabase settings or cloud data are changed.
+- Cross-project public Website ZIP is unchanged.
+
+LIMITATIONS
+- Linked projects must be present and saved in the same browser's local project storage (cloud-only or another-device projects must first be opened locally).
+- This is a sandboxed approximation of deployment; relative links, navigation and local assets can be tested, but external hosting domains, third-party embeds, backend requests and live RSVP should still be tested on staging.
+- The preview is read-only. Switching projects in Preview does not open the other project for editing.
+
+TESTED LOCALLY
+- V14.7 cross-project ZIP export retained the same correct two-site folder layout and links.
+- Browser (Chromium) from Editor: main -> linked project -> main via actual clicks.
+- Selecting a linked project, navigating to its second page, Back to main.
+- Editor S.pid and S.doc.name remain unchanged throughout Preview navigation.
+- Syntax and ZIP integrity checked.

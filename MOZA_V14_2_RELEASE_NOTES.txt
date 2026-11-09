@@ -1,0 +1,38 @@
+MOZA STUDIO ADVANCED V14.2 - PRODUCT IMAGE CAROUSEL + EDITOR PATCH
+------------------------------------------------------------------
+Upgrade source: Moza Studio Advanced V14.1 Copy/Paste Hotfix.
+This is a release candidate. Back up the previous deployment before upgrading.
+
+CHANGELOG
+- NEW Product Image Carousel element (separate from the existing Carousel):
+  multi-image product gallery, thumbnails, prev/next arrows, swipe gestures,
+  optional dots/loop, product title, caption or price, editable fonts and sizes.
+  Images use the project's Uploads media library.
+- Add transfer shrink factors 0.6x and 0.3x. Existing 0.8x retained.
+- Reduce Properties-editor movement by keeping the editor viewport anchored
+  while a Properties control is focused, and pausing editor canvas animations.
+- Preview page navigation can switch to the selected page without regenerating
+  the full iframe on every page change; the original preview is otherwise kept.
+- Verify that left-panel tabs have no obvious missing data-a action handlers.
+  This is not a comprehensive interaction test for every button.
+
+CHANGED FROM V14.1
+- index.html (new script/style refs and 0.6x, 0.3x options)
+- moza-product-gallery.css (NEW)
+- moza-product-gallery.js (NEW)
+
+UPGRADE ON GITHUB PAGES / EXISTING HOSTING
+1. Back up the V14.1 website or create a Git commit first.
+2. Replace index.html.
+3. Add moza-product-gallery.css and moza-product-gallery.js to the SAME folder.
+4. Keep all existing JS/CSS, RSVP/Supabase, Code.gs and other files.
+5. Wait for your hosting deploy, then hard refresh the browser.
+
+TESTS / LIMITATIONS
+- Local isolated Chromium tests passed: element addition, property coordinates,
+  font rendering in Preview, gallery prev/next, page switch without iframe
+  recreation, new scale options, and syntax checks for new JavaScript.
+- The existing editor reports URL/inline-document warnings when loaded without
+  real origin/hosting. Hosting-specific login, cloud, RSVP, and live publish not
+  verified. Full Production QA is still required.
+- Mobile swipe behavior should be checked on real phones.
