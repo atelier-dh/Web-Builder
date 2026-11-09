@@ -1,0 +1,27 @@
+MOZA STUDIO V14.8.11 — QA REPORT
+
+BASELINE
+- Full source package: Moza Studio V14.8.9 VISUAL UI RECOVERY.
+- Comparison references: V14.8.2 FULL and V14.8.3 TABLET MOBILE FAST CANVAS FULL.
+
+STATIC VALIDATION
+- JavaScript syntax check: PASS, 27 external JS files.
+- Visual Smart Filter save-path assertion: PASS; content edits no longer call afterEdit() / full-canvas render.
+- Visual Smart Filter inspector refresh: PASS; open accordion states and panel scroll are preserved.
+- Preview route test: PASS for same-origin absolute project URL, trailing-slash project URL, and relative project URL.
+- External URL isolation: PASS; different-host URL is not intercepted.
+- Visual Smart Filter Preview message test: PASS for project, page, and section destinations.
+- Export guard assertion: PASS; 95 MB limit applies to Standalone HTML only, not Website ZIP.
+- Combined Website ZIP assertion: PASS; source HTML size guard removed; post-extraction HTML/media/ZIP limits retained.
+
+LIMITATIONS
+- No live browser session was available for end-to-end interaction testing.
+- No real user project data, linked-project collection, large media set, or GitHub Pages deployment was available for acceptance testing.
+- Treat this package as a release candidate. Test on a duplicate project and a staging deployment before replacing production.
+
+RECOMMENDED ACCEPTANCE TEST
+1. Duplicate the current project and one linked target project.
+2. Edit several Visual Smart Filter cards, categories, colors, fonts, and image assignments; verify Undo, autosave, panel state, and responsive breakpoints.
+3. In Preview, click links to another local project using both the Project link type and a same-origin public URL; verify destination project/page/section and Back navigation.
+4. Export Standalone HTML, Website ZIP, Combined Website ZIP, and Editable ZIP; verify each download exists and opens as intended.
+5. Deploy Website ZIP / Combined Website ZIP to a staging path; verify internal project links and media paths.
