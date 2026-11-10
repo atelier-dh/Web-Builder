@@ -1,0 +1,30 @@
+PANDUAN DEPLOY MOZA STUDIO V14.5
+
+1. Ekstrak file ZIP.
+2. Salin semua file hasil ekstraksi ke root repository GitHub Pages.
+3. Jangan menghapus file JS/CSS lama yang masih dipanggil oleh index.html.
+4. Pastikan index.html dan moza-v14.5-table-editor.js berada pada folder yang sama.
+5. Commit dan push ke branch yang digunakan GitHub Pages.
+6. Setelah deploy, lakukan hard refresh.
+
+Pengujian editor tabel
+- Pilih objek tabel di canvas.
+- Buka Properties > Open Table Editor.
+- Klik C1, lalu klik Pilih rentang, kemudian klik D1.
+- Tombol Merge cells akan menggabungkan C1:D1.
+- Pilih sel gabungan tersebut lalu klik Split cells.
+- Pilih satu sel, ubah font/alignment/warna/background, lalu pastikan hanya sel terpilih yang berubah.
+- Pilih header row dan ubah formatnya.
+- Ubah isi sel dan pastikan Live preview ikut berubah.
+- Uji layar desktop, tablet portrait, dan ponsel.
+
+Pengujian musik
+- Aktifkan Play background music dan Autoplay.
+- Masukkan file audio atau URL audio yang dapat diakses publik.
+- Deploy HTML.
+- Buka halaman hasil deploy. Browser dapat menolak autoplay bersuara saat halaman baru dibuka.
+- Lakukan tap atau klik pertama di halaman. Musik seharusnya mulai berjalan jika sumber audio valid.
+- Gunakan tombol speaker untuk pause/resume.
+
+Batasan browser
+Safari, iOS, dan browser modern menerapkan kebijakan autoplay. Musik bersuara tidak dapat dipaksa mulai sebelum interaksi pengguna. Versi ini mencoba autoplay saat halaman dibuka dan mengulang pemanggilan play() secara langsung pada interaksi pengguna pertama.

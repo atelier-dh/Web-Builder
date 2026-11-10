@@ -1,0 +1,26 @@
+MOZA V14.6.1 QA REPORT
+
+STATIC CHECKS
+- node --check passed for moza-v14.6-canvas-table-editor.js.
+- Confirmed index.html loads moza-v14.6-canvas-table-editor.js after moza-v14.5-table-editor.js.
+- Confirmed the script version reports 14.6.1.
+- Confirmed #top receives a stacking level above #main/#dock.
+- Confirmed #dock and .v8-canvas-head are hidden only while the Advanced menu is open.
+- Confirmed outside pointer, touch, click, Escape, scroll, and resize dismissal handlers are present.
+- Confirmed the V14.6 canvas table renderer and contenteditable cell handlers remain in place.
+- Confirmed the V14.5 bridge and serializer are retained.
+
+NOT VERIFIED
+- Live GitHub Pages deployment.
+- Physical iPad Safari rendering, touch, and virtual keyboard behavior.
+- End-to-end merge/split and save/publish on the user's live project.
+
+STAGING CHECKS
+1. Hard-refresh the deployed site.
+2. Open Advanced. Confirm the menu appears above the canvas controls and the floating toolbar/canvas header hide temporarily.
+3. Tap the canvas outside the menu. Confirm the menu closes and the canvas controls return.
+4. Press Escape while Advanced is open. Confirm the same close behavior.
+5. Select a table and type directly into several cells on the canvas.
+6. Format one cell, then verify neighboring cells remain unchanged.
+7. Test merge/split and row/column insertion/deletion.
+8. Preview and publish a staging page; verify the table output.
