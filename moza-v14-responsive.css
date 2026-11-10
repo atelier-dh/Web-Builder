@@ -1,0 +1,13 @@
+/* V14 responsive helpers — scoped to V14 editor controls only */
+.mz14-responsive-panel{box-sizing:border-box;max-width:100%;min-width:0;overflow-wrap:anywhere;border:1px solid #dfe5f3;background:#f8faff;border-radius:12px;padding:12px;margin:10px 0;color:#25344e}
+.mz14-responsive-panel h4{font-size:13px;margin:0 0 6px}
+.mz14-responsive-panel p{font-size:11px;line-height:1.55;margin:0 0 9px;color:#6a778e}
+.mz14-actions{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.mz14-actions button{box-sizing:border-box;min-width:0;max-width:100%;border:1px solid #d5dff3;background:#fff;border-radius:8px;min-height:36px;padding:8px 10px;color:#2f4982;cursor:pointer}
+.mz14-audit{padding:16px;max-width:900px;width:min(90vw,900px);margin:auto;color:#21304b}
+.mz14-audit p{font-size:13px;line-height:1.6}
+.mz14-audit-table{max-height:min(65vh,500px);overflow:auto;border:1px solid #dde4f0;border-radius:9px}
+.mz14-audit table{width:100%;border-collapse:collapse;font-size:12px}
+.mz14-audit td,.mz14-audit th{border-bottom:1px solid #e4e9f1;text-align:left;padding:8px;vertical-align:top}
+.mz14-audit thead{background:#f2f5fa}
+@media(max-width:760px){.mz14-responsive-panel{width:100%;padding:10px}.mz14-actions{gap:6px}.mz14-actions button{flex:1 1 120px;min-width:0}.mz14-audit{width:min(95vw,900px);padding:10px}}
