@@ -1,0 +1,15 @@
+/* Additional UI only; inherits Atelier's existing palette. */
+.moza-v3{border-top:1px solid var(--line,#ddd);padding:16px 12px 22px;display:grid;gap:13px;background:var(--panel,#fff);color:var(--txt,inherit)}
+.moza-v3 header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.moza-v3 header small{font-size:10px;color:var(--mut,#777);border:1px solid var(--line,#ddd);padding:2px 6px;border-radius:8px}
+.moza-v3-section{border:1px solid var(--line,#ddd);border-radius:10px;padding:12px;display:grid;gap:10px}
+.moza-v3-section strong{font-size:12px}
+.moza-v3-section small{color:var(--mut,#777);font-size:11px;line-height:1.5}
+.moza-v3-section label{font-size:11px;color:var(--mut,#666);display:grid;gap:4px}
+.moza-v3-section select{min-width:0;max-width:100%;width:100%;border:1px solid var(--line,#ddd);border-radius:7px;padding:7px;background:var(--panel,#fff);color:inherit}
+.moza-v3-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0}
+.moza-v3-row span{flex:1;min-width:70px;word-break:break-word;font-size:12px}
+.moza-v3-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.moza-v3-actions{display:flex;flex-wrap:wrap;gap:5px}
+.moza-v3 button{min-height:32px;touch-action:manipulation}
+@media(max-width:760px){.moza-v3{padding:14px}.moza-v3 button{min-height:42px}.moza-v3-grid{gap:12px}}
