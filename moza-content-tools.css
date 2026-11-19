@@ -1,5 +1,0 @@
-/* Moza Advanced V9 — additive editor inspector */
-.mz9-tools{margin:13px 10px;padding:12px;border:1px solid var(--border,#d9dce5);border-radius:12px;background:var(--panel,#fff);display:grid;gap:10px}
-.mz9-tools .mz9-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}.mz9-tools .mz9-heading b{font-size:13px}.mz9-tools .mz9-heading small{font-size:11px;opacity:.7}
-.mz9-tools .hint{font-size:11px;line-height:1.45;margin:0;opacity:.8}.mz9-tools .mz9-actions{display:flex;gap:7px;flex-wrap:wrap}.mz9-tools label{display:grid;gap:5px;font-size:12px}.mz9-tools select,.mz9-tools input[type=file]{max-width:100%;min-width:0;border:1px solid #ccc;border-radius:7px;padding:7px;font:inherit}
-.mz9-tools .mz9-preview{background:rgba(115,125,161,.09);border:1px solid #d7dce6;border-radius:8px;padding:9px;display:grid;gap:3px;overflow-wrap:anywhere}.mz9-tools .mz9-preview b{font-size:12px}.mz9-tools .mz9-preview div,.mz9-tools .mz9-preview small{font-size:11px}
