@@ -1,0 +1,19 @@
+/* Moza 14.7.6: scoped exclusively to EDITOR when light mode is enabled.
+   Does NOT appear in siteHTML, deployed pages or the Preview iframe. */
+body.mzperf-touch #frame.edit .sec.mzperf-offscreen,
+body.mzperf-touch #frame.edit .sec.mzperf-offscreen *{
+ animation-play-state:paused!important;
+}
+body.mzperf-touch.mzperf-inactive #frame.edit *,
+body.mzperf-touch.mzperf-inactive #frame.edit *::before,
+body.mzperf-touch.mzperf-inactive #frame.edit *::after{
+ animation-play-state:paused!important;
+}
+body.mzperf-touch #left .assets img,
+body.mzperf-touch #right .palrow img,
+body.mzperf-touch #fillm img{
+ content-visibility:auto;
+}
+.mzperf-more{width:100%;min-height:40px;margin:10px 0 4px;font-size:12px}
+.mzperf-toggle[aria-pressed="true"]{border-color:#7e94ef!important;background:#edf1ff!important;color:#293f8f!important}
+@media(max-width:760px){.mzperf-toggle{min-width:42px;max-width:175px;white-space:normal;line-height:1.2}}

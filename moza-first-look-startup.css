@@ -1,0 +1,40 @@
+/* V14.8.4 — workspace first look + progressive project covers */
+#st28-shell .mzfl-featured{margin:22px 0 30px;border:1px solid #e6e6f3;border-radius:19px;padding:19px;background:#fff}
+#st28-shell .mzfl-featured-head,#st28-shell .mzfl-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px}
+#st28-shell .mzfl-featured-head{margin:0 0 17px}
+#st28-shell .mzfl-featured-head h2{margin:0 0 5px;color:#28304e;font-size:22px;font-weight:800}
+#st28-shell .mzfl-featured-head p{margin:0;color:#727b96;font-size:13px}
+#st28-shell .mzfl-featured-head button,#st28-shell .mzfl-toolbar button{border:1px solid #d7ddf4;color:var(--mzfl-accent,#5764df);border-radius:10px;padding:10px 13px;background:#f8f9ff;font-size:12px;font-weight:700;cursor:pointer}
+#st28-shell .mzfl-featured-foot{text-align:right;margin-top:14px}
+#st28-shell .mzfl-featured-foot button{border:0;background:none;color:var(--mzfl-accent,#5764df);font-weight:700;cursor:pointer}
+#st28-shell .mzfl-toolbar{padding:14px 17px;margin:0 0 18px;border:1px solid #e5e8f4;border-radius:13px;background:#fff}
+#st28-shell .mzfl-toolbar b{display:block;font-size:15px;color:#2a304b}
+#st28-shell .mzfl-toolbar small{color:#8288a0;font-size:12px;display:block;margin-top:3px}
+#st28-shell .st-card-actions .mzfl-pin,#st28-shell .st-card-actions .mzfl-move{border:1px solid #dce0ef;border-radius:8px;background:#fff;color:#626d85;cursor:pointer;padding:6px;font-size:11px;white-space:nowrap}
+#st28-shell .st-card-actions .mzfl-pin.on{color:var(--mzfl-accent,#5764df);background:#f2f0ff}
+#st28-shell .mzfl-cover-placeholder{min-height:155px;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:16px;text-align:center;background:linear-gradient(135deg,#f9f7ff,#e9eaff);color:#6570ad;border-radius:13px}
+#st28-shell .mzfl-cover-placeholder span{font-size:30px}
+#st28-shell .mzfl-cover-placeholder strong{font-size:13px;overflow-wrap:anywhere}
+#st28-shell .mzfl-cover-placeholder small{font-size:10px;color:#7c83ab}
+#st28-shell [data-mzfl-layout="compact"] .st-card-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px}
+#st28-shell [data-mzfl-layout="compact"] .st-design-meta{padding:10px}
+#st28-shell [data-mzfl-layout="list"] .st-card-grid{grid-template-columns:minmax(0,1fr)}
+#st28-shell [data-mzfl-layout="list"] .st-design-card{display:flex;gap:10px;align-items:stretch;min-height:120px}
+#st28-shell [data-mzfl-layout="list"] .st-open-preview{width:175px;flex:0 0 175px;min-width:0}
+#st28-shell [data-mzfl-layout="list"] .st-design-meta{flex:1;min-width:0}
+#st28-shell .mzfl-mask{position:fixed;inset:0;z-index:2147483000;background:#15213880;display:flex;align-items:center;justify-content:center;padding:12px;overflow:auto}
+#st28-shell .mzfl-dialog{width:min(580px,100%);max-height:min(94vh,850px);overflow:auto;background:#fff;padding:22px;border-radius:18px;box-shadow:0 30px 80px #10203b45;color:#28314b}
+#st28-shell .mzfl-dialog-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#st28-shell .mzfl-dialog h2{margin:0;font-size:22px}
+#st28-shell .mzfl-dialog-head button{border:1px solid #e2e6f4;border-radius:8px;background:#fff;padding:7px 11px;cursor:pointer}
+#st28-shell .mzfl-dialog>p{color:#71809a;font-size:13px;line-height:1.5}
+#st28-shell #mzfl-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#st28-shell #mzfl-form label{display:flex;flex-direction:column;gap:5px;color:#475370;font-size:12px;font-weight:700}
+#st28-shell #mzfl-form input:not([type="checkbox"]),#st28-shell #mzfl-form select{box-sizing:border-box;width:100%;padding:11px;border:1px solid #dce2f1;border-radius:10px;background:white;font-size:13px;color:#242e48}
+#st28-shell #mzfl-form input[type="color"]{padding:3px;height:40px}
+#st28-shell #mzfl-form .mzfl-check{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #e4e7f3;border-radius:10px;font-weight:500}
+#st28-shell #mzfl-form .mzfl-hint{font-size:12px;line-height:1.6;color:#66718b;grid-column:1/-1}
+#st28-shell .mzfl-dialog-actions{display:flex;justify-content:flex-end;gap:10px;grid-column:1/-1}
+#st28-shell .mzfl-dialog-actions button{border:1px solid #d9def0;border-radius:10px;padding:10px 16px;background:#fff;color:#4a5574;cursor:pointer}
+#st28-shell .mzfl-dialog-actions button[type="submit"]{background:#5160df;color:#fff;border-color:#5160df}
+@media(max-width:700px){#st28-shell .mzfl-featured-head,#st28-shell .mzfl-toolbar{align-items:flex-start;flex-wrap:wrap}#st28-shell #mzfl-form{grid-template-columns:1fr}#st28-shell .mzfl-dialog{padding:14px}#st28-shell [data-mzfl-layout="list"] .st-open-preview{width:110px;flex-basis:110px}#st28-shell .mzfl-featured{padding:12px}}

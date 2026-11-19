@@ -1,0 +1,17 @@
+/* Moza V5 — uses inherited Atelier button colors; editor theme unchanged. */
+.mz5-library{padding:12px 13px 14px;border-bottom:1px solid var(--line,#e2e5ed);margin:0 0 8px}
+.mz5-library h4{margin:0 0 6px;font-size:13px}
+.mz5-library p{margin:0 0 10px}
+.mz5-tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mz5-tiles button{min-height:38px;white-space:normal;text-align:center}
+.mz5-panel{margin:14px 10px;padding:12px;border:1px solid var(--line,#e2e5ed);border-radius:12px;background:var(--card,#fff);display:grid;gap:10px}
+.mz5-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mz5-head b{font-size:13px}.mz5-head small{font-size:11px;color:var(--mut,#8790a1)}
+.mz5-panel label{display:grid;gap:5px;font-size:11px;font-weight:600;color:var(--txt,#303746)}
+.mz5-panel input:not([type=checkbox]),.mz5-panel textarea,.mz5-panel select{min-width:0;width:100%;box-sizing:border-box;border:1px solid var(--line,#dce0e8);border-radius:8px;padding:8px;font:12px/1.5 inherit;background:#fff;color:inherit}
+.mz5-panel textarea{font-family:inherit;resize:vertical}
+.mz5-row{display:grid;gap:8px;background:var(--bg,#fafafa);padding:10px;border-radius:10px;border:1px solid var(--line,#e2e5ed)}
+.mz5-rowhead{display:flex;align-items:center;justify-content:space-between;gap:6px}.mz5-rowhead>div{display:flex;gap:3px}.mz5-rowhead b{font-size:12px}
+.mz5-rowhead button{min-width:25px;min-height:28px;padding:2px 5px}
+.mz5-add{min-height:34px}.mz5-options{display:grid;gap:9px;grid-template-columns:1fr 1fr}.mz5-options .mz5-check{grid-column:1/-1;display:flex;align-items:center;gap:7px}.mz5-options input[type=color]{height:36px;cursor:pointer}
+@media(max-width:760px){.mz5-library{padding:10px}.mz5-tiles button{font-size:11px;min-height:44px}.mz5-panel{margin:10px 8px;padding:10px}}
