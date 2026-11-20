@@ -22,8 +22,12 @@
     const next = clamp149(nextZoom, .25, 2);
     if (Math.abs(next - oldZoom) < .001) return;
     S.zoom = next;
-    renderCanvas();
-    renderStatus();
+    const liveFrame = $149('#frame');
+    if (liveFrame) liveFrame.style.setProperty('--iz', (1 / next).toFixed(3));
+    // Update only the compositor transform and scroll-wrapper dimensions.
+    // Rebuilding the complete page DOM for every pinch frame caused jank on phones.
+    if (typeof fit === 'function') fit();
+    if (typeof renderStatus === 'function') renderStatus();
     requestAnimationFrame(() => {
       const newFrame = $149('#frame');
       if (!newFrame) return;
@@ -543,5 +547,5 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot149,{once:true});else boot149();
   window.addEventListener('resize',()=>{installMobileCanvasGestures149();installMobileZoomControls149()},{passive:true});
-  window.__MOZA_V149_STATUS__={version:'14.9.1',features:['mobile-scroll-locked-elements','custom-pinch-zoom','mobile-zoom-controls','proportional-image-video-resize','video-source-aspect-detection','permanent-section-delete','modular-envelope-assets','optional-card','one-page-cinematic-video','persistent-final-frame','carousel-vertical-continuous','digital-haus-frame-shape','continuous-motion-linear-loops','faq-custom-content-blocks','faq-copy-to-clipboard','faq-uploaded-and-github-fonts','countdown-github-fonts']};
+  window.__MOZA_V149_STATUS__={version:'14.9.2',features:['mobile-scroll-locked-elements','custom-pinch-zoom','mobile-zoom-controls','proportional-image-video-resize','video-source-aspect-detection','permanent-section-delete','modular-envelope-assets','optional-card','one-page-cinematic-video','persistent-final-frame','carousel-vertical-continuous','digital-haus-frame-shape','continuous-motion-linear-loops','faq-custom-content-blocks','faq-copy-to-clipboard','faq-uploaded-and-github-fonts','countdown-github-fonts','faq-responsive-scale-per-device','compositor-only-smooth-zoom','page-context-reset','guest-greeting-apply-fix']};
 })();

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="atelier-build" content="v14.9.1-carousel-faq-motion-fonts">
+<meta name="atelier-build" content="v14.9.2-responsive-faq-editor-qa">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Moza Studio — Advanced V14.9.1</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
+<title>Moza Studio — Advanced V14.9.2</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
 <meta name="atelier-feature-recovery" content="v30.26-responsive-sync-shrink">
 <style>
 :root{--bg:#e9ebef;--panel:#fff;--ink:#1c2027;--mut:#6b7380;--line:#e2e5ea;--acc:#3a5bf0;--acc2:#eef1ff;--ok:#18864b;--bad:#c93a3a;--r:10px;--sh:0 1px 2px rgba(20,25,40,.06),0 6px 20px rgba(20,25,40,.08);--iz:1}
@@ -113,7 +113,7 @@ button{cursor:pointer}
 .tcard .tb b{flex:1}
 .pagerow{display:flex;align-items:center;gap:6px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px}
 .pagerow.on{border-color:var(--acc);background:var(--acc2)}
-.pagerow span{flex:1;cursor:pointer}
+.pagerow .page-go{flex:1;min-width:0;text-align:left;border:0;background:transparent;color:inherit;padding:3px 4px;cursor:pointer;font:inherit;overflow-wrap:anywhere}.pagerow .page-go:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
 .palrow{display:flex;gap:4px;flex-wrap:wrap}
 .palrow .sw{width:22px;height:22px}
 .navitem{border:1px solid var(--line);border-radius:9px;margin:6px 0;background:#fff}
@@ -2260,7 +2260,15 @@ function siteRuntime(){
  function bp(){var w=innerWidth;return w<=640?'m':w<=1024?'t':'d'}
  function cur(){return pgs.filter(function(p){return !p.hidden})[0]||pgs[0]}
  function nvh(){var h=0;navs.forEach(function(n){var c=JSON.parse(n.getAttribute('data-cfg'));if(n.offsetParent!==null&&c.pos==='top'&&(c.fx||c.hide===false)&&cur().contains(n)&&!c.tr){h=Math.max(h,n.offsetHeight)}});R.style.setProperty('--nvh',h+'px')}
- function setbp(){R.setAttribute('data-bp',bp());nvh()}
+ function syncMozaWidgetBreakpoints(){
+  var activeBp=bp();
+  [].slice.call(document.querySelectorAll('iframe[data-moza-widget-frame="1"]')).forEach(function(frame){
+   var send=function(){try{frame.contentWindow.postMessage({type:'moza-widget-breakpoint',bp:activeBp},'*')}catch(e){}};
+   if(!frame.__mozaBpBound){frame.__mozaBpBound=true;frame.addEventListener('load',send)}
+   send();
+  });
+ }
+ function setbp(){R.setAttribute('data-bp',bp());nvh();syncMozaWidgetBreakpoints()}
  function closeAll(){navs.forEach(function(n){n.classList.remove('open');var b=n.querySelector('.nv-bg');if(b)b.setAttribute('aria-expanded','false')})}
  function act(){var pg=cur(),slug=pg.dataset.slug,cs=null,off=(parseFloat(getComputedStyle(R).getPropertyValue('--nvh'))||0)+80;
   [].slice.call(pg.querySelectorAll('.sec')).forEach(function(s){if(s.getBoundingClientRect().top<=off)cs=s.id.slice(2)});
@@ -2687,7 +2695,7 @@ function tabTemplates(){
  <div class="lbl">My templates</div>${S.userTpl.length?S.userTpl.map((t,i)=>`<div class="prow"><b>${esc(t.name)}</b><button class="btn sm" data-a="utpl-use" data-v="${i}">Use</button><button class="btn sm" data-a="utpl-dup" data-v="${i}">Duplicate</button><button class="btn sm dng" data-a="utpl-del" data-v="${i}">✕</button></div>`).join(''):'<div class="hint">Nothing saved yet.</div>'}
  <button class="btn" style="width:100%;margin-top:8px" data-a="tpl-save">Save current page as template</button>` }
 function tabPages(){
- return `<h3>Pages</h3>`+S.doc.pages.map(p=>`<div class="pagerow ${p.id===S.pageId?'on':''}"><span data-a="page-go" data-id="${p.id}">${esc(p.name)} <small class="hint">#/${esc(p.slug)}</small></span><button class="ib" data-a="page-dup" data-id="${p.id}" title="Duplicate">⧉</button><button class="ib" data-a="page-del" data-id="${p.id}" title="Delete" ${S.doc.pages.length<2?'disabled':''}>✕</button></div>`).join('')
+ return `<h3>Pages</h3>`+S.doc.pages.map(p=>`<div class="pagerow ${p.id===S.pageId?'on':''}" data-page-row="${esc(p.id)}"><button type="button" class="page-go" data-a="page-go" data-id="${esc(p.id)}" aria-current="${p.id===S.pageId?'page':'false'}"><b>${esc(p.name)}</b> <small class="hint">#/${esc(p.slug)}</small></button><button type="button" class="ib" data-a="page-dup" data-id="${esc(p.id)}" title="Duplicate">⧉</button><button type="button" class="ib" data-a="page-del" data-id="${esc(p.id)}" title="Delete" ${S.doc.pages.length<2?'disabled':''}>✕</button></div>`).join('')
  +`<button class="btn" style="width:100%" data-a="page-add">Add page</button><p class="hint" style="margin-top:10px">Select a page, then click an empty spot on the canvas to edit its name, URL slug and background in the right panel. Pages are linked from buttons and the navigation bar.</p>` }
 function tabNav(){
  const n=curNav(),pg=curPage();
@@ -2814,7 +2822,7 @@ function elSettings(el){
   +SEL('Playback Mode','el','playbackMode',[[ 'click','On Click / Tap' ],[ 'auto','Autoplay' ],[ 'scroll','On Scroll (Scroll-Scrub)' ],[ 'ended','On Video End → Next Page' ]],{rp:1})+CB('Show video controls','el','videoControls')+CB('Loop video','el','videoLoop')+((el.playbackMode==='scroll')?N('Scroll distance (px)','el','scrubPixels',{min:200,max:6000,step:50}):'')+((el.playbackMode==='ended')?SEL('Next page','el','videoOnEndPage',[[ '', 'Choose page…' ],...S.doc.pages.map(p=>[p.id,p.name])]):'')
   +(el.playbackMode==='scroll'?`<button class="btn sm" data-a="cinema-space" style="margin:5px 0">↕ Add scroll space to section</button>`:'')
   +`<div class="hint">Scroll-Scrub is supported for direct MP4/WebM sources (upload or direct URL), not YouTube/Drive embeds. On Video End automatically disables looping and navigates to the selected page. For custom triggers, use Prototype → When video ends. Disable Loop, then set Prototype → On video end → Navigate to page to play an invitation sequence without delays. If controls are hidden, taps on the video cannot pause it.</div>`+videoExtra(el);
- if(TEXTY.includes(t))h+=`<div class="lbl">Nama tamu & sapaan</div>`
+ if(TEXTY.includes(t))h+=`<div class="lbl" id="guest-settings-heading">Nama tamu & sapaan</div>`
   +CB('Ambil nama dari link ?to=','el','guestDynamic',{rp:1})
   +(el.guestDynamic?`
   <div class="hint" style="line-height:1.5;margin:6px 0">Tulis sapaan sesukamu. Sisipkan <b>{{nama_tamu}}</b> di bagian mana pun untuk menampilkan nama penerima dari link.</div>
@@ -3292,7 +3300,11 @@ function openRmbg(aid){
 function rmRun(){const el=T('el');const aid=RM&&RM.aid||el&&el.asset;if(aid)openRmbg(aid)}
 /* ---------- actions ---------- */
 function zeroSel(){S.sel=null}
-function setZoom(z){S.zoom=clamp(z,.25,2);renderCanvas();renderStatus()}
+function setZoom(z){
+ S.zoom=clamp(Number(z)||1,.25,2);
+ const fr=$('#frame');if(fr)fr.style.setProperty('--iz',(1/S.zoom).toFixed(3));
+ fit();renderStatus();
+}
 function fitZoom(){const w=$('#viewport').clientWidth-56;setZoom(Math.min(1,w/BP[S.bp]))}
 function dupSection(s){const c=clone(s);c.id=uid('s');c.name=s.name+' copy';c.elements.forEach(e=>e.id=uid('e'));return c}
 function reidDoc(sections,nav){const m={};sections.forEach(s=>{const o=s.id;s.id=uid('s');m[o]=s.id;s.elements.forEach(e=>e.id=uid('e'))});
@@ -3387,7 +3399,14 @@ const ACT={
  'utpl-use':b=>{const t=clone(S.userTpl[+b.dataset.v].data);reidDoc(t.sections,t.nav);applyTemplate({theme:t.theme,nav:t.nav,pages:[{id:'x',sections:t.sections,bg:t.bg}]})},
  'utpl-dup':b=>{const t=clone(S.userTpl[+b.dataset.v]);t.name+=' copy';S.userTpl.push(t);saveTpl();renderLeft()},
  'utpl-del':b=>{S.userTpl.splice(+b.dataset.v,1);saveTpl();renderLeft()},
- 'page-go':b=>{finishEdit();S.pageId=b.dataset.id;S.sel=null;renderAll()},
+ 'page-go':b=>{
+  const target=S.doc.pages.find(p=>p.id===b.dataset.id);
+  if(!target){toast('Halaman tidak ditemukan. Daftar halaman dimuat ulang.');renderLeft();return;}
+  finishEdit();
+  S.pageId=target.id;S.sel=null;S.multi=[];S.inGroup=null;S.pathEdit=null;S.pathSel=null;S.pen=null;S.editing=false;S.renaming=null;S._selKey=null;
+  renderAll();
+  const vp=$('#viewport');if(vp){vp.scrollTop=0;vp.scrollLeft=0;}
+ },
  'page-add':()=>{commit(discrete());const n=S.doc.pages.length+1,p={id:uid('p'),name:'Page '+n,slug:'page-'+n,title:'Page '+n,bg:defBg(),navOwn:false,nav:null,sections:[SECT.hero({title:'New page'}),SECT.footer({name:S.doc.name})]};S.doc.pages.push(p);S.pageId=p.id;S.sel=null;renderAll()},
  'page-dup':b=>{const p=S.doc.pages.find(x=>x.id===b.dataset.id);commit(discrete());const c=clone(p);c.id=uid('p');c.name+=' copy';c.slug=slugify(p.slug+'-copy');reidDoc(c.sections,c.nav||undefined);S.doc.pages.splice(S.doc.pages.indexOf(p)+1,0,c);S.pageId=c.id;renderAll()},
  'page-del':b=>{if(S.doc.pages.length<2||!confirm('Delete this page?'))return;commit(discrete());S.doc.pages=S.doc.pages.filter(p=>p.id!==b.dataset.id);S.pageId=S.doc.pages[0].id;S.sel=null;renderAll()},
@@ -3819,7 +3838,15 @@ function siteRuntime(){
  function bp(){var w=innerWidth;return w<=640?'m':w<=1024?'t':'d'}
  function cur(){return pgs.filter(function(p){return !p.hidden})[0]||startPg}
  function nvh(){var h=0;navs.forEach(function(n){var c=JSON.parse(n.getAttribute('data-cfg'));if(n.offsetParent!==null&&c.pos==='top'&&(c.fx||c.hide===false)&&cur().contains(n)&&!c.tr){h=Math.max(h,n.offsetHeight)}});R.style.setProperty('--nvh',h+'px')}
- function setbp(){R.setAttribute('data-bp',bp());nvh()}
+ function syncMozaWidgetBreakpoints(){
+  var activeBp=bp();
+  [].slice.call(document.querySelectorAll('iframe[data-moza-widget-frame="1"]')).forEach(function(frame){
+   var send=function(){try{frame.contentWindow.postMessage({type:'moza-widget-breakpoint',bp:activeBp},'*')}catch(e){}};
+   if(!frame.__mozaBpBound){frame.__mozaBpBound=true;frame.addEventListener('load',send)}
+   send();
+  });
+ }
+ function setbp(){R.setAttribute('data-bp',bp());nvh();syncMozaWidgetBreakpoints()}
  function closeAll(){navs.forEach(function(n){n.classList.remove('open');var b=n.querySelector('.nv-bg');if(b)b.setAttribute('aria-expanded','false')})}
  function act(){var pg=cur(),slug=pg.dataset.slug,cs=null,off=(parseFloat(getComputedStyle(R).getPropertyValue('--nvh'))||0)+80;
   [].slice.call(pg.querySelectorAll('.sec')).forEach(function(s){if(s.getBoundingClientRect().top<=off)cs=s.id.slice(2)});
@@ -7164,7 +7191,7 @@ Object.assign(ACT,{
  'guest-insert':()=>{
   const el=T('el');if(!el||!el.guestDynamic)return;
   const t=document.activeElement;
-  const input=t&&t.dataset&&t.dataset.p==='guestTemplate'?t:document.querySelector('#right textarea[data-p="guestTemplate"]');
+  const input=t&&t.dataset&&t.dataset.p==='guestTemplate'?t:(document.querySelector('#left textarea[data-p="guestTemplate"]')||document.querySelector('#right textarea[data-p="guestTemplate"]'));
   const current=input?input.value:guestPattern(el);
   const at=input&&typeof input.selectionStart==='number'?input.selectionStart:current.length;
   const end=input&&typeof input.selectionEnd==='number'?input.selectionEnd:at;
@@ -7667,7 +7694,20 @@ function mOpenPanel(target,tab){S._mobileModeV5=true;S._mobilePanel=target;S.lef
  renderRail();layoutPanels();renderStatus();
 }
 function mClosePanel(){S._mobileModeV5=true;S._mobilePanel='';layoutPanels();renderRail();}
-function mGuestOpen(){const current=mobileGuestEls();const el=mobileGuestSelected();if(!el){const dynamic=current.find(e=>e.guestDynamic);if(dynamic)S.sel={k:'el',id:dynamic.id};}
+function mGuestOpen(){
+ const current=mobileGuestEls();
+ let el=mobileGuestSelected();
+ if(!el){el=current.find(e=>e.guestDynamic)||current[0]||null;}
+ if(!mNarrow()){
+  if(!el){toast('Pilih elemen teks terlebih dahulu, atau tambahkan Sapaan Tamu dari Elemen.');return;}
+  if(S.sel?.id!==el.id||S.sel?.k!=='el'){S.sel={k:'el',id:el.id};S.multi=[];S.inGroup=null;renderCanvas();renderRight();renderTools();layoutPanels();}
+  const heading=document.getElementById('guest-settings-heading');
+  if(heading){heading.scrollIntoView({block:'nearest',behavior:'smooth'});}
+  else{const right=$('#right');if(right)right.scrollTop=right.scrollHeight;}
+  return;
+ }
+ if(!el){mOpenPanel('left','guest-mobile');return;}
+ if(S.sel?.id!==el.id||S.sel?.k!=='el'){S.sel={k:'el',id:el.id};S.multi=[];S.inGroup=null;renderCanvas();renderRight();}
  mOpenPanel('left','guest-mobile');
 }
 Object.assign(ACT,{
@@ -7685,7 +7725,20 @@ Object.assign(ACT,{
  'm-set-device':b=>{ACT.bp(b);renderLeft();layoutPanels()},
  'm-guest-enable':()=>{const el=mobileGuestSelected();if(!el)return;setField('el','guestDynamic',true);renderLeft();renderRight();layoutPanels()},
  'm-guest-new':()=>{const el=newEl('paragraph',{name:'Sapaan Tamu',text:'Dear {{nama_tamu}}',guestDynamic:true,guestTemplate:'Dear {{nama_tamu}}',guestFallback:'Tamu Undangan',w:420,h:80,st:{fs:32,fw:500,align:'center'}});addEl(el,selSecId());mOpenPanel('left','guest-mobile')},
- 'm-guest-close':()=>mClosePanel(),
+ 'm-guest-close':()=>{
+  const el=mobileGuestSelected();
+  if(el&&el.guestDynamic){
+   const template=$('#m-guest-text')?.value;
+   const fallback=$('#m-guest-fallback')?.value;
+   if(template!==undefined&&template!==String(guestPattern(el))||fallback!==undefined&&fallback!==String(el.guestFallback||'Tamu Undangan')){
+    commit(discrete());
+    if(template!==undefined)el.guestTemplate=String(template).slice(0,2400);
+    if(fallback!==undefined)el.guestFallback=String(fallback).slice(0,120);
+    scheduleSave();
+   }
+  }
+  renderCanvas();mClosePanel();toast('Sapaan tamu diterapkan dan disimpan.');
+ },
  'm-lock':()=>{const el=T('el');if(!el)return;setField('el','locked',!el.locked);renderCanvas();refreshMobileQuick();toast(el.locked?'Elemen dikunci':'Elemen dibuka')}
 });
 const v5GuestPreset=ACT['guest-preset'];ACT['guest-preset']=function(b){v5GuestPreset(b);if(mNarrow()&&S.tab==='guest-mobile'){renderLeft();layoutPanels()}};
@@ -7730,7 +7783,7 @@ function v6AddGreeting(){
  if(S.mode==='proto')setMode('design');
  const el=newEl('paragraph',{name:'Sapaan Tamu',text:'Dear {{nama_tamu}}',guestDynamic:true,guestTemplate:'Dear {{nama_tamu}}',guestFallback:'Tamu Undangan',w:430,h:86,st:{fs:32,fw:500,align:'center'}});
  addEl(el,selSecId());
- if(mNarrow()){S._mPropView='';mOpenPanel('left','guest-mobile')}else{renderRight();const group=$('#right details.grp[data-g="greet"]')||[...document.querySelectorAll('#right details.grp')].find(x=>/Nama tamu|sapaan|Guest/i.test(x.textContent));if(group){group.open=true;group.scrollIntoView({block:'nearest'})}}
+ if(mNarrow()){S._mPropView='';mOpenPanel('left','guest-mobile')}else{renderRight();const heading=document.getElementById('guest-settings-heading');if(heading)heading.scrollIntoView({block:'nearest',behavior:'smooth'});}
 }
 Object.assign(ACT,{
  'v6-add-guest':v6AddGreeting,
@@ -9771,23 +9824,12 @@ function at19SheetId(url){
 }
 async function at19Request(action,extra={}){
  if(!ATWSP.jwt)throw Error('Please connect as a wedding admin first.');
- const r=await fetch(ATWSP.url+'/functions/v1/wsp-sheets',{method:'POST',headers:{'apikey':ATWSP.key,'Authorization':'Bearer '+ATWSP.jwt,'Content-Type':'application/json'},body:JSON.stringify({action,order_id:AT19S.orderId,...extra,project_id:String(S.pid||'')})});
+ const r=await fetch(ATWSP.url+'/functions/v1/wsp-sheets',{method:'POST',headers:{'apikey':ATWSP.key,'Authorization':'Bearer '+ATWSP.jwt,'Content-Type':'application/json'},body:JSON.stringify({action,order_id:AT19S.orderId,...extra})});
  const j=await r.json().catch(()=>({}));
  if(!r.ok){
    const message=String(j.error||j.message||'Spreadsheet server returned an error.').slice(0,360);
    const err=new Error(message+' (HTTP '+r.status+')');err.httpStatus=r.status;err.sheetAction=action;
    throw err;
- }
- // Public Apps Script URL is not a secret. Keep it in the project so Comments
- // can reuse the same shared bridge without asking the user to paste it again.
- if(j&&j.bridge_url&&S&&S.doc){
-  S.doc.wspSheetsBridgeUrl=String(j.bridge_url);
-  if(j.project_mapping&&j.project_mapping.ok&&j.connection&&j.connection.spreadsheet_id){
-   S.doc.wspSheetsLinkedOrderId=String(AT19S.orderId||'');
-  }else if(String(S.doc.wspSheetsLinkedOrderId||'')===String(AT19S.orderId||'')){
-   delete S.doc.wspSheetsLinkedOrderId;
-  }
-  if(typeof scheduleSave==='function')scheduleSave();
  }
  return j;
 }
@@ -9806,7 +9848,7 @@ function at19View(){
  <div class="at19-actions"><button class="btn" data-a="at19-sync-questions">↻ Sync pertanyaan terbaru</button><button class="btn" data-a="at19-probe">Read spreadsheet columns</button><button class="btn" data-a="at19-create">Create New Spreadsheet</button></div>
  ${AT19S.headers.length?`<div class="at19-hint"><b>${AT19S.headers.length} headers found</b><small>Existing Sheets need a column named <code>Response ID</code>, preferably the first column. Map each RSVP question below; different clients can use different headers.</small></div><div class="at19-fields">${sel||'<small>No custom RSVP questions yet.</small>'}</div>`:'<div class="at19-hint"><small>To connect an existing spreadsheet, share editing permission with the Google account running the The Wedding Space Apps Script, then click Read spreadsheet columns.</small></div>'}
  <div class="at19-actions"><button class="btn pri" data-a="at19-save">Save connection</button><button class="btn" data-a="at19-sync">Sync existing responses</button></div>
- <p class="hint">Google connection runs through a protected server function. The current project_id is included for Apps Script project-to-spreadsheet routing. No private Google key is saved in the invitation HTML.</p></div>`, '<button class="btn" data-a="at-rsvp-open">Back to RSVP</button>','at19-sheet-dialog'));
+ <p class="hint">Google connection runs through a protected server function. No private Google key is saved in the invitation HTML.</p></div>`, '<button class="btn" data-a="at-rsvp-open">Back to RSVP</button>','at19-sheet-dialog'));
 }
 function at19Busy(note){AT19S.note=note;at19View()}
 function at19Fields(){const id=at19SheetId(document.querySelector('#at19-url')?.value||AT19S.id);const tab=(document.querySelector('#at19-tab')?.value||'RSVP').trim();const choice=document.querySelector('#at19-mode')?.value||'none';const mode=choice==='sheets'?'sheets_only':choice==='both'?'dashboard_and_sheets':'dashboard_only';const enabled=mode!=='dashboard_only';return{id,tab,enabled,mode}}
@@ -16443,15 +16485,15 @@ function a319Card(el){
  let hostname=el.embedKind==='widget'?'':a319Host(el.embedUrl||'');
  return `<div class="a319-card"><div class="a319-card-top">🔗 ${esc(mode)}</div><div class="a319-card-main"><div class="a319-card-icon">▣</div><b>${esc(el.name||mode)}</b><small>${esc(hostname||hint)}</small></div><div class="a319-card-bottom">Drag • Resize • Preview untuk interaksi</div></div>`;
 }
-function a319SandboxFrame(doc,editing){
- return `<iframe class="a319-safe-iframe" title="Embedded widget (isolated)" sandbox="allow-scripts allow-forms allow-popups" loading="${editing?'lazy':'eager'}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write" srcdoc="${esc(doc)}" style="position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;${editing?'pointer-events:none;':''}"></iframe>`;
+function a319SandboxFrame(doc,editing,responsiveWidget=false){
+ return `<iframe class="a319-safe-iframe" ${responsiveWidget?'data-moza-widget-frame="1"':''} title="Embedded widget (isolated)" sandbox="allow-scripts allow-forms allow-popups" loading="${editing?'lazy':'eager'}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write" srcdoc="${esc(doc)}" style="position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;${editing?'pointer-events:none;':''}"></iframe>`;
 }
 function a319RenderEmbed(el,edit){
  if(el.embedKind==='widget'){
   const code=window.MZX&&MZX.on?MZX.inline(el.embedCode||'',el.name||'Embed'):(el.embedCode||'');
   if(!code.trim())return a319Card(el);
   if(edit&&!el.embedLive)return a319Card(el);
-  return `<div class="a319-embed-box" style="position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate">${a319SandboxFrame(a319WidgetDocument(code),edit)}</div>`;
+  return `<div class="a319-embed-box" style="position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate">${a319SandboxFrame(a319WidgetDocument(code),edit,!!el.mozaWidget)}</div>`;
  }
  if(el.embedUrl){
   if(edit&&!el.embedLive)return a317EmbedContent(el,true);
@@ -16519,7 +16561,7 @@ ACT['a319-apply']=()=>{
 ACT['a319-open-preview']=()=>{
  const el=T('el');if(!el||el.type!=='embed')return;
  if(el.embedKind==='widget'){
-  const frame=a319SandboxFrame(a319WidgetDocument(el.embedCode||''),false);
+  const frame=a319SandboxFrame(a319WidgetDocument(el.embedCode||''),false,!!el.mozaWidget);
   showModal(mbox('Widget Preview · Terisolasi',`<div style="position:relative;width:100%;height:min(65vh,520px);background:#fff;border:1px solid #dce1e8;border-radius:10px;overflow:hidden">${frame}</div><p class="hint">Widget berjalan pada halaman sandbox yang tidak bisa mengakses data Atelier. Jika kosong, provider mungkin menolak iframe.</p>`,`<button class="btn" data-a="mclose">Tutup</button>`));
  } else if(el.embedUrl) a317PreviewFrame();else toast('Gunakan Preview untuk HTML legacy');
 };
@@ -17895,14 +17937,14 @@ const a316Style=document.createElement('style');a316Style.id='atelier-v302116-st
 @keyframes a316-load{to{background-position:-200% 0}}
 `;document.head.appendChild(a316Style);
 const a316PriorTop=renderTop;
-renderTop=function(...args){const r=a316PriorTop.apply(this,args);const e=document.querySelector('#top .v24-version');if(e)e.textContent='v30.21.31';return r};
+renderTop=function(...args){const r=a316PriorTop.apply(this,args);const e=document.querySelector('#top .v24-version');if(e)e.textContent='v30.21.21';return r};
 /* === end Atelier v30.21.16 === */
 
 
-/* Atelier Studio v30.21.31 — RSVP starters, editable tables, expanded frames */
+/* Atelier Studio v30.21.21 — RSVP starters, editable tables, expanded frames */
 (function(){
 'use strict';
-const AT321_VERSION='v30.21.31';
+const AT321_VERSION='v30.21.21';
 
 /* Oval mask: use elliptical border radii so non-square frames remain true ovals. */
 if(typeof MASKS!=='undefined')MASKS.ellipse='border-radius:50% / 50%;overflow:hidden;';
@@ -20868,7 +20910,7 @@ window.__mozaClipboardBuild='V14.1-cross-device-paste';
 <link rel="stylesheet" href="./moza-v4.css">
 <script src="./moza-v4.js"></script>
 <link rel="stylesheet" href="./moza-interactive.css?v=14_9_1">
-<script src="./moza-interactive.js?v=14_9_1"></script>
+<script src="./moza-interactive.js?v=14_9_2"></script>
 <link rel="stylesheet" href="./moza-smart-filter.css">
 <script src="./moza-smart-filter.js?v=14_8_11"></script>
 <link rel="stylesheet" href="./moza-content-tools.css">
@@ -20907,10 +20949,20 @@ window.__mozaClipboardBuild='V14.1-cross-device-paste';
 <link rel="stylesheet" href="./moza-top-toolbar-fix.css?v=14_8_23">
 <script src="./moza-top-toolbar-fix.js?v=14_8_23"></script>
 <script src="./moza-marquee.js?v=14_8_24"></script>
-<script src="./moza-comments.js?v=14_9_4"></script>
+
+<style id="moza-comments-launcher-v1493">
+.at-v14-launch .at-v14-comments-add{appearance:none;-webkit-appearance:none;width:100%;min-height:76px;border:1px solid var(--line,#dce2ee);background:#fff;color:var(--ink,#25324a);border-radius:10px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;touch-action:manipulation;user-select:none;font:inherit;font-size:12px}
+.at-v14-launch .at-v14-comments-add svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.at-v14-launch .at-v14-comments-add span{pointer-events:none}
+.at-v14-launch .at-v14-comments-add:focus-visible{outline:3px solid #6577ef;outline-offset:2px}
+.at-v14-launch .at-v14-comments-add:active{transform:scale(.985);background:var(--acc2,#f2f4ff)}
+@media(hover:hover){.at-v14-launch .at-v14-comments-add:hover{border-color:#aebcff;background:#f7f8ff}}
+</style>
+
+<script src="./moza-comments.js?v=14_9_3"></script>
 <script src="./moza-richtext.js?v=14_8_28"></script>
 <script src="./moza-passgate.js?v=14_8_31"></script>
-<script src="./moza-v14.9-revision.js?v=14_9_1"></script>
+<script src="./moza-v14.9-revision.js?v=14_9_2"></script>
 </body></html>
 <!-- Atelier Studio v28.12 · detail-preserving background remover patch -->
 

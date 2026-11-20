@@ -1,4 +1,4 @@
-/* Moza Studio V14.9.4 - RSVP-linked Comments / Ucapan & Doa element.
+/* Moza Studio V14.8.26 - Comments / Ucapan & Doa element.
  * Elemen baru "Ucapan & Doa": form + daftar komentar yang LANGSUNG tampil di website.
  * Penyimpanan: Google Sheets lewat Apps Script (Code.gs) - sama seperti RSVP manual.
  *  - kirim  : POST (no-cors) action "comment_add"
@@ -11,13 +11,12 @@ if(window.MozaComments||typeof elHTML!=='function'||typeof siteHTML!=='function'
 
 /* ---------------- defaults ---------------- */
 var DEF={
- link:'rsvp',rsvpForm:'auto',rsvpLinkId:'',withRsvp:false,sbUrl:'',sbKey:'',endpoint:'',tab:'Comments',moderation:'auto',pageSize:6,maxMsg:300,refresh:60,
+ link:'rsvp',rsvpForm:'auto',withRsvp:false,sbUrl:'',sbKey:'',endpoint:'',tab:'Comments',moderation:'auto',pageSize:6,maxMsg:300,refresh:60,
  title:'Ucapan & Doa',subtitle:'Kirimkan ucapan dan doa terbaik untuk kami',
  nameLabel:'Nama',namePh:'Nama kamu',msgLabel:'Ucapan',msgPh:'Tulis ucapan & doa…',
  attendOn:false,attendLabel:'Kehadiran',attendOpts:'Hadir, Tidak hadir, Masih ragu',
  btn:'Kirim Ucapan',sending:'Mengirim…',
  ok:'Terima kasih! Ucapanmu sudah terkirim.',okPending:'Terima kasih! Ucapanmu akan tampil setelah disetujui.',
- okMirrorWarn:'Ucapan tersimpan di Supabase, tetapi salinan Google Sheets belum dapat dikonfirmasi. Periksa koneksi Sheets.',
  err:'Gagal mengirim. Periksa koneksi lalu coba lagi.',reqName:'Nama wajib diisi.',reqMsg:'Ucapan wajib diisi.',wait:'Tunggu sebentar sebelum mengirim lagi.',
  empty:'Belum ada ucapan. Jadilah yang pertama!',loading:'Memuat ucapan…',loadErr:'Ucapan belum bisa dimuat.',notConfigured:'Ucapan belum dihubungkan ke Google Sheets.',loadMore:'Muat lebih banyak',
  showForm:true,formPos:'top',showAvatar:true,showTime:true,
@@ -35,8 +34,8 @@ function cfgOf(el){var c=el&&el.cm&&typeof el.cm==='object'?el.cm:{};var o={};fo
 function dv(c,k){var d=c[k],t=c[k+'T']!=null?c[k+'T']:d,m=c[k+'M']!=null?c[k+'M']:t;return{d:d,t:t,m:m}}
 /* Teks bawaan per bahasa (semua bisa diubah bebas di panel; tombol "Terapkan bahasa" mengisi ulang dari sini) */
 var LANG={
- id:{title:'Ucapan & Doa',subtitle:'Kirimkan ucapan dan doa terbaik untuk kami',nameLabel:'Nama',namePh:'Nama kamu',msgLabel:'Ucapan',msgPh:'Tulis ucapan & doa…',attendLabel:'Kehadiran',attendOpts:'Hadir, Tidak hadir, Masih ragu',btn:'Kirim Ucapan',sending:'Mengirim…',ok:'Terima kasih! Ucapanmu sudah terkirim.',okPending:'Terima kasih! Ucapanmu akan tampil setelah disetujui.',okMirrorWarn:'Ucapan tersimpan di Supabase, tetapi salinan Google Sheets belum dapat dikonfirmasi. Periksa koneksi Sheets.',err:'Gagal mengirim. Periksa koneksi lalu coba lagi.',reqName:'Nama wajib diisi.',reqMsg:'Ucapan wajib diisi.',wait:'Tunggu sebentar sebelum mengirim lagi.',empty:'Belum ada ucapan. Jadilah yang pertama!',loading:'Memuat ucapan…',loadErr:'Ucapan belum bisa dimuat.',notConfigured:'Ucapan belum dihubungkan ke Google Sheets.',loadMore:'Muat lebih banyak',agoNow:'baru saja',agoMin:'{n} menit lalu',agoHour:'{n} jam lalu',agoDay:'{n} hari lalu',locale:'id-ID'},
- en:{title:'Wishes & Messages',subtitle:'Leave your warmest wishes for us',nameLabel:'Name',namePh:'Your name',msgLabel:'Message',msgPh:'Write your wishes…',attendLabel:'Attendance',attendOpts:'Attending, Not attending, Maybe',btn:'Send Wishes',sending:'Sending…',ok:'Thank you! Your message has been sent.',okPending:'Thank you! Your message will appear once approved.',okMirrorWarn:'Your message was saved in Supabase, but its Google Sheets copy could not be confirmed. Check the Sheets connection.',err:'Could not send. Check your connection and try again.',reqName:'Name is required.',reqMsg:'Message is required.',wait:'Please wait a moment before sending again.',empty:'No messages yet. Be the first!',loading:'Loading messages…',loadErr:'Messages could not be loaded.',notConfigured:'Messages are not connected to Google Sheets yet.',loadMore:'Load more',agoNow:'just now',agoMin:'{n} min ago',agoHour:'{n} h ago',agoDay:'{n} d ago',locale:'en-US'}};
+ id:{title:'Ucapan & Doa',subtitle:'Kirimkan ucapan dan doa terbaik untuk kami',nameLabel:'Nama',namePh:'Nama kamu',msgLabel:'Ucapan',msgPh:'Tulis ucapan & doa…',attendLabel:'Kehadiran',attendOpts:'Hadir, Tidak hadir, Masih ragu',btn:'Kirim Ucapan',sending:'Mengirim…',ok:'Terima kasih! Ucapanmu sudah terkirim.',okPending:'Terima kasih! Ucapanmu akan tampil setelah disetujui.',err:'Gagal mengirim. Periksa koneksi lalu coba lagi.',reqName:'Nama wajib diisi.',reqMsg:'Ucapan wajib diisi.',wait:'Tunggu sebentar sebelum mengirim lagi.',empty:'Belum ada ucapan. Jadilah yang pertama!',loading:'Memuat ucapan…',loadErr:'Ucapan belum bisa dimuat.',notConfigured:'Ucapan belum dihubungkan ke Google Sheets.',loadMore:'Muat lebih banyak',agoNow:'baru saja',agoMin:'{n} menit lalu',agoHour:'{n} jam lalu',agoDay:'{n} hari lalu',locale:'id-ID'},
+ en:{title:'Wishes & Messages',subtitle:'Leave your warmest wishes for us',nameLabel:'Name',namePh:'Your name',msgLabel:'Message',msgPh:'Write your wishes…',attendLabel:'Attendance',attendOpts:'Attending, Not attending, Maybe',btn:'Send Wishes',sending:'Sending…',ok:'Thank you! Your message has been sent.',okPending:'Thank you! Your message will appear once approved.',err:'Could not send. Check your connection and try again.',reqName:'Name is required.',reqMsg:'Message is required.',wait:'Please wait a moment before sending again.',empty:'No messages yet. Be the first!',loading:'Loading messages…',loadErr:'Messages could not be loaded.',notConfigured:'Messages are not connected to Google Sheets yet.',loadMore:'Load more',agoNow:'just now',agoMin:'{n} min ago',agoHour:'{n} h ago',agoDay:'{n} d ago',locale:'en-US'}};
 
 /* ---------------- pure helpers (also stringified into the published runtime) ---------------- */
 function cmEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -108,43 +107,13 @@ function cmRuntime(esc,ago,card){
   function status(t,kind){if(st){st.textContent=t||'';st.className='mzcm-status'+(kind?' is-'+kind:'')}}
   function count(){if(cnt&&msgI)cnt.textContent=msgI.value.length+'/'+cfg.maxMsg}
   if(msgI){msgI.addEventListener('input',count);count()}
-  function gasPost(payload){
-   var url=cfg.endpoint||cfg.mirror;
-   if(!url)return Promise.reject(new Error('Apps Script bridge URL is not configured'));
-   return fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload),credentials:'omit',redirect:'follow'});
-  }
-  function verifyMirror(payload,attempt){
-   if(!cfg.mirror)return Promise.resolve(false);
-   return new Promise(function(resolve){
-    jsonp(cfg.mirror,{action:'comment_status',project_id:payload.project_id,order_id:payload.order_id,tab_name:payload.tab_name,request_id:payload.request_id},function(err,data){
-     if(!err&&data&&data.ok===true&&data.found===true){resolve(true);return;}
-     /* Backward compatibility: the legacy bound Code.gs exposes comments, not comment_status. */
-     if(!err&&data&&data.ok===true&&typeof data.found==='undefined'&&data.version!=='21.4'){
-      jsonp(cfg.mirror,{action:'comments',tab:payload.tab_name,limit:50,offset:0},function(listErr,list){
-       var found=!listErr&&list&&list.ok===true&&Array.isArray(list.items)&&list.items.some(function(item){return String(item.id||'')===String(payload.request_id)});
-       resolve(!!found);
-      });
-      return;
-     }
-     if(attempt>0){setTimeout(function(){verifyMirror(payload,attempt-1).then(resolve)},900);return;}
-     resolve(false);
-    });
-   });
-  }
-  function mirrorComment(payload){
-   if(!cfg.mirror)return Promise.resolve(false);
-   return gasPost(payload).then(function(){return verifyMirror(payload,1)}).catch(function(){return false});
-  }
+  function gasPost(payload){return fetch(cfg.endpoint||cfg.mirror,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload),credentials:'omit',redirect:'follow'})}
   function send(payload){
-   if(!SB)return gasPost(payload).then(function(){return{mirrorOk:true}});
+   if(!SB)return gasPost(payload);
    return fetch(SB.url+'/rest/v1/wsp_comments',{method:'POST',headers:sbHead({'Content-Type':'application/json',Prefer:'return=minimal'}),
      body:JSON.stringify({client_id:payload.request_id,site_key:SB.site||'',channel:cfg.tab,name:payload.name,message:payload.message,attendance:payload.attendance||''})})
     .then(function(r){if(!r.ok&&r.status!==409)throw new Error('http '+r.status)})
-    .then(function(){
-     if(!cfg.mirrorRequired)return{mirrorOk:null};
-     return mirrorComment(payload).then(function(ok){return{mirrorOk:ok}});
-    });
-  }   /* Supabase tetap utama; Apps Script mirror diverifikasi secara terpisah. */
+    .then(function(){if(cfg.mirror){try{gasPost(payload).catch(function(){})}catch(e){}}})}   /* Supabase + Google Sheets: salinan ke Sheet */
   form.addEventListener('submit',function(e){
    e.preventDefault();if(sending)return;
    var n=(nameI.value||'').trim(),m=(msgI.value||'').trim();
@@ -155,20 +124,19 @@ function cmRuntime(esc,ago,card){
    if(!cfg.endpoint&&!SB){status(cfg.notConfigured,'err');return}
    if(cfg.__old&&!SB){status(cfg.err,'err');return}
    var id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,10),att=attI?attI.value:'';
-   var payload={action:'comment_add',request_id:id,tab_name:cfg.tab,name:n.slice(0,60),message:m.slice(0,cfg.maxMsg),attendance:att,project_id:cfg.pid||'',order_id:cfg.orderId||'',rsvp_id:cfg.rsvpId||'',rsvp_tab:cfg.rsvpTab||'',rsvp_name:cfg.rsvpName||'',submitted_at:new Date().toISOString(),contact_website:''};
+   var payload={action:'comment_add',request_id:id,tab_name:cfg.tab,name:n.slice(0,60),message:m.slice(0,cfg.maxMsg),attendance:att,project_id:cfg.pid||'',submitted_at:new Date().toISOString(),contact_website:''};
    sending=true;if(btn)btn.disabled=true;status(cfg.sending,'');
    send(payload)
-   .then(function(result){
+   .then(function(){
     store('mzcm_last',String(Date.now()));store('mzcm_name',n);
     if(cfg.moderation==='manual'){status(cfg.okPending,'ok')}
     else{status(cfg.ok,'ok');items.unshift({id:id,n:n,m:m,a:att,t:Date.now(),local:true});total++;loaded=true;render()}
-    if(cfg.mirrorRequired&&(!result||result.mirrorOk!==true))status(cfg.okMirrorWarn||'Supabase saved the message, but the Google Sheets mirror was not confirmed.','warn');
     msgI.value='';count();setTimeout(function(){load(0,false)},2800)})
    .catch(function(){status(cfg.err,'err')})
    .then(function(){sending=false;if(btn)btn.disabled=false})});
  })}
 
-/* ---------------- koneksi: pilih RSVP yang menjadi sumber spreadsheet ---------------- */
+/* ---------------- koneksi: ikut RSVP (otomatis) ---------------- */
 function rsvpForms(){var out=[];
  try{(S.doc.pages||[]).forEach(function(p){(p.sections||[]).forEach(function(s){walkEls(s.elements||[],function(e){
   if(!e||e.type!=='form')return;
@@ -176,52 +144,18 @@ function rsvpForms(){var out=[];
   var tab=String((e.rsvp&&e.rsvp.manualTab)||(e.at322&&(e.at322.manualTab||e.at322.tab))||'RSVP').trim()||'RSVP';
   out.push({id:e.id,name:String(e.name||(e.at322&&e.at322.name)||'RSVP'),url:url,tab:tab})})})})}catch(_){}
  return out}
-function supabaseRsvpForms(){
- var out=[],seen={};
- function add(x){if(!x||!x.id||!x.orderId||seen[x.id])return;seen[x.id]=1;out.push(x)}
- try{
-  var doc=S.doc||{},globalOrder=String((doc.at322&&doc.at322.orderId)||'').trim();
-  (doc.pages||[]).forEach(function(p){(p.sections||[]).forEach(function(s){walkEls(s.elements||[],function(e){
-   if(!e||e.type!=='form')return;
-   var d=e.at322||{};
-   if(d.multi===true){
-    var orderId=String(d.orderId||globalOrder||'').trim();
-    var linked=!!(d.remoteId&&d.projectId===S.pid&&d.elementId===e.id&&d.remoteArchived!==true);
-    if(linked&&orderId&&d.destination!=='manual'&&d.enabled!==false){
-     add({id:'dynamic:'+String(e.id),kind:'dynamic',name:String(d.name||e.name||'RSVP tambahan'),tab:String(d.tab||'RSVP'),orderId:orderId,rsvpId:String(d.remoteId),elementId:String(e.id),linked:true});
-    }
-    return;
-   }
-   var r=e.rsvp||{},mainOrder=String(r.orderId||'').trim();
-   if(r.enabled===true&&r.formId&&mainOrder){
-    add({id:'main:'+String(e.id),kind:'main',name:String(e.name||'RSVP utama'),tab:'RSVP',orderId:mainOrder,rsvpId:String(r.formId),elementId:String(e.id),linked:true});
-   }
-  })})})
- }catch(_){}
- return out;
-}
 function sbBase(c){var d=(typeof ATWSP!=='undefined'&&ATWSP)||{};return{url:String(c.sbUrl||d.url||'').trim().replace(/\/+$/,''),key:String(c.sbKey||d.key||'').trim()}}
 function resolve(c){
  if(c.link==='supabase'||c.link==='supabase_sheet'){
-  var b=sbBase(c),mirror='',mirrorSource='none',f=rsvpForms(),supForms=supabaseRsvpForms(),pick=null;
-  if(c.link==='supabase_sheet'){
-   pick=supForms.filter(function(x){return x.id===c.rsvpLinkId})[0]||null;
-   var docState=(typeof S!=='undefined'&&S.doc)||{};
-   var docBridge=docState.wspSheetsBridgeUrl||'';
-   var explicit=String(c.endpoint||'').trim();
-   mirror=explicit||String(docBridge||'').trim();
-   mirrorSource=explicit?'explicit':(mirror?'rsvp_connection':'none');
-  }
-  var orderReady=!!(pick&&String(((typeof S!=='undefined'&&S.doc&&S.doc.wspSheetsLinkedOrderId)||''))===String(pick.orderId));
-  var ok=!!(b.url&&b.key&&(c.link!=='supabase_sheet'||(mirror&&pick&&pick.orderId&&orderReady)));
-  return{mode:'sb',ok:ok,url:'',sb:b.url&&b.key?b:null,mirror:mirror,mirrorSource:mirrorSource,orderReady:orderReady,rsvpTab:pick?pick.tab:'',orderId:pick?pick.orderId:'',rsvpId:pick?pick.rsvpId:'',rsvpName:pick?pick.name:'',rsvpLinkId:pick?pick.id:'',forms:f,supabaseForms:supForms};
- }
+  var b=sbBase(c),mirror='',f=rsvpForms();
+  if(c.link==='supabase_sheet'){mirror=String(c.endpoint||'').trim()||(f[0]?f[0].url:'')}
+  var ok=!!(b.url&&b.key);return{mode:'sb',ok:ok,url:'',sb:ok?b:null,mirror:mirror,rsvpTab:'',forms:f}}
  if(c.link==='custom'){var u=String(c.endpoint||'').trim();return{mode:'gas',ok:!!u,url:u,rsvpTab:'',forms:rsvpForms()}}
  var fs=rsvpForms(),pick=null;
  if(c.rsvpForm&&c.rsvpForm!=='auto')pick=fs.filter(function(x){return x.id===c.rsvpForm})[0]||null;
  pick=pick||fs[0];
- return pick?{mode:'gas',ok:true,url:pick.url,rsvpTab:c.withRsvp?pick.tab:'',name:pick.name,tab:pick.tab,forms:fs}:{mode:'gas',ok:false,url:'',rsvpTab:'',forms:fs}
-}
+ return pick?{mode:'gas',ok:true,url:pick.url,rsvpTab:c.withRsvp?pick.tab:'',name:pick.name,tab:pick.tab,forms:fs}:{mode:'gas',ok:false,url:'',rsvpTab:'',forms:fs}}
+
 /* ---------------- markup ---------------- */
 function vars(c,edit){
  var bp=(edit&&typeof S!=='undefined'&&['d','t','m'].indexOf(S.bp)>=0)?S.bp:'d';
@@ -238,8 +172,8 @@ function demo(lg){var n=Date.now();if(lg==='en')return[
 function shell(el,edit){
  var c=cfgOf(el),rs=resolve(c);if(!edit&&!rs.ok)return '';
  var site=(typeof S!=='undefined'&&S.pid)?String(S.pid):'';
- var pub={endpoint:rs.url,mirror:rs.mirror||'',mirrorRequired:L==='supabase_sheet',sb:rs.sb?{url:rs.sb.url,key:rs.sb.key,site:site}:null,rsvpTab:rs.rsvpTab||'',orderId:rs.orderId||'',rsvpId:rs.rsvpId||'',rsvpName:rs.rsvpName||'',tab:c.tab,pageSize:c.pageSize,maxMsg:c.maxMsg,refresh:c.refresh,moderation:c.moderation,showAvatar:!!c.showAvatar,showTime:!!c.showTime,
-  ok:c.ok,okPending:c.okPending,okMirrorWarn:c.okMirrorWarn,err:c.err,reqName:c.reqName,reqMsg:c.reqMsg,wait:c.wait,empty:c.empty,loading:c.loading,loadErr:c.loadErr,notConfigured:c.notConfigured,sending:c.sending,agoNow:c.agoNow,agoMin:c.agoMin,agoHour:c.agoHour,agoDay:c.agoDay,locale:c.locale||(c.lang==='en'?'en-US':'id-ID'),pid:(typeof S!=='undefined'&&S.pid)?String(S.pid):''};
+ var pub={endpoint:rs.url,mirror:rs.mirror||'',sb:rs.sb?{url:rs.sb.url,key:rs.sb.key,site:site}:null,rsvpTab:rs.rsvpTab||'',tab:c.tab,pageSize:c.pageSize,maxMsg:c.maxMsg,refresh:c.refresh,moderation:c.moderation,showAvatar:!!c.showAvatar,showTime:!!c.showTime,
+  ok:c.ok,okPending:c.okPending,err:c.err,reqName:c.reqName,reqMsg:c.reqMsg,wait:c.wait,empty:c.empty,loading:c.loading,loadErr:c.loadErr,notConfigured:c.notConfigured,sending:c.sending,agoNow:c.agoNow,agoMin:c.agoMin,agoHour:c.agoHour,agoDay:c.agoDay,locale:c.locale||(c.lang==='en'?'en-US':'id-ID'),pid:(typeof S!=='undefined'&&S.pid)?String(S.pid):''};
  var attr=edit?' data-mzcm-edit="1"':" data-mzcm='"+String(JSON.stringify(pub)).replace(/&/g,'&amp;').replace(/'/g,'&#39;')+"'";
  var opts=String(c.attendOpts||'').split(',').map(function(x){return x.trim()}).filter(Boolean);
  var head=(c.title||c.subtitle)?'<div class="mzcm-head">'+(c.title?'<h3 class="mzcm-title">'+cmEsc(c.title)+'</h3>':'')+(c.subtitle?'<p class="mzcm-sub">'+cmEsc(c.subtitle)+'</p>':'')+'</div>':'';
@@ -253,7 +187,7 @@ function shell(el,edit){
  return '<div class="mzcm" data-fp="'+c.formPos+'" style="'+vars(c,edit)+'"'+attr+'>'+head+form+list+(edit?'':'<button type="button" class="mzcm-more" hidden>'+cmEsc(c.loadMore)+'</button>')+'</div>'}
 
 /* ---------------- CSS (sitecss = editor + Preview + published) ---------------- */
-var CSS='\n/* MOZA_COMMENTS_V14826 */\n'
+var CSS='\n/* MOZA_COMMENTS_V1493 */\n'
 +'.mzcm{box-sizing:border-box;width:100%;height:100%;display:flex;flex-direction:column;gap:var(--cm-gap,12px);color:var(--cm-text,#2b3142);font-size:var(--cm-fs,15px);line-height:1.45;overflow:hidden;text-align:left}\n'
 +'.mzcm *{box-sizing:border-box;font-family:inherit}\n'
 +'.mzcm-head{flex:none;order:0}.mzcm-title{margin:0 0 4px;font-size:1.4em;line-height:1.2;font-weight:700;color:var(--cm-name)}.mzcm-sub{margin:0;color:var(--cm-muted);font-size:.92em}\n'
@@ -266,7 +200,7 @@ var CSS='\n/* MOZA_COMMENTS_V14826 */\n'
 +'.mzcm-row{display:flex;align-items:center;gap:10px}.mzcm-count{margin-left:auto;font-size:.78em;color:var(--cm-muted)}\n'
 +'.mzcm-send{cursor:pointer;border:0;border-radius:calc(var(--cm-radius)*.65);padding:10px 18px;font:inherit;font-weight:700;color:var(--cm-btntext);background:var(--cm-accent)}\n'
 +'.mzcm-send:disabled{opacity:.6;cursor:progress}.mzcm-send:hover:not(:disabled){filter:brightness(1.07)}\n'
-+'.mzcm-status{min-height:1.2em;font-size:.84em}.mzcm-status.is-ok{color:#166534}.mzcm-status.is-err{color:#b42318}.mzcm-status.is-warn{color:#a16207}\n'
++'.mzcm-status{min-height:1.2em;font-size:.84em}.mzcm-status.is-ok{color:#166534}.mzcm-status.is-err{color:#b42318}\n'
 +'.mzcm-list{flex:1 1 auto;min-height:0;order:2;overflow-y:auto;display:flex;flex-direction:column;gap:var(--cm-gap);padding-right:2px;scrollbar-width:thin;overscroll-behavior:contain}\n'
 +'.mzcm-card{flex:none;display:flex;gap:11px;padding:var(--cm-pad,12px);background:var(--cm-card);border:1px solid var(--cm-border);border-radius:var(--cm-radius)}\n'
 +'.mzcm-av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:var(--cm-btntext);background:var(--cm-accent)}.mzcm-av[hidden]{display:none}\n'
@@ -278,9 +212,10 @@ var CSS='\n/* MOZA_COMMENTS_V14826 */\n'
 +'.mzcm{--cm-fs:var(--cm-fs-d,15px);--cm-radius:var(--cm-radius-d,14px);--cm-gap:var(--cm-gap-d,12px);--cm-pad:var(--cm-pad-d,12px)}\n'
 +'@media(max-width:1024px){.mzcm{--cm-fs:var(--cm-fs-t,var(--cm-fs-d,15px));--cm-radius:var(--cm-radius-t,var(--cm-radius-d,14px));--cm-gap:var(--cm-gap-t,var(--cm-gap-d,12px));--cm-pad:var(--cm-pad-t,var(--cm-pad-d,12px))}}\n'
 +'@media(max-width:640px){.mzcm{--cm-fs:var(--cm-fs-m,var(--cm-fs-t,var(--cm-fs-d,15px)));--cm-radius:var(--cm-radius-m,var(--cm-radius-t,var(--cm-radius-d,14px)));--cm-gap:var(--cm-gap-m,var(--cm-gap-t,var(--cm-gap-d,12px)));--cm-pad:var(--cm-pad-m,var(--cm-pad-t,var(--cm-pad-d,12px)))}}\n'
-+'[data-mzcm-edit],[data-mzcm-edit] *{pointer-events:none!important;user-select:none}\n';
++'[data-mzcm-edit]{pointer-events:auto!important;user-select:none;cursor:move}\n'
++'[data-mzcm-edit] *{pointer-events:none!important;user-select:none}\n';
 var st=document.getElementById('sitecss');
-if(st&&!st.textContent.includes('MOZA_COMMENTS_V14826'))st.textContent+=CSS;
+if(st&&!st.textContent.includes('MOZA_COMMENTS_V1493'))st.textContent+=CSS;
 
 /* ---------------- element registration ---------------- */
 TDEF.comments={name:'Ucapan & Doa',w:520,h:640,cm:JSON.parse(JSON.stringify(DEF)),st:{fs:15,ff:'$body',color:'tok:ink',pad:0,br:0,bw:0,bg:'transparent'}};
@@ -300,8 +235,31 @@ siteHTML=function(){
  var k=html.lastIndexOf('</body>');return k<0?html+js:html.slice(0,k)+js+html.slice(k)};
 
 /* ---------------- editor: tile + inspector ---------------- */
-if(typeof tabElements==='function'){var oldTab=tabElements;tabElements=function(){var h=oldTab.apply(this,arguments);
- return h.replace('<h3>Elements</h3>','<h3>Elements</h3><div class="at-v14-launch"><b>\ud83d\udcac Ucapan &amp; Doa</b><span>Kolom komentar yang tampil langsung di website.</span><div class="at-v14-tiles">'+tile('comments','Ucapan & Doa')+'</div></div>')}}
+function commentsLauncher(){
+ return '<section class="at-v14-launch" aria-label="Ucapan dan doa">'
+  +'<b>💬 Ucapan &amp; Doa</b><span>Kolom komentar yang tampil langsung di website.</span>'
+  +'<div class="at-v14-tiles"><button type="button" class="tile at-v14-comments-add" data-a="mzcm-add" aria-label="Tambah elemen Ucapan dan Doa" title="Tambah Ucapan & Doa">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path><path d="M8 9h8M8 12h5"></path></svg><span>Ucapan &amp; Doa</span></button></div></section>';
+}
+if(typeof tabElements==='function'){
+ var oldTab=tabElements;
+ tabElements=function(){
+  var h=oldTab.apply(this,arguments);
+  if(typeof h!=='string'||h.indexOf('data-a="mzcm-add"')>=0)return h;
+  var launcher=commentsLauncher(),marker='<h3>Elements</h3>';
+  return h.indexOf(marker)>=0?h.replace(marker,marker+launcher):h+launcher;
+ };
+}
+ACT['mzcm-add']=function(){
+ if(typeof newEl!=='function'||typeof addEl!=='function'){
+  try{toast('Editor belum siap. Muat ulang Moza Studio lalu coba lagi.')}catch(_){}
+  return;
+ }
+ var el=newEl('comments');
+ if(!el){try{toast('Elemen Ucapan & Doa belum dapat dibuat.')}catch(_){}return;}
+ addEl(el,typeof selSecId==='function'?selSecId():undefined);
+ try{toast('Ucapan & Doa ditambahkan. Pilih elemen di kanvas untuk mengatur tampilannya.')}catch(_){}
+};
 function panel(el){
  var c=cfgOf(el),p='cm.';
  var rs=resolve(c),forms=rs.forms||rsvpForms(),L=c.link,isSb=(L==='supabase'||L==='supabase_sheet');
@@ -309,14 +267,12 @@ function panel(el){
  if(L==='rsvp')stat=rs.ok?'<div class="hint">\u2713 Terhubung ke RSVP <b>'+esc(rs.name)+'</b> (Google Sheets manual). Ucapan disimpan di spreadsheet yang sama, tab <b>'+esc(c.tab)+'</b>.</div>'
   :'<div class="hint">\u26a0 RSVP manual (Apps Script) belum diisi. Selama belum, kolom ini <b>tidak tampil</b> di website. Untuk RSVP Supabase/Wedding Space pilih sumber <b>Supabase</b> atau <b>Supabase + Google Sheets</b>.</div>';
  else if(L==='custom')stat=rs.ok?'<div class="hint">\u2713 Memakai URL Apps Script sendiri.</div>':'<div class="hint">\u26a0 URL belum diisi \u2192 kolom ini tidak tampil di website.</div>';
- else if(L==='supabase_sheet')stat='<div class="hint">✓ Supabase tetap menjadi database utama. '+(rs.rsvpName?'Terhubung ke <b>'+esc(rs.rsvpName)+'</b> · order '+esc(String(rs.orderId).slice(0,8))+'…; salinan masuk ke worksheet <b>'+esc(c.tab)+'</b> pada spreadsheet RSVP yang dipilih.':'Pilih RSVP Supabase yang sudah tersinkron agar Comments memakai spreadsheet order yang sama.')+' '+(rs.orderReady?'Koneksi spreadsheet untuk order terpilih sudah didaftarkan.':(rs.mirror?'Klik <b>Hubungkan RSVP terpilih</b> untuk mendaftarkan order ini.':'Klik <b>Hubungkan RSVP terpilih</b> untuk mengambil koneksi dan mendaftarkan spreadsheet otomatis.'))+' Jalankan <b>SUPABASE_KOMENTAR_V14_8_26.sql</b> sekali saja jika tabel <code>wsp_comments</code> belum dibuat.</div>';
- else stat='<div class="hint">✓ Ucapan disimpan di tabel <code>wsp_comments</code> Supabase. Jalankan <b>SUPABASE_KOMENTAR_V14_8_26.sql</b> sekali di Supabase (SQL Editor). Tabel belum ada → kolom ini otomatis tidak tampil.</div>';
- var A=GRP('mzcm-conn','\\ud83d\\udcac Ucapan &amp; Doa \\u00b7 Koneksi',
-  SEL('Simpan ucapan di','el',p+'link',[['rsvp','Ikut RSVP (Google Sheets manual)'],['custom','Google Sheets \\u2013 URL sendiri'],['supabase','Supabase'],['supabase_sheet','Supabase + Google Sheets']],{rp:1})+stat
-  +(L==='rsvp'&&forms.length>1?SEL('Pakai RSVP','el',p+'rsvpForm',[['auto','Otomatis (yang pertama)']].concat(forms.map(function(f){return[f.id,f.name+' \\u00b7 tab '+f.tab]})),{rp:1}):'')
-  +(L==='supabase_sheet'?SEL('Hubungkan ke RSVP','el',p+'rsvpLinkId',[['','Pilih RSVP Supabase…']].concat((rs.supabaseForms||[]).map(function(f){return[f.id,f.name+' · tab '+f.tab]})),{rp:1})+((rs.supabaseForms||[]).length?'<div class="row" style="margin:6px 0"><button type="button" class="btn sm pri" data-a="mzcm-link-rsvp">↗ Hubungkan RSVP terpilih</button></div>':'<div class="hint">Belum ada RSVP Supabase yang tersinkron di project ini. Sinkronkan RSVP utama atau RSVP tambahan terlebih dahulu.</div>'):'')
-  +((L==='custom'||L==='supabase_sheet')?X(L==='custom'?'URL Web App (/exec)':'URL Web App V21.4 (opsional override)','el',p+'endpoint',{ph:L==='supabase_sheet'?'Otomatis dari koneksi RSVP; isi hanya jika perlu override':'https://script.google.com/macros/s/.../exec'}):'')
-  +(L==='supabase_sheet'?'<div class="hint">Pilih RSVP Utama atau RSVP tambahan (RSVP 1, RSVP 2, dan seterusnya). Moza mengambil <code>order_id</code> dari RSVP terpilih, lalu mendaftarkan pasangan project + order ke Apps Script melalui Edge Function <code>wsp-sheets</code>. URL bridge diambil otomatis dari koneksi Google Sheets; tidak perlu menyalin Spreadsheet ID.</div>':'')
+ else stat='<div class="hint">\u2713 Ucapan disimpan di tabel <code>wsp_comments</code> Supabase'+(L==='supabase_sheet'?(rs.mirror?' <b>dan</b> disalin ke Google Sheets (tab <b>'+esc(c.tab)+'</b>).':'. \u26a0 URL Apps Script belum ada, jadi salinan ke Sheets belum jalan.'):'.')
+   +' Jalankan <b>SUPABASE_KOMENTAR_V14_8_26.sql</b> sekali di Supabase (SQL Editor). Tabel belum ada \u2192 kolom ini otomatis tidak tampil.</div>';
+ var A=GRP('mzcm-conn','\ud83d\udcac Ucapan &amp; Doa \u00b7 Koneksi',
+  SEL('Simpan ucapan di','el',p+'link',[['rsvp','Ikut RSVP (Google Sheets manual)'],['custom','Google Sheets \u2013 URL sendiri'],['supabase','Supabase'],['supabase_sheet','Supabase + Google Sheets']],{rp:1})+stat
+  +(L==='rsvp'&&forms.length>1?SEL('Pakai RSVP','el',p+'rsvpForm',[['auto','Otomatis (yang pertama)']].concat(forms.map(function(f){return[f.id,f.name+' \u00b7 tab '+f.tab]})),{rp:1}):'')
+  +((L==='custom'||L==='supabase_sheet')?X(L==='custom'?'URL Web App (/exec)':'URL Apps Script untuk salinan Sheets','el',p+'endpoint',{ph:L==='supabase_sheet'?'kosong = pakai URL RSVP manual':'https://script.google.com/macros/s/.../exec'}):'')
   +(isSb?X('Supabase URL','el',p+'sbUrl',{ph:'kosong = Wedding Space bawaan'})+X('Supabase anon / publishable key','el',p+'sbKey',{ph:'kosong = Wedding Space bawaan'}):'')
   +X('Nama tab / channel ucapan','el',p+'tab',{ph:'Comments'})
   +(L==='rsvp'?CB('Tampilkan juga pesan dari form RSVP','el',p+'withRsvp',{rp:1})+'<div class="hint">'+(c.withRsvp?'\u26a0 Kolom Message di sheet RSVP ikut tampil <b>publik</b> sebagai ucapan. Pastikan tamu tahu pesannya akan terlihat.':'Aktifkan agar pesan yang tamu tulis saat RSVP ikut jadi ucapan.')+'</div>':'')
@@ -331,7 +287,7 @@ function panel(el){
   +X('Judul','el',p+'title')+X('Sub-judul','el',p+'subtitle')+X('Label nama','el',p+'nameLabel')+X('Placeholder nama','el',p+'namePh')
   +X('Label ucapan','el',p+'msgLabel')+X('Placeholder ucapan','el',p+'msgPh')
   +CB('Pilihan kehadiran','el',p+'attendOn',{rp:1})+(c.attendOn?X('Label kehadiran','el',p+'attendLabel')+X('Pilihan (pisah koma)','el',p+'attendOpts'):'')
-  +X('Teks tombol','el',p+'btn')+X('Teks saat mengirim','el',p+'sending')+X('Pesan sukses','el',p+'ok')+X('Pesan menunggu persetujuan','el',p+'okPending')+X('Pesan mirror Sheets belum terkonfirmasi','el',p+'okMirrorWarn')+X('Pesan gagal kirim','el',p+'err')
+  +X('Teks tombol','el',p+'btn')+X('Teks saat mengirim','el',p+'sending')+X('Pesan sukses','el',p+'ok')+X('Pesan menunggu persetujuan','el',p+'okPending')+X('Pesan gagal kirim','el',p+'err')
   +X('Pesan nama kosong','el',p+'reqName')+X('Pesan ucapan kosong','el',p+'reqMsg')+X('Pesan tunggu (anti-spam)','el',p+'wait')
   +X('Pesan belum ada ucapan','el',p+'empty')+X('Pesan sedang memuat','el',p+'loading')+X('Pesan gagal memuat','el',p+'loadErr')+X('Pesan belum terhubung','el',p+'notConfigured')+X('Tombol muat lagi','el',p+'loadMore')
   +'<div class="hint">Waktu relatif: tulis <code>{n}</code> untuk angkanya.</div>'
@@ -359,68 +315,25 @@ if(typeof renderRight==='function'){var prevRight=renderRight;renderRight=functi
 ACT['mzcm-lang']=function(){var el=T('el');if(!el||el.type!=='comments')return;var c=el.cm||(el.cm={}),lg=c.lang==='en'?'en':'id',L=LANG[lg];
  if(!confirm('Ganti SEMUA teks kolom ucapan dengan bawaan bahasa '+(lg==='en'?'English':'Indonesia')+'?\n\nTeks yang sudah kamu ubah akan tertimpa (bisa di-Undo).'))return;
  commit(discrete());for(var k in L)c[k]=L[k];renderCanvas();renderRight();toast('Semua teks diganti ke '+(lg==='en'?'English':'Indonesia'))};
-ACT['mzcm-link-rsvp']=async function(){
- var el=T('el');if(!el||el.type!=='comments')return;
- var c=cfgOf(el),pick=supabaseRsvpForms().filter(function(x){return x.id===c.rsvpLinkId})[0];
- function say(msg,good){var out=document.getElementById('mzcm-test-out');if(out){out.textContent=msg;out.style.color=good?'#166534':'#b42318'}try{toast(msg,6000)}catch(e){}}
- if(!pick)return say('Pilih RSVP Supabase terlebih dahulu.',false);
- if(typeof ATWSP==='undefined'||!ATWSP.jwt)return say('Login ke akun admin yang berwenang terlebih dahulu.',false);
- if(!S.pid)return say('Simpan project Moza terlebih dahulu.',false);
- say('Menghubungkan '+pick.name+' ke spreadsheet RSVP…',true);
- try{
-  var response=await fetch(ATWSP.url.replace(/\/$/,'')+'/functions/v1/wsp-sheets',{
-   method:'POST',
-   headers:{apikey:ATWSP.key,Authorization:'Bearer '+ATWSP.jwt,'Content-Type':'application/json'},
-   body:JSON.stringify({action:'get',order_id:pick.orderId,project_id:String(S.pid)})
-  });
-  var data=await response.json().catch(function(){return{}});
-  if(!response.ok||!data.ok)throw new Error(data.error||'Koneksi RSVP gagal dibaca.');
-  if(!data.connection||!data.connection.spreadsheet_id)throw new Error('Order RSVP ini belum memiliki Google Spreadsheet. Hubungkan Google Sheets untuk order tersebut terlebih dahulu.');
-  if(!data.bridge_url)throw new Error('WSP_SHEETS_WEBHOOK_URL belum tersedia di Supabase Secrets.');
-  if(!data.project_mapping||data.project_mapping.ok!==true||String(data.project_mapping.order_id)!==String(pick.orderId))throw new Error('Apps Script belum mengonfirmasi mapping untuk RSVP/order terpilih.');
-  commit(discrete());
-  S.doc.wspSheetsBridgeUrl=String(data.bridge_url);
-  S.doc.wspSheetsLinkedOrderId=String(pick.orderId);
-  if(typeof scheduleSave==='function')scheduleSave();
-  renderCanvas();renderRight();
-  say('✓ '+pick.name+' terhubung. Komentar akan masuk ke worksheet Comments dalam spreadsheet RSVP yang sama.',true);
- }catch(err){say('Gagal menghubungkan RSVP: '+String(err&&err.message||err),false)}
-};
 ACT['mzcm-test']=function(){
  var el=T('el');if(!el||el.type!=='comments')return;var c=cfgOf(el),rs=resolve(c),out=document.getElementById('mzcm-test-out');
  function say(msg,good){if(out){out.textContent=msg;out.style.color=good?'#166534':'#b42318'}try{toast(msg,6000)}catch(e){}}
- function bridgeCheck(){
-  if(c.link!=='supabase_sheet')return say('✓ Supabase terhubung (tabel wsp_comments bisa dibaca).',true);
-  if(!rs.mirror)return say('⚠ Bridge Google Sheets belum tersedia. Klik Hubungkan RSVP terpilih atau periksa WSP_SHEETS_WEBHOOK_URL di Supabase Secrets.',false);
-  var name='__mzcmBridge'+Date.now().toString(36),sc=document.createElement('script'),done=false,timer;
-  function finish(){if(done)return false;done=true;clearTimeout(timer);try{delete window[name]}catch(e){window[name]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);return true}
-  window[name]=function(d){if(!finish())return;
-   if(d&&d.ok===true&&d.mapped===true)say('✓ Supabase terhubung dan Apps Script V21.4 sudah mengenali spreadsheet project ini.',true);
-   else if(d&&d.ok===true&&d.version==='21.4'&&d.mapped===false)say('⚠ RSVP terpilih belum terhubung ke spreadsheet. Klik Hubungkan RSVP terpilih untuk mendaftarkan project + order ke bridge.',false);
-   else if(d&&d.ok===true&&d.version!=='21.4')say('✓ URL Apps Script lama dapat dijangkau. Untuk routing satu bridge ke banyak spreadsheet, gunakan deployment V21.4 yang sama dengan URL bridge di Supabase.',true);
-   else say('⚠ URL merespons, tetapi bukan endpoint status bridge V21.4 atau mengembalikan error: '+((d&&d.error)||'respons tidak sesuai'),false);
-  };
-  sc.onerror=function(){if(finish())say('⚠ Tidak bisa menghubungi Apps Script. Periksa URL /exec dan akses Web App = Anyone.',false)};
-  timer=setTimeout(function(){if(finish())say('⚠ Apps Script tidak merespons. Periksa URL /exec dan deployment V21.4.',false)},12000);
-  sc.src=rs.mirror+(rs.mirror.indexOf('?')<0?'?':'&')+'action=project_status&project_id='+encodeURIComponent((typeof S!=='undefined'&&S.pid)||'')+'&order_id='+encodeURIComponent(rs.orderId||'')+'&callback='+name;
-  document.head.appendChild(sc);
- }
  if(!rs.ok){say('Belum terhubung: lengkapi pengaturan koneksi dulu.',false);return}
- say('Menguji koneksi…',true);
+ say('Menguji koneksi\u2026',true);
  if(rs.mode==='sb'){
   fetch(rs.sb.url+'/rest/v1/wsp_comments?select=client_id&limit=1',{headers:{apikey:rs.sb.key,Authorization:'Bearer '+rs.sb.key},cache:'no-store'}).then(function(r){
-   if(r.ok)return bridgeCheck();
-   if(r.status===404)return say('⚠ Tabel wsp_comments belum ada. Jalankan SUPABASE_KOMENTAR_V14_8_26.sql di Supabase (SQL Editor).',false);
-   say('⚠ Supabase menolak ('+r.status+'). Periksa URL, key, dan RLS.',false)}).catch(function(){say('⚠ Tidak bisa menghubungi Supabase (jaringan/URL).',false)});return}
+   if(r.ok)return say('\u2713 Supabase terhubung (tabel wsp_comments bisa dibaca).',true);
+   if(r.status===404)return say('\u26a0 Tabel wsp_comments belum ada. Jalankan SUPABASE_KOMENTAR_V14_8_26.sql di Supabase (SQL Editor).',false);
+   say('\u26a0 Supabase menolak ('+r.status+'). Periksa URL, key, dan RLS.',false)}).catch(function(){say('\u26a0 Tidak bisa menghubungi Supabase (jaringan/URL).',false)});return}
  var name='__mzcmT'+Date.now().toString(36),sc=document.createElement('script'),done=false,timer;
  function end(){if(done)return false;done=true;clearTimeout(timer);try{delete window[name]}catch(e){window[name]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);return true}
  window[name]=function(d){if(!end())return;
-  if(d&&d.ok===true&&Array.isArray(d.items))say('✓ Terhubung ke Apps Script versi baru (tab "'+c.tab+'": '+(d.total||d.items.length||0)+' ucapan).',true);
-  else if(d&&d.ok===true)say('⚠ Apps Script masih versi lama atau endpoint ini bukan Comments API. Untuk mode Supabase + Sheets, gunakan URL bridge V21.4.',false);
-  else say('⚠ Apps Script menjawab error: '+((d&&d.error)||'tidak diketahui'),false)};
- sc.onerror=function(){if(end())say('⚠ Tidak bisa dihubungi. Pastikan Deploy → Web app → Who has access = Anyone, dan URL berakhiran /exec.',false)};
- timer=setTimeout(function(){if(end())say('⚠ Tidak ada jawaban (timeout). Periksa URL /exec dan akses Anyone.',false)},12000);
+  if(d&&d.ok===true&&Array.isArray(d.items))say('\u2713 Terhubung ke Apps Script versi baru (tab "'+c.tab+'": '+(d.total||d.items.length||0)+' ucapan).',true);
+  else if(d&&d.ok===true)say('\u26a0 Apps Script masih VERSI LAMA (belum mendukung ucapan). Tempel ulang Code.gs terbaru, lalu Deploy > Manage deployments > Edit > Version: New version.',false);
+  else say('\u26a0 Apps Script menjawab error: '+((d&&d.error)||'tidak diketahui'),false)};
+ sc.onerror=function(){if(end())say('\u26a0 Tidak bisa dihubungi. Pastikan Deploy > Web app > "Who has access" = Anyone, dan URL berakhiran /exec (bukan /dev).',false)};
+ timer=setTimeout(function(){if(end())say('\u26a0 Tidak ada jawaban (timeout). Periksa URL /exec dan akses "Anyone".',false)},12000);
  sc.src=rs.url+(rs.url.indexOf('?')<0?'?':'&')+'action=comments&tab='+encodeURIComponent(c.tab)+'&limit=1&callback='+name;document.head.appendChild(sc)};
-window.MozaComments={version:'14.9.4',cfgOf:cfgOf,esc:cmEsc,ago:cmAgo,card:cmCard};
-console.info('[Moza V14.9.4] Comments + V21.4 Sheets mirror installed');
+window.MozaComments={version:'14.9.3',cfgOf:cfgOf,esc:cmEsc,ago:cmAgo,card:cmCard};
+console.info('[Moza V14.9.3] Comments (Ucapan & Doa) installed');
 })();
