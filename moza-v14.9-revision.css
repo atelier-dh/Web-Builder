@@ -1,0 +1,33 @@
+/* V14.9 mobile canvas navigation */
+  @media(max-width:760px){
+    #viewport{touch-action:none!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch;}
+    #frame .el.lock,#frame .el.lock *{touch-action:none!important;cursor:grab!important;}
+    body.m-sheet-open #mz149-zoom-controls{display:none!important}
+    #mz149-zoom-controls{position:absolute;right:10px;bottom:78px;z-index:42;display:flex;align-items:center;gap:3px;padding:4px;background:rgba(255,255,255,.96);border:1px solid #d9dfeb;border-radius:999px;box-shadow:0 5px 18px rgba(24,35,60,.16);backdrop-filter:blur(10px)}
+    #mz149-zoom-controls button{height:34px;min-width:34px;border:0;border-radius:999px;background:#f1f4fb;color:#24314b;font-weight:800;font-size:17px;padding:0 9px;touch-action:manipulation}
+    #mz149-zoom-controls button[data-a="mz149-zoom-fit"]{font-size:11px;min-width:38px}
+    #mz149-zoom-controls output{min-width:39px;text-align:center;font-size:10px;font-weight:800;color:#53617a;font-variant-numeric:tabular-nums}
+  }
+  @media(min-width:761px){#mz149-zoom-controls{display:none!important}}
+  /* Image/video resize is aspect-locked by default; Shift temporarily unlocks it. */
+  #frame.edit .el.selected:not(.lock)>.h{touch-action:none}
+  .env-widget.env-single{background-repeat:no-repeat;background-position:center;background-size:contain;}
+  .env-skip{position:absolute;right:10px;bottom:10px;z-index:20;border:1px solid #ffffff88;border-radius:999px;background:#ffffffdf;color:#252a33;padding:7px 12px;font:600 11px system-ui;box-shadow:0 3px 12px #0003;cursor:pointer;}
+  .env-widget.opened .env-skip{display:none;}
+  .env-widget.env-skip-now .env-flap,.env-widget.env-skip-now .env-letter,.env-widget.env-skip-now .env-seal{transition-duration:.01ms!important;}
+  .env-widget.env-single .env-letter{opacity:0;transition:opacity .35s ease,translate var(--env-duration,1.1s) cubic-bezier(.19,.8,.3,1),scale var(--env-duration,1.1s) ease;}
+  .env-widget.env-single.opened .env-letter{opacity:1;}
+  .env-widget.env-single .env-back,.env-widget.env-single .env-pocket,.env-widget.env-single .env-flap,.env-widget.env-single .env-seal{display:none!important}
+  .env-widget .env-letter{width:var(--env-card-w,70%);height:var(--env-card-h,63%);left:calc((100% - var(--env-card-w,70%))/2);}
+  .env-widget .env-letter-group{display:block;padding:0;overflow:hidden;}
+  .env-widget .env-letter-group .env-card-group{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none;}
+  .env-widget .env-letter-group .env-card-group .gcl{position:absolute;left:var(--mz-card-src-left,0px);top:var(--mz-card-src-top,0px);width:var(--mz-card-src-w,100%);height:var(--mz-card-src-h,100%);transform:scale(var(--mz-card-src-scale,1));transform-origin:top left;}
+  .env-widget .env-letter-group .env-card-group .el{pointer-events:none!important;}
+  .env-widget .env-card-art{display:block;width:100%;height:100%;object-fit:var(--env-card-fit,contain);object-position:center;border:0;pointer-events:none;}
+  .env-widget .env-seal img{display:block;width:100%;height:100%;object-fit:contain;border-radius:inherit;}
+  .env-cinema-stage{position:absolute;inset:0;z-index:12;overflow:hidden;background:#08090d;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .55s ease,visibility 0s linear .55s;}
+  .env-widget.env-cinema-playing .env-cinema-stage{opacity:1;visibility:visible;transition:opacity .55s ease;}
+  .env-cinema-stage video{display:block;width:100%;height:100%;object-fit:var(--env-cinema-fit,contain);background:#08090d;}
+  .env-cinema-play{display:none;position:absolute;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);border:1px solid #ffffff88;border-radius:999px;background:#fff;color:#222;padding:10px 16px;font:600 13px system-ui;box-shadow:0 4px 18px #0005;pointer-events:auto;}
+  .env-cinema-stage.needs-play .env-cinema-play{display:block;}
+  @media(prefers-reduced-motion:reduce){.env-cinema-stage,.env-widget .env-letter,.env-widget .env-flap{transition-duration:.01ms!important}}

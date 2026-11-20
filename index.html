@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="atelier-build" content="v29-split-local-cloud-assets-free-plan">
+<meta name="atelier-build" content="v14.9.1-carousel-faq-motion-fonts">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Moza Studio — Advanced V14.8</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
+<title>Moza Studio — Advanced V14.9.1</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
 <meta name="atelier-feature-recovery" content="v30.26-responsive-sync-shrink">
 <style>
 :root{--bg:#e9ebef;--panel:#fff;--ink:#1c2027;--mut:#6b7380;--line:#e2e5ea;--acc:#3a5bf0;--acc2:#eef1ff;--ok:#18864b;--bad:#c93a3a;--r:10px;--sh:0 1px 2px rgba(20,25,40,.06),0 6px 20px rgba(20,25,40,.08);--iz:1}
@@ -3227,6 +3227,7 @@ $('#fileimg').addEventListener('change',async e=>{
  else if(c==='logo'){const n=curNav();commit(discrete());n.logo.asset=a.id;n.logo.type='image';renderCanvas();afterStruct()}
  else if(c&&c.indexOf('navico:')===0){const n=curNav(),it=n&&n.items[+c.slice(7)];if(it){await shrinkIcon(a);commit(discrete());it.iconImg=a.id;renderCanvas();afterStruct()}}
  else if(c==='vposter'){const el=T('el');if(el){commit(discrete());el.poster=a.id;renderCanvas();afterStruct()}}
+ else if(c&&c.indexOf('mz149-env:')===0){const el=T('el'),key=c.slice(10);if(el&&el.type==='envelope'&&['modelAsset','bodyAsset','flapAsset','sealAsset','cardAsset'].includes(key)){commit(discrete());el.env=el.env||clone(TDEF.envelope.env);el.env[key]=a.id;if(key==='modelAsset')el.env.assetMode='single';if(['bodyAsset','flapAsset','sealAsset'].includes(key))el.env.assetMode='layered';if(key==='cardAsset'){el.env.cardSource='asset';el.env.showCard=true}if(window.MZ149)window.MZ149.hiddenCardSourceDirty=true;renderCanvas();renderRight();scheduleSave();toast('Envelope asset updated')}}
  else toast(`${list.length} image${list.length>1?'s':''} added`) });
 function pickVideo(context){S.uploadVideoCtx=context;const f=$('#filevideo');f.value='';f.click()}
 $('#filevideo').addEventListener('change',async e=>{
@@ -4784,7 +4785,7 @@ function fxRules(el,edit){
  if(!edit||play){
   const an=[];
   if(E)an.push(`fx-${fe} var(--fd) var(--fe) var(--fl) backwards`);
-  if(f.loop&&f.loop!=='none'){const seamless=['continuous-rotate','rotate-reverse','hue-cycle'].includes(f.loop);an.push(`fxl-${f.loop} var(--lp) ${seamless?'linear':'ease-in-out'} ${E?'calc(var(--fl) + var(--fd))':'0s'} infinite`);}
+  if(f.loop&&f.loop!=='none'){const seamless=['continuous-rotate','rotate-reverse','hue-cycle','float','bob','spin','wiggle','swing','orbit','drift','float-diagonal','pendulum','rock','wave'].includes(f.loop);an.push(`fxl-${f.loop} var(--lp) ${seamless?'linear':'ease-in-out'} ${E?'calc(var(--fl) + var(--fd))':'0s'} infinite`);}
   if(f.txt==='shimmer')an.push('fx-sh 3s linear infinite');
   if(an.length)o+=`${E&&!edit?C+'.fx-go':C}{animation:${an.join(',')}}`;
   if(E&&!edit)o+=`html[data-bp] ${C}:not(.fx-go){visibility:hidden}`}
@@ -4859,7 +4860,7 @@ function carouselHTML(el,edit){
  let sl=el.slides||[];if(!edit)sl=sl.filter(s=>s.a3211Kind==='text'||(s.a3212Kind==='shape'&&s.a3212Shape?.type==='shape')||assetSrc(s.asset)||vidSrc(s.videoAsset)||s.videoUrl);
  if(!sl.length)return '<div class="ph">Carousel: add photos, text or videos in Properties</div>';
  const ar={'1:1':'1/1','4:5':'4/5','3:4':'3/4','16:9':'16/9','3:2':'3/2','2:3':'2/3'}[el.ratio]||'',n=sl.length;
- const cfg={style:el.cstyle,allVid:el.carAllVideos!==false,flowSpeed:Math.max(0,Number(el.flowSpeed??50)),flowDir:el.flowDir||'left',step:el.cstep||.72,scale:el.scale,dim:el.dim,tilt:el.tilt,loop:!!el.loop,auto:(!edit&&el.auto)?1:0,int:el.int,gap:el.gap,start:Math.min(Math.max(el.cur||0,0),n-1),vis:3,fixr:ar?1:0,preview:!edit};
+ const cfg={style:el.cstyle,allVid:el.carAllVideos!==false,flowSpeed:Math.max(0,Number(el.flowSpeed??50)),flowDir:el.flowDir||'left',step:el.cstep||.72,scale:el.scale,dim:el.dim,tilt:el.tilt,loop:!!el.loop,auto:(!edit&&el.auto)?1:0,int:el.int,gap:el.gap,fw:el.fw,ratio:ar||'',fshape:el.fshape||'rounded',rad:el.rad||0,pauseHover:!!el.pauseHover,start:Math.min(Math.max(el.cur||0,0),n-1),vis:3,fixr:ar?1:0,preview:!edit};
  const slides=sl.map((s,i)=>{
   const src=assetSrc(s.asset),vid=(s.videoUrl||vidSrc(s.videoAsset)),ytId=at67CarouselYouTubeId(vid),video=!!vid;
   const isText=s.a3211Kind==='text',isShape=s.a3212Kind==='shape'&&s.a3212Shape?.type==='shape';
@@ -5044,48 +5045,72 @@ function carRuntime(root){
   });
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
    if(cfg.style==='continuous'){
-    // Digital Haus continuous gallery, self-contained and exported with siteHTML.
-    // No HTML scripts from imports are executed; only this trusted runtime runs.
+    // Digital Haus continuous gallery: horizontal or vertical, preserving the selected frame shape.
     const totalCards=sl.length;
     if(!totalCards)return;
     const track=c.querySelector('.car-track');
     const mod=(v,len)=>((v%len)+len)%len;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-    const speed=clamp(Number(cfg.flowSpeed)||0,0,300)*(cfg.flowDir==='right'?-1:1);
-    let offset=(Number(cfg.start)||0)*196,raf=0,last=0,pressed=false,px=0,initial=0,previousX=0,previousT=0,velocity=0,lastVidCheck=0;
-    let visible=true,alive=true,hoverPause=false;
+    const vertical=cfg.flowDir==='up'||cfg.flowDir==='down';
+    const sign=(cfg.flowDir==='right'||cfg.flowDir==='down')?-1:1;
+    const speed=clamp(Number(cfg.flowSpeed)||0,0,300)*sign;
+    let offset=0,raf=0,last=0,pressed=false,px=0,initial=0,previousP=0,previousT=0,velocity=0,lastVidCheck=0;
+    let visible=true,alive=true,hoverPause=false,pitch=196,initialized=false;
+    let layoutScale=1,cardW=170,cardH=220;
     const ro=typeof ResizeObserver!=='undefined'?new ResizeObserver(()=>draw()):null;
     if(ro)ro.observe(c);
     const observer=typeof IntersectionObserver!=='undefined'?new IntersectionObserver(e=>{visible=!!e[0]?.isIntersecting}):null;
     if(observer)observer.observe(c);
     c.classList.add('dh-flow');
+    c.dataset.flowAxis=vertical?'vertical':'horizontal';
     track.style.overflow='hidden';
     function draw(){
      const w=c.clientWidth||760,h=c.clientHeight||380;
-     const scale=clamp(Math.min(w/900,h/380),.36,1.3);
-     const center=w/2,mid=h*.51,pitch=196,total=totalCards*pitch;
+     if(vertical){
+      layoutScale=clamp(w/520,.62,1.2);
+      const requested=Math.max(15,Math.min(100,Number(cfg.fw)||25))/100;
+      cardW=Math.min(w*.84,Math.max(140,w*requested));
+      const ratio=String(cfg.ratio||'').match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+      cardH=ratio?cardW*(Number(ratio[2])/Math.max(.01,Number(ratio[1]))):Math.max(130,Math.min(210,h*.46));
+      cardH=Math.min(Math.max(100,cardH),Math.max(140,h*.82));
+      pitch=cardH+clamp(Number(cfg.gap)||18,0,100);
+      const total=totalCards*pitch,mid=h/2;
+      if(!initialized){offset=(Number(cfg.start)||0)*pitch;if(cfg.loop===false&&sign<0&&offset===0)offset=(totalCards-1)*pitch;initialized=true}
+      for(let i=0;i<totalCards;i++){
+       const t=mod(i*pitch-offset+total/2,total)-total/2;
+       const d=clamp(Math.abs(t)/(h*.62),0,1.4),scale=1-.10*d;
+       const x=(w-cardW)/2,y=mid+t,card=sl[i];
+       card.style.position='absolute';card.style.left='0';card.style.top='0';
+       card.style.width=cardW+'px';card.style.height=cardH+'px';
+       card.style.transition='none';card.style.opacity=String(clamp(1-.12*d,.72,1));card.style.filter='none';
+       card.style.transform='translate3d('+x+'px,'+(y-cardH/2)+'px,0) scale('+scale.toFixed(3)+')';
+       card.style.transformOrigin='center center';
+       card.style.clipPath='';card.style.borderRadius='';
+       card.style.zIndex=String(Math.round(100-d*30));
+       card.setAttribute('aria-hidden','false');
+      }
+      return;
+     }
+     layoutScale=clamp(Math.min(w/900,h/380),.36,1.3);
+     const requested=Math.max(15,Math.min(100,Number(cfg.fw)||25))/100;
+     cardW=Math.min(w*.82,Math.max(110,w*requested));
+     const ratio=String(cfg.ratio||'').match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+     cardH=ratio?cardW*(Number(ratio[2])/Math.max(.01,Number(ratio[1]))):Math.max(130,Math.min(220,h*.58));
+     pitch=cardW+clamp(Number(cfg.gap)||24,0,100);
+     const total=totalCards*pitch,center=w/2,mid=h*.51;
+     if(!initialized){offset=(Number(cfg.start)||0)*pitch;if(cfg.loop===false&&sign<0&&offset===0)offset=(totalCards-1)*pitch;initialized=true}
      for(let i=0;i<totalCards;i++){
-      const card=sl[i];
       const t=mod(i*pitch-offset+total/2,total)-total/2;
-      const pushed=t*(1+.083*Math.pow(t/706,2));
-      const x=center+pushed*scale;
-      const d=clamp(Math.abs(pushed)/706,0,1.25);
-      const cw=(170+48*d*d)*scale;
-      const edgeL=clamp(Math.abs(pushed-cw/(2*scale))/706,0,1.4);
-      const edgeR=clamp(Math.abs(pushed+cw/(2*scale))/706,0,1.4);
-      const hl=(280+92*Math.pow(edgeL,2.6))*scale;
-      const hr=(280+92*Math.pow(edgeR,2.6))*scale;
-      const cy=mid-12*d*d*scale;
-      const tl=cy-hl/2,tr=cy-hr/2,bl=cy+hl/2,br=cy+hr/2;
-      const top=Math.min(tl,tr),bottom=Math.max(bl,br),ch=bottom-top;
+      const d=clamp(Math.abs(t)/(Math.max(1,w*.72)),0,1.25),scale=1-.12*d;
+      const cw=cardW,ch=cardH,x=center-cw/2+t,y=mid-ch/2-8*d*d*layoutScale,card=sl[i];
       card.style.position='absolute';card.style.left='0';card.style.top='0';
       card.style.width=cw+'px';card.style.height=ch+'px';
       card.style.transition='none';card.style.opacity='1';card.style.filter='none';
-      card.style.transform='translate3d('+(x-cw/2)+'px,'+top+'px,0)';
+      card.style.transform='translate3d('+x+'px,'+y+'px,0) scale('+scale.toFixed(3)+')';
       card.style.transformOrigin='center center';
-      card.style.clipPath=`polygon(0px ${tl-top}px, ${cw}px ${tr-top}px, ${cw}px ${br-top}px, 0px ${bl-top}px)`;
-      card.style.borderRadius=Math.max(8,15*scale)+'px';
-      card.style.zIndex=String(Math.round(100-d*40));
+      // The .sh-* CSS classes own the frame shape; runtime must not override them inline.
+      card.style.clipPath='';card.style.borderRadius='';
+      card.style.zIndex=String(Math.round(100-d*30));
       card.setAttribute('aria-hidden','false');
      }
     }
@@ -5095,36 +5120,41 @@ function carRuntime(root){
      const dt=last?clamp((now-last)/1000,0,.05):0;last=now;
      if(!pressed&&!hoverPause&&visible&&!document.hidden&&!reduce&&cfg.auto){
       offset+=speed*dt+velocity*dt;
-      if(cfg.loop===false)offset=clamp(offset,0,Math.max(0,totalCards-1)*196);
+      if(cfg.loop===false)offset=clamp(offset,0,Math.max(0,totalCards-1)*pitch);
       velocity*=Math.pow(.09,dt);
      }
      draw();
-     if(now-lastVidCheck>250){lastVidCheck=now;const chosen=mod(Math.round(offset/196),totalCards);syncSlideVideos(chosen)}
+     if(now-lastVidCheck>250){lastVidCheck=now;const chosen=mod(Math.round(offset/Math.max(1,pitch)),totalCards);syncSlideVideos(chosen)}
      raf=requestAnimationFrame(tick);
     }
+    function coord(e){return vertical?e.clientY:e.clientX}
+    function dragScale(){return vertical?clamp((c.clientHeight||380)/380,.45,1.3):clamp((c.clientWidth||760)/900,.36,1.3)}
     function down(e){
      if(e.button!==0&&e.pointerType!=='touch')return;
-     pressed=true;px=e.clientX;initial=offset;previousX=e.clientX;previousT=performance.now();velocity=0;
+     pressed=true;px=coord(e);initial=offset;previousP=px;previousT=performance.now();velocity=0;
      c.classList.add('dragging');
      try{c.setPointerCapture(e.pointerId)}catch(_){}
     }
     function move(e){
      if(!pressed)return;
-     const scale=clamp(Math.min((c.clientWidth||760)/900,(c.clientHeight||380)/380),.36,1.3);
-     offset=initial-(e.clientX-px)/scale;
+     const p=coord(e),scale=dragScale();
+     offset=initial-(p-px)/scale;
      const now=performance.now(),dt=now-previousT;
-     if(dt>4)velocity=clamp(-(e.clientX-previousX)/scale/(dt/1000),-550,550);
-     previousX=e.clientX;previousT=now;draw();
+     if(dt>4)velocity=clamp(-(p-previousP)/scale/(dt/1000),-550,550);
+     previousP=p;previousT=now;draw();
     }
-    function up(e){pressed=false;c.classList.remove('dragging');try{c.releasePointerCapture(e.pointerId)}catch(_){} }
+    function up(e){pressed=false;c.classList.remove('dragging');try{c.releasePointerCapture(e.pointerId)}catch(_){}}
     function cleanup(){if(!alive)return;alive=false;cancelAnimationFrame(raf);ro?.disconnect();observer?.disconnect();}
-    c.addEventListener('mouseenter',()=>{if(cfg.pauseHover)hoverPause=true});c.addEventListener('mouseleave',()=>{hoverPause=false});
+    c.addEventListener('mouseenter',()=>{if(cfg.pauseHover)hoverPause=true});
+    c.addEventListener('mouseleave',()=>{hoverPause=false});
     c.addEventListener('pointerdown',down);c.addEventListener('pointermove',move);
     c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);
-    c.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();offset+=(e.key==='ArrowRight'?196:-196);draw()}});
+    c.addEventListener('keydown',e=>{
+     const prev=vertical?'ArrowUp':'ArrowLeft',next=vertical?'ArrowDown':'ArrowRight';
+     if(e.key===prev){e.preventDefault();offset-=pitch;draw()}
+     else if(e.key===next){e.preventDefault();offset+=pitch;draw()}
+    });
     draw();
-    // The initial draw already paints cards. Video checks run inside tick(now).
-    // Previous code referenced an undefined `now` here and stopped this style.
     raf=requestAnimationFrame(tick);
     return;
    }
@@ -5168,7 +5198,7 @@ function carouselPanel(el){
  let h=(el.a329Originals?.length?`<div style="margin-bottom:8px;padding:9px;border:1px solid #d6e1ff;border-radius:9px;background:#eff4ff"><b>✦ Efek Digital Haus dari elemen</b><p class="hint" style="margin:4px 0 7px">Foto, teks, dan shape asli tersimpan untuk Restore. Isinya tetap bisa diedit lewat Slides.</p><button type="button" class="btn sm" data-a="a329-flow-restore">↶ Kembalikan elemen ke kanvas</button></div>`:'')+`<div class="row" style="margin-bottom:6px"><button class="btn sm" data-a="car-hero">Full-width slider · dots below</button><button class="btn sm pri" data-a="car-dh">✦ Digital Haus · continuous</button></div><div class="lbl">Look</div>${SEL('Style','el','cstyle',CSTYLES,{rp:1})}${SEL('Frame shape','el','fshape',FSHAPES,{rp:1})}${SEL('Frame ratio','el','ratio',[['','Fill the height'],['1:1','Square 1:1'],['4:5','Portrait 4:5'],['3:4','Portrait 3:4'],['2:3','Tall 2:3'],['3:2','Landscape 3:2'],['16:9','Wide 16:9']],{rp:1})}${RG('Frame width %','el','fw',{min:15,max:100})}`;
  if(el.cstyle==='coverflow')h+=RG('Side spacing','el','cstep',{min:.3,max:1.2,step:.01})+RG('Side size','el','scale',{min:.4,max:1,step:.01})+RG('Side darkness','el','dim',{min:0,max:.8,step:.01})+RG('3D tilt','el','tilt',{min:0,max:50});
  if(el.cstyle==='wheel')h+=RG('Fan angle','el','tilt',{min:5,max:45});
-  if(el.cstyle==='continuous')h+=N('Scrolling speed (px/sec)','el','flowSpeed',{min:0,max:300,step:5})+SEL('Direction','el','flowDir',[['left','Moves left'],['right','Moves right']])+`<label class="f"><span>▶ Putar semua video yang terlihat (muted)</span><input type="checkbox" data-o="el" data-p="carAllVideos" data-t="b" data-rp="1" ${el.carAllVideos!==false?'checked':''}></label><div class="hint">ON: semua video yang terlihat berjalan bersamaan, tanpa suara dan berulang. Kartu di luar layar dijeda agar HP tidak berat. OFF: mode lama, hanya video di tengah yang diputar. YouTube memakai IFrame API (memerlukan internet dan izin embed); browser dapat membatasi autoplay. Tautan yang rusak perlu diganti.</div><div class="hint">Bergerak otomatis di Preview dan HTML export. Drag dengan mouse atau swipe jari. Foto, teks, dan shape bisa diedit di Slides.</div>`;
+  if(el.cstyle==='continuous')h+=N('Scrolling speed (px/sec)','el','flowSpeed',{min:0,max:300,step:5})+SEL('Direction','el','flowDir',[['left','Moves left →'],['right','Moves right ←'],['up','Moves up ↑'],['down','Moves down ↓']])+`<label class="f"><span>▶ Putar semua video yang terlihat (muted)</span><input type="checkbox" data-o="el" data-p="carAllVideos" data-t="b" data-rp="1" ${el.carAllVideos!==false?'checked':''}></label><div class="hint">ON: semua video yang terlihat berjalan bersamaan, tanpa suara dan berulang. Kartu di luar layar dijeda agar HP tidak berat. OFF: mode lama, hanya video di tengah yang diputar. YouTube memakai IFrame API (memerlukan internet dan izin embed); browser dapat membatasi autoplay. Tautan yang rusak perlu diganti.</div><div class="hint">Bergerak otomatis di Preview dan HTML export. Drag dengan mouse atau swipe jari. Foto, teks, dan shape bisa diedit di Slides.</div>`;
  if(['slide','film','peek','vertical','stack'].includes(el.cstyle))h+=N('Gap (px)','el','gap',{min:0,max:80});
  if(el.fshape==='rounded')h+=N('Corner radius','el','rad',{min:0,max:200});
  h+=SEL('Photo fit','el','fit',[['cover','Fill (crop)'],['contain','Show whole photo']])+N('Border width','el','bw',{min:0,max:30})+(el.bw?CL('Border color','el','bc'):'')+CB('Drop shadow','el','shadow');
@@ -9741,12 +9771,23 @@ function at19SheetId(url){
 }
 async function at19Request(action,extra={}){
  if(!ATWSP.jwt)throw Error('Please connect as a wedding admin first.');
- const r=await fetch(ATWSP.url+'/functions/v1/wsp-sheets',{method:'POST',headers:{'apikey':ATWSP.key,'Authorization':'Bearer '+ATWSP.jwt,'Content-Type':'application/json'},body:JSON.stringify({action,order_id:AT19S.orderId,...extra})});
+ const r=await fetch(ATWSP.url+'/functions/v1/wsp-sheets',{method:'POST',headers:{'apikey':ATWSP.key,'Authorization':'Bearer '+ATWSP.jwt,'Content-Type':'application/json'},body:JSON.stringify({action,order_id:AT19S.orderId,...extra,project_id:String(S.pid||'')})});
  const j=await r.json().catch(()=>({}));
  if(!r.ok){
    const message=String(j.error||j.message||'Spreadsheet server returned an error.').slice(0,360);
    const err=new Error(message+' (HTTP '+r.status+')');err.httpStatus=r.status;err.sheetAction=action;
    throw err;
+ }
+ // Public Apps Script URL is not a secret. Keep it in the project so Comments
+ // can reuse the same shared bridge without asking the user to paste it again.
+ if(j&&j.bridge_url&&S&&S.doc){
+  S.doc.wspSheetsBridgeUrl=String(j.bridge_url);
+  if(j.project_mapping&&j.project_mapping.ok&&j.connection&&j.connection.spreadsheet_id){
+   S.doc.wspSheetsLinkedOrderId=String(AT19S.orderId||'');
+  }else if(String(S.doc.wspSheetsLinkedOrderId||'')===String(AT19S.orderId||'')){
+   delete S.doc.wspSheetsLinkedOrderId;
+  }
+  if(typeof scheduleSave==='function')scheduleSave();
  }
  return j;
 }
@@ -9765,7 +9806,7 @@ function at19View(){
  <div class="at19-actions"><button class="btn" data-a="at19-sync-questions">↻ Sync pertanyaan terbaru</button><button class="btn" data-a="at19-probe">Read spreadsheet columns</button><button class="btn" data-a="at19-create">Create New Spreadsheet</button></div>
  ${AT19S.headers.length?`<div class="at19-hint"><b>${AT19S.headers.length} headers found</b><small>Existing Sheets need a column named <code>Response ID</code>, preferably the first column. Map each RSVP question below; different clients can use different headers.</small></div><div class="at19-fields">${sel||'<small>No custom RSVP questions yet.</small>'}</div>`:'<div class="at19-hint"><small>To connect an existing spreadsheet, share editing permission with the Google account running the The Wedding Space Apps Script, then click Read spreadsheet columns.</small></div>'}
  <div class="at19-actions"><button class="btn pri" data-a="at19-save">Save connection</button><button class="btn" data-a="at19-sync">Sync existing responses</button></div>
- <p class="hint">Google connection runs through a protected server function. No private Google key is saved in the invitation HTML.</p></div>`, '<button class="btn" data-a="at-rsvp-open">Back to RSVP</button>','at19-sheet-dialog'));
+ <p class="hint">Google connection runs through a protected server function. The current project_id is included for Apps Script project-to-spreadsheet routing. No private Google key is saved in the invitation HTML.</p></div>`, '<button class="btn" data-a="at-rsvp-open">Back to RSVP</button>','at19-sheet-dialog'));
 }
 function at19Busy(note){AT19S.note=note;at19View()}
 function at19Fields(){const id=at19SheetId(document.querySelector('#at19-url')?.value||AT19S.id);const tab=(document.querySelector('#at19-tab')?.value||'RSVP').trim();const choice=document.querySelector('#at19-mode')?.value||'none';const mode=choice==='sheets'?'sheets_only':choice==='both'?'dashboard_and_sheets':'dashboard_only';const enabled=mode!=='dashboard_only';return{id,tab,enabled,mode}}
@@ -16403,7 +16444,7 @@ function a319Card(el){
  return `<div class="a319-card"><div class="a319-card-top">🔗 ${esc(mode)}</div><div class="a319-card-main"><div class="a319-card-icon">▣</div><b>${esc(el.name||mode)}</b><small>${esc(hostname||hint)}</small></div><div class="a319-card-bottom">Drag • Resize • Preview untuk interaksi</div></div>`;
 }
 function a319SandboxFrame(doc,editing){
- return `<iframe class="a319-safe-iframe" title="Embedded widget (isolated)" sandbox="allow-scripts allow-forms allow-popups" loading="${editing?'lazy':'eager'}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" srcdoc="${esc(doc)}" style="position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;${editing?'pointer-events:none;':''}"></iframe>`;
+ return `<iframe class="a319-safe-iframe" title="Embedded widget (isolated)" sandbox="allow-scripts allow-forms allow-popups" loading="${editing?'lazy':'eager'}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write" srcdoc="${esc(doc)}" style="position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;${editing?'pointer-events:none;':''}"></iframe>`;
 }
 function a319RenderEmbed(el,edit){
  if(el.embedKind==='widget'){
@@ -16598,7 +16639,7 @@ function a320Settings(el){
  ${field('Zona waktu','timezone',sel('timezone',[['Asia/Jakarta','Asia/Jakarta (WIB)'],['Asia/Makassar','Asia/Makassar (WITA)'],['Asia/Jayapura','Asia/Jayapura (WIT)'],['UTC','UTC'],['Asia/Singapore','Singapore'],['Asia/Tokyo','Tokyo'],['Europe/London','London'],['America/New_York','New York'],['America/Los_Angeles','Los Angeles'],['Australia/Sydney','Sydney']]))}
  ${box('repeat','Repeat (ulangi acara)')}${c.repeat?field('Periode ulang','repeatEvery',sel('repeatEvery',[['yearly','Setiap tahun'],['monthly','Setiap bulan'],['weekly','Setiap minggu']])):''}
  ${field('Nama countdown','title',inp('title'))}${box('showTitle','Tampilkan judul')}
- ${field('Font','font',sel('font',[['$body','Body Font'],['$head','Heading Font'],...([...new Set([...(S.fonts||[]).map(x=>x.family),...GOOGLE.map(x=>x[0])])].map(v=>[v,v]))]))}
+ ${field('Font','font',sel('font',[['$body','Body Font'],['$head','Heading Font'],...([...new Set([...(S.fonts||[]).map(x=>x.family),...(typeof A321!=='undefined'?(A321.fonts||[]).map(x=>x.family):[]),...GOOGLE.map(x=>x[0])])].map(v=>[v,v]))]))}
  ${field('Link opsional','link',inp('link','url','placeholder="https://..."'))}
  <div class="a320-subtitle">Satuan & tampilan</div><div class="a320-unit-options">${uopts.map(([key,label])=>`<label><input type="checkbox" data-a320-unitcheck="${key}" ${(c.units||[]).includes(key)?'checked':''}> ${label}</label>`).join('')}</div>
  ${box('showUnitNames','Tampilkan nama satuan')}
@@ -17854,14 +17895,14 @@ const a316Style=document.createElement('style');a316Style.id='atelier-v302116-st
 @keyframes a316-load{to{background-position:-200% 0}}
 `;document.head.appendChild(a316Style);
 const a316PriorTop=renderTop;
-renderTop=function(...args){const r=a316PriorTop.apply(this,args);const e=document.querySelector('#top .v24-version');if(e)e.textContent='v30.21.21';return r};
+renderTop=function(...args){const r=a316PriorTop.apply(this,args);const e=document.querySelector('#top .v24-version');if(e)e.textContent='v30.21.31';return r};
 /* === end Atelier v30.21.16 === */
 
 
-/* Atelier Studio v30.21.21 — RSVP starters, editable tables, expanded frames */
+/* Atelier Studio v30.21.31 — RSVP starters, editable tables, expanded frames */
 (function(){
 'use strict';
-const AT321_VERSION='v30.21.21';
+const AT321_VERSION='v30.21.31';
 
 /* Oval mask: use elliptical border radii so non-square frames remain true ovals. */
 if(typeof MASKS!=='undefined')MASKS.ellipse='border-radius:50% / 50%;overflow:hidden;';
@@ -20826,8 +20867,8 @@ window.__mozaClipboardBuild='V14.1-cross-device-paste';
 <script src="./moza-pro.js"></script>
 <link rel="stylesheet" href="./moza-v4.css">
 <script src="./moza-v4.js"></script>
-<link rel="stylesheet" href="./moza-interactive.css">
-<script src="./moza-interactive.js"></script>
+<link rel="stylesheet" href="./moza-interactive.css?v=14_9_1">
+<script src="./moza-interactive.js?v=14_9_1"></script>
 <link rel="stylesheet" href="./moza-smart-filter.css">
 <script src="./moza-smart-filter.js?v=14_8_11"></script>
 <link rel="stylesheet" href="./moza-content-tools.css">
@@ -20866,9 +20907,10 @@ window.__mozaClipboardBuild='V14.1-cross-device-paste';
 <link rel="stylesheet" href="./moza-top-toolbar-fix.css?v=14_8_23">
 <script src="./moza-top-toolbar-fix.js?v=14_8_23"></script>
 <script src="./moza-marquee.js?v=14_8_24"></script>
-<script src="./moza-comments.js?v=14_8_26"></script>
+<script src="./moza-comments.js?v=14_9_4"></script>
 <script src="./moza-richtext.js?v=14_8_28"></script>
 <script src="./moza-passgate.js?v=14_8_31"></script>
+<script src="./moza-v14.9-revision.js?v=14_9_1"></script>
 </body></html>
 <!-- Atelier Studio v28.12 · detail-preserving background remover patch -->
 

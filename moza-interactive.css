@@ -15,3 +15,24 @@
 .mz5-rowhead button{min-width:25px;min-height:28px;padding:2px 5px}
 .mz5-add{min-height:34px}.mz5-options{display:grid;gap:9px;grid-template-columns:1fr 1fr}.mz5-options .mz5-check{grid-column:1/-1;display:flex;align-items:center;gap:7px}.mz5-options input[type=color]{height:36px;cursor:pointer}
 @media(max-width:760px){.mz5-library{padding:10px}.mz5-tiles button{font-size:11px;min-height:44px}.mz5-panel{margin:10px 8px;padding:10px}}
+
+/* V14.9 FAQ Builder: editable content blocks, per-item box controls and responsive inspector */
+.mz5-panel{min-width:0}
+.mz5-row{min-width:0}
+.mz5-style-advanced{margin-top:9px;padding:10px;border:1px solid var(--line,#dfe4ed);border-radius:9px;background:#fff}
+.mz5-style-advanced summary{font-weight:750;cursor:pointer;list-style:none}
+.mz5-style-advanced summary::-webkit-details-marker{display:none}
+.mz5-style-advanced label{display:grid;gap:5px;margin:9px 0;font-size:11px}
+.mz5-style-advanced input,.mz5-style-advanced select,.mz5-style-advanced textarea{width:100%;min-width:0;box-sizing:border-box;min-height:32px;padding:7px;border:1px solid #dfe5f1;border-radius:7px;background:#fff}
+.mz5-two{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mz5-inline-check{display:flex!important;align-items:center;gap:6px}
+.mz5-inline-check input{width:auto!important;min-height:0!important}
+.mz5-blocks-editor{display:grid;gap:7px;padding-top:8px;border-top:1px solid #e1e5ee}
+.mz5-block-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mz5-block{display:grid;gap:7px;padding:8px;border:1px solid #dfe5f1;border-radius:8px;background:#fff}
+.mz5-block-add{display:flex;flex-wrap:wrap;gap:5px}
+.mz5-block-add button{flex:1 1 28%;white-space:normal;min-height:34px}
+@media(max-width:760px){
+ .mz5-two{grid-template-columns:1fr 1fr}
+ .mz5-block-add button{flex:1 1 42%;min-height:40px}
+}
