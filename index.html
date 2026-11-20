@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="atelier-build" content="v14.9.2-responsive-faq-editor-qa">
+<meta name="atelier-build" content="v14.9.5-responsive-3d-curved">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Moza Studio — Advanced V14.9.2</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
+<title>Moza Studio — Advanced V14.9.5</title><meta name="atelier-startup-recovery" content="v30.57 non-destructive boot diagnostics">
 <meta name="atelier-feature-recovery" content="v30.26-responsive-sync-shrink">
 <style>
 :root{--bg:#e9ebef;--panel:#fff;--ink:#1c2027;--mut:#6b7380;--line:#e2e5ea;--acc:#3a5bf0;--acc2:#eef1ff;--ok:#18864b;--bad:#c93a3a;--r:10px;--sh:0 1px 2px rgba(20,25,40,.06),0 6px 20px rgba(20,25,40,.08);--iz:1}
@@ -892,7 +892,9 @@ html{-webkit-text-size-adjust:100%}
 /* carousel extras */
 @keyframes kbz{from{transform:scale(1)}to{transform:scale(1.15)}}
 .car.kb .cs[aria-hidden=false] img{animation:kbz 9s ease-out forwards}
-.car .cs{backface-visibility:hidden}
+.car .cs{backface-visibility:hidden;transform-style:preserve-3d}
+.car.dh-flow .car-track{transform-style:preserve-3d}
+.car.dh-flow{perspective:1400px;perspective-origin:50% 50%}
 
 /* v30.21.11: text slides in Digital Haus Continuous */
 .car .cs.dh-text-card{background:transparent;}
@@ -2842,7 +2844,7 @@ function elSettings(el){
   <div class="hint">Contoh lain: <code>Dear {{nama_tamu}}</code>, <code>Untuk {{nama_tamu}} tersayang</code>, atau sapaan lebih dari satu baris. Klik dua kali teks di kanvas untuk mengedit langsung.</div>`:'');
  if(t==='embed')h+=a319Properties(el);
  if(t==='form'&&!el.at20FormUI)h+=formPanel(el);
- if(t==='gallery')h+=`<div class="a329-flow-entry" style="padding:10px;border-radius:10px;background:#eff4ff;margin:9px 0"><b>✦ Digital Haus Continuous</b><p class="hint">Ubah seluruh foto Gallery menjadi aliran otomatis yang bisa drag/swipe. Foto bisa diedit lagi dari daftar Slides.</p><button type="button" class="btn sm pri" data-a="a329-photo-flow" style="width:100%">Terapkan efek ke foto Gallery</button></div>`;
+ if(t==='gallery')h+=`<div class="a329-flow-entry" style="padding:10px;border-radius:10px;background:#eff4ff;margin:9px 0"><b>✦ Digital Haus · Gallery Effects</b><p class="hint">Ubah foto Gallery menjadi strip bergerak atau carousel 3D melengkung. Bisa drag/swipe; foto asli disimpan dan dapat dipulihkan.</p><div class="row" style="gap:6px;flex-wrap:wrap"><button type="button" class="btn sm" data-a="a329-photo-flow" style="flex:1">Continuous flow</button><button type="button" class="btn sm pri" data-a="a329-photo-arc" style="flex:1">3D Curved</button></div></div>`;
  if(t==='gallery'){h+=N('Columns','el','cols' ,{min:1,max:8})+N('Gap','el','gap',{min:0,max:60})+`<div class="row" style="margin:6px 0"><button class="btn sm" data-a="gal-upload">Upload images</button></div>`;
   h+=`<div class="palrow" style="gap:6px">${mzPerfPropertyAssets(S.assets,el.imgs||[]).map(a=>`<div class="sw" style="width:44px;height:34px;${(el.imgs||[]).includes(a.id)?'outline:2px solid var(--acc)':''}" data-a="gal-toggle" data-aid="${a.id}" title="Click to add/remove"><img src="${a.data}" style="width:100%;height:100%;object-fit:cover" alt=""></div>`).join('')}</div>`}
  if(t==='carousel')h+=carouselPanel(el);
@@ -4887,7 +4889,7 @@ function carouselHTML(el,edit){
  let sl=el.slides||[];if(!edit)sl=sl.filter(s=>s.a3211Kind==='text'||(s.a3212Kind==='shape'&&s.a3212Shape?.type==='shape')||assetSrc(s.asset)||vidSrc(s.videoAsset)||s.videoUrl);
  if(!sl.length)return '<div class="ph">Carousel: add photos, text or videos in Properties</div>';
  const ar={'1:1':'1/1','4:5':'4/5','3:4':'3/4','16:9':'16/9','3:2':'3/2','2:3':'2/3'}[el.ratio]||'',n=sl.length;
- const cfg={style:el.cstyle,allVid:el.carAllVideos!==false,flowSpeed:Math.max(0,Number(el.flowSpeed??50)),flowDir:el.flowDir||'left',step:el.cstep||.72,scale:el.scale,dim:el.dim,tilt:el.tilt,loop:!!el.loop,auto:(!edit&&el.auto)?1:0,int:el.int,gap:el.gap,fw:el.fw,ratio:ar||'',fshape:el.fshape||'rounded',rad:el.rad||0,pauseHover:!!el.pauseHover,start:Math.min(Math.max(el.cur||0,0),n-1),vis:3,fixr:ar?1:0,preview:!edit};
+ const cfg={style:el.cstyle,allVid:el.carAllVideos!==false,flowSpeed:Math.max(0,Number(el.flowSpeed??50)),flowDir:el.flowDir||'left',step:el.cstep||.72,scale:el.scale,dim:el.dim,tilt:el.tilt,arcCenterScale:el.arcCenterScale??.84,arcSideScale:el.arcSideScale??1.10,arcDepth:el.arcDepth??150,arcTilt:el.arcTilt??18,loop:!!el.loop,auto:(!edit&&el.auto)?1:0,int:el.int,gap:el.gap,fw:el.fw,ratio:ar||'',fshape:el.fshape||'rounded',rad:el.rad||0,pauseHover:!!el.pauseHover,start:Math.min(Math.max(el.cur||0,0),n-1),vis:3,fixr:ar?1:0,preview:!edit};
  const slides=sl.map((s,i)=>{
   const src=assetSrc(s.asset),vid=(s.videoUrl||vidSrc(s.videoAsset)),ytId=at67CarouselYouTubeId(vid),video=!!vid;
   const isText=s.a3211Kind==='text',isShape=s.a3212Kind==='shape'&&s.a3212Shape?.type==='shape';
@@ -4902,14 +4904,14 @@ function carouselHTML(el,edit){
   const se=isShape?s.a3212Shape:null;
   const shapeRatio=se?Math.max(.05,Math.min(30,(Number(se.w)||100)/(Number(se.h)||100))):1;
   const shapeMedia=isShape?`<div class="dh-flow-shape" style="--dh-shape-ratio:${shapeRatio}" role="img" aria-label="${esc(se.name||'Shape')}">${shapeHTML(se)}</div>`:'';
-  const ytMedia=ytId?`<div class="at67-yt-shell" data-car-youtube-id="${ytId}" data-car-autoplay="${s.videoAutoplay!==false?1:0}" data-car-loop="${s.videoLoop!==false?1:0}" data-car-muted="${s.videoMuted!==false?1:0}" data-car-controls="${s.videoControls!==false&&el.cstyle!=='continuous'?1:0}" data-hold="${Math.max(1,Math.min(120,Number(s.videoHold)||8))}"><img class="at67-yt-poster" src="https://i.ytimg.com/vi/${ytId}/hqdefault.jpg" alt="YouTube video preview" draggable="false" loading="lazy"><span class="at67-yt-label">▶ YouTube · ${edit?'Preview untuk memutar':'Memuat video...'}</span></div>`:'';
-  const media=isShape?shapeMedia:isText?textMedia:ytId?ytMedia:video?`<video data-car-video data-car-autoplay="${s.videoAutoplay!==false?1:0}" data-hold="${Math.max(1,Math.min(120,Number(s.videoHold)||8))}" src="${esc(vid)}" preload="metadata" playsinline ${s.videoMuted!==false?'muted':''} ${s.videoLoop!==false?'loop':''} ${s.videoControls!==false&&el.cstyle!=='continuous'&&!edit?'controls':''} disablepictureinpicture></video>`:src?`<img src="${esc(src)}" alt="${esc(s.text||'')}" draggable="false">`:`<div class="ph">Slide ${i+1}</div>`;
+  const ytMedia=ytId?`<div class="at67-yt-shell" data-car-youtube-id="${ytId}" data-car-autoplay="${s.videoAutoplay!==false?1:0}" data-car-loop="${s.videoLoop!==false?1:0}" data-car-muted="${s.videoMuted!==false?1:0}" data-car-controls="${s.videoControls!==false&&!['continuous','arc3d'].includes(el.cstyle)?1:0}" data-hold="${Math.max(1,Math.min(120,Number(s.videoHold)||8))}"><img class="at67-yt-poster" src="https://i.ytimg.com/vi/${ytId}/hqdefault.jpg" alt="YouTube video preview" draggable="false" loading="lazy"><span class="at67-yt-label">▶ YouTube · ${edit?'Preview untuk memutar':'Memuat video...'}</span></div>`:'';
+  const media=isShape?shapeMedia:isText?textMedia:ytId?ytMedia:video?`<video data-car-video data-car-autoplay="${s.videoAutoplay!==false?1:0}" data-hold="${Math.max(1,Math.min(120,Number(s.videoHold)||8))}" src="${esc(vid)}" preload="metadata" playsinline ${s.videoMuted!==false?'muted':''} ${s.videoLoop!==false?'loop':''} ${s.videoControls!==false&&!['continuous','arc3d'].includes(el.cstyle)&&!edit?'controls':''} disablepictureinpicture></video>`:src?`<img src="${esc(src)}" alt="${esc(s.text||'')}" draggable="false">`:`<div class="ph">Slide ${i+1}</div>`;
   return `<figure class="cs${video?' car-video-slide':''}${isText?' dh-text-card':''}${isShape?' dh-shape-card':''}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${i+1} of ${n}">${media}${!isText&&s.text&&el.fshape!=='x'?`<figcaption>${esc(s.text)}</figcaption>`:''}</figure>`;
  }).join('');
- const arrows=el.cstyle!=='continuous'&&el.arrows&&n>1?'<button class="car-a pv" type="button" aria-label="Previous slide">‹</button><button class="car-a nx" type="button" aria-label="Next slide">›</button>':'';
- const dots=el.cstyle!=='continuous'&&el.dots&&n>1?`<div class="car-d">${sl.map((s,i)=>`<button type="button" aria-label="Go to slide ${i+1}"></button>`).join('')}</div>`:'';
+ const arrows=!['continuous','arc3d'].includes(el.cstyle)&&el.arrows&&n>1?'<button class="car-a pv" type="button" aria-label="Previous slide">‹</button><button class="car-a nx" type="button" aria-label="Next slide">›</button>':'';
+ const dots=!['continuous','arc3d'].includes(el.cstyle)&&el.dots&&n>1?`<div class="car-d">${sl.map((s,i)=>`<button type="button" aria-label="Go to slide ${i+1}"></button>`).join('')}</div>`:'';
  const st=`--fw:${el.fw}%;--cr:${el.fshape==='rounded'?el.rad:0}px;--tr:${el.trans}ms;--fit:${el.fit};--ac:${col(el.ac)};--abg:${col(el.abg)};--dc:${col(el.dc)};${el.da?`--da:${col(el.da)};`:''}${el.cbg?`--cbg:${col(el.cbg)};`:''}${ar?`--ar:${ar};`:''}${el.bw?`--bd:${el.bw}px solid ${col(el.bc)};`:''}`;
- return `<div class="car${el.cstyle==='continuous'?' dh-flow':''} sh-${el.fshape}${el.shadow?' shd':''}${ar?' fixr':''}${el.dpos==='below'?' dbelow':''}${el.dstyle&&el.dstyle!=='dots'?' dst-'+el.dstyle:''}${el.cbg?' hascbg':''}" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${esc(el.name||'Carousel')}" data-cfg='${esc(JSON.stringify(cfg)).replace(/'/g,'&#39;')}' style="${st}"><div class="car-track">${slides}</div>${arrows}${dots}</div>` }
+ return `<div class="car${['continuous','arc3d'].includes(el.cstyle)?' dh-flow':''} sh-${el.fshape}${el.shadow?' shd':''}${ar?' fixr':''}${el.dpos==='below'?' dbelow':''}${el.dstyle&&el.dstyle!=='dots'?' dst-'+el.dstyle:''}${el.cbg?' hascbg':''}" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${esc(el.name||'Carousel')}" data-cfg='${esc(JSON.stringify(cfg)).replace(/'/g,'&#39;')}' style="${st}"><div class="car-track">${slides}</div>${arrows}${dots}</div>` }
 function carRuntime(root){
  var cars=[].slice.call((root||document).querySelectorAll('.car'));
  cars.forEach(function(c){
@@ -4917,7 +4919,7 @@ function carRuntime(root){
   var sl=[].slice.call(c.querySelectorAll('.cs')),n=sl.length,cur=Math.min(cfg.start||0,n-1),dots=[].slice.call(c.querySelectorAll('.car-d button')),timer=null,x0=null;
   // Keep the source Slides unchanged. Only repeat DOM cards in Preview/Publish
   // when the user has fewer than six photos, to keep the moving strip filled.
-  if(cfg.style==='continuous'&&n>0&&n<6){
+  if((cfg.style==='continuous'||cfg.style==='arc3d')&&n>0&&n<6){
    const originals=sl.slice(),track=c.querySelector('.car-track');
    const target=Math.max(6,n*3);
    for(let i=n;i<target;i++){
@@ -5071,8 +5073,10 @@ function carRuntime(root){
    }else syncSlideVideos(cur);
   });
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
-   if(cfg.style==='continuous'){
-    // Digital Haus continuous gallery: horizontal or vertical, preserving the selected frame shape.
+   if(cfg.style==='continuous'||cfg.style==='arc3d'){
+    // Digital Haus continuous gallery. arc3d adds a perspective curve while
+    // retaining the same smooth drag/swipe and responsive layout engine.
+    const arc3d=cfg.style==='arc3d';
     const totalCards=sl.length;
     if(!totalCards)return;
     const track=c.querySelector('.car-track');
@@ -5119,25 +5123,40 @@ function carRuntime(root){
       return;
      }
      layoutScale=clamp(Math.min(w/900,h/380),.36,1.3);
-     const requested=Math.max(15,Math.min(100,Number(cfg.fw)||25))/100;
-     cardW=Math.min(w*.82,Math.max(110,w*requested));
+     const requested=Math.max(15,Math.min(100,Number(cfg.fw)||(arc3d?18:25)))/100;
+     cardW=arc3d
+      ?Math.min(w*.72,Math.max(Math.min(90,w*.28),w*requested))
+      :Math.min(w*.82,Math.max(110,w*requested));
      const ratio=String(cfg.ratio||'').match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
-     cardH=ratio?cardW*(Number(ratio[2])/Math.max(.01,Number(ratio[1]))):Math.max(130,Math.min(220,h*.58));
-     pitch=cardW+clamp(Number(cfg.gap)||24,0,100);
+     cardH=ratio?cardW*(Number(ratio[2])/Math.max(.01,Number(ratio[1]))):(arc3d?Math.max(90,Math.min(460,h*.82)):Math.max(130,Math.min(220,h*.58)));
+     if(arc3d)cardH=Math.min(cardH,Math.max(90,h*.9));
+     pitch=arc3d?cardW*clamp(Number(cfg.step)||1.08,.65,1.5):cardW+clamp(Number(cfg.gap)||24,0,100);
      const total=totalCards*pitch,center=w/2,mid=h*.51;
      if(!initialized){offset=(Number(cfg.start)||0)*pitch;if(cfg.loop===false&&sign<0&&offset===0)offset=(totalCards-1)*pitch;initialized=true}
      for(let i=0;i<totalCards;i++){
       const t=mod(i*pitch-offset+total/2,total)-total/2;
-      const d=clamp(Math.abs(t)/(Math.max(1,w*.72)),0,1.25),scale=1-.12*d;
-      const cw=cardW,ch=cardH,x=center-cw/2+t,y=mid-ch/2-8*d*d*layoutScale,card=sl[i];
+      const d=clamp(Math.abs(t)/(Math.max(1,w*.72)),0,1.25);
+      const side=Math.min(3,Math.abs(t)/Math.max(1,pitch));
+      const scale=arc3d
+       ?clamp(Number(cfg.arcCenterScale)||.84,0.6,1.15)+(clamp(Number(cfg.arcSideScale)||1.10,.7,1.3)-clamp(Number(cfg.arcCenterScale)||.84,.6,1.15))*Math.min(1,side/2.4)
+       :1-.12*d;
+      const cw=cardW,ch=cardH,x=center-cw/2+t,y=mid-ch/2-(arc3d?0:8*d*d*layoutScale),card=sl[i];
+      const depthValue=Number(cfg.arcDepth),tiltValue=Number(cfg.arcTilt);
+      const z=arc3d?Math.min(3,side)*clamp(Number.isFinite(depthValue)?depthValue:150,0,320)/3:0;
+      const rot=arc3d?-(Math.sign(t)||0)*Math.min(32,side*clamp(Number.isFinite(tiltValue)?tiltValue:18,0,40)):0;
       card.style.position='absolute';card.style.left='0';card.style.top='0';
       card.style.width=cw+'px';card.style.height=ch+'px';
-      card.style.transition='none';card.style.opacity='1';card.style.filter='none';
-      card.style.transform='translate3d('+x+'px,'+y+'px,0) scale('+scale.toFixed(3)+')';
+      card.style.transition='none';card.style.opacity='1';
+      const dimValue=Number(cfg.dim),sideDim=Math.max(0,Math.min(.3,Number.isFinite(dimValue)?dimValue:.08));
+      card.style.filter=arc3d?'brightness('+(1-Math.min(.24,side*sideDim*.35)).toFixed(2)+')':'none';
+      card.style.transform=arc3d
+       ?'translate3d('+x+'px,'+y+'px,'+z+'px) rotateY('+rot+'deg) scale('+scale.toFixed(3)+')'
+       :'translate3d('+x+'px,'+y+'px,0) scale('+scale.toFixed(3)+')';
       card.style.transformOrigin='center center';
+      card.style.transformStyle='preserve-3d';
       // The .sh-* CSS classes own the frame shape; runtime must not override them inline.
       card.style.clipPath='';card.style.borderRadius='';
-      card.style.zIndex=String(Math.round(100-d*30));
+      card.style.zIndex=String(Math.round(100-d*30+z/10));
       card.setAttribute('aria-hidden','false');
      }
     }
@@ -5218,18 +5237,19 @@ function carRuntime(root){
   c.addEventListener('pointerup',function(e){if(x0===null)return;var dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))});
   document.addEventListener('visibilitychange',function(){if(document.hidden)stop();else play()});
   if(cfg.style==='kenburns')c.classList.add('kb');lay(true);play()}) }
-const CSTYLES=[['continuous','Digital Haus · continuous / flowing'],['coverflow','Center focus (big middle, small sides)'],['slide','Slide'],['peek','Peek (next photo shows at the side)'],['fade','Fade'],['zoom','Zoom fade'],['blur','Blur fade'],['kenburns','Ken Burns (slow zoom)'],['vertical','Vertical slide'],['flip','Flip'],['stack','Card stack'],['cards','Swipe cards'],['wheel','Fan / wheel'],['film','Film strip']];
+const CSTYLES=[['continuous','Digital Haus · continuous / flowing'],['arc3d','3D Curved · perspective flow'],['coverflow','Center focus (big middle, small sides)'],['slide','Slide'],['peek','Peek (next photo shows at the side)'],['fade','Fade'],['zoom','Zoom fade'],['blur','Blur fade'],['kenburns','Ken Burns (slow zoom)'],['vertical','Vertical slide'],['flip','Flip'],['stack','Card stack'],['cards','Swipe cards'],['wheel','Fan / wheel'],['film','Film strip']];
 const FSHAPES=[['rounded','Rounded'],['rect','Square corners'],['circle','Circle / oval'],['arch','Arch'],['hex','Hexagon'],['blob','Blob'],['polaroid','Polaroid'],['film','Film frame']];
 function carouselPanel(el){
  const sl=el.slides||[],sel=Math.min(S.carSel||0,Math.max(sl.length-1,0)),cu=sl[sel];
- let h=(el.a329Originals?.length?`<div style="margin-bottom:8px;padding:9px;border:1px solid #d6e1ff;border-radius:9px;background:#eff4ff"><b>✦ Efek Digital Haus dari elemen</b><p class="hint" style="margin:4px 0 7px">Foto, teks, dan shape asli tersimpan untuk Restore. Isinya tetap bisa diedit lewat Slides.</p><button type="button" class="btn sm" data-a="a329-flow-restore">↶ Kembalikan elemen ke kanvas</button></div>`:'')+`<div class="row" style="margin-bottom:6px"><button class="btn sm" data-a="car-hero">Full-width slider · dots below</button><button class="btn sm pri" data-a="car-dh">✦ Digital Haus · continuous</button></div><div class="lbl">Look</div>${SEL('Style','el','cstyle',CSTYLES,{rp:1})}${SEL('Frame shape','el','fshape',FSHAPES,{rp:1})}${SEL('Frame ratio','el','ratio',[['','Fill the height'],['1:1','Square 1:1'],['4:5','Portrait 4:5'],['3:4','Portrait 3:4'],['2:3','Tall 2:3'],['3:2','Landscape 3:2'],['16:9','Wide 16:9']],{rp:1})}${RG('Frame width %','el','fw',{min:15,max:100})}`;
+ let h=(el.a329Originals?.length?`<div style="margin-bottom:8px;padding:9px;border:1px solid #d6e1ff;border-radius:9px;background:#eff4ff"><b>✦ Efek Digital Haus dari elemen</b><p class="hint" style="margin:4px 0 7px">Foto, teks, dan shape asli tersimpan untuk Restore. Isinya tetap bisa diedit lewat Slides.</p><button type="button" class="btn sm" data-a="a329-flow-restore">↶ Kembalikan elemen ke kanvas</button></div>`:'')+`<div class="row" style="margin-bottom:6px;flex-wrap:wrap"><button class="btn sm" data-a="car-hero">Full-width slider · dots below</button><button class="btn sm" data-a="car-dh">✦ Digital Haus · continuous</button><button class="btn sm pri" data-a="car-arc3d">✦ 3D Curved</button></div><div class="lbl">Look</div>${SEL('Style','el','cstyle',CSTYLES,{rp:1})}${SEL('Frame shape','el','fshape',FSHAPES,{rp:1})}${SEL('Frame ratio','el','ratio',[['','Fill the height'],['1:1','Square 1:1'],['4:5','Portrait 4:5'],['3:4','Portrait 3:4'],['2:3','Tall 2:3'],['3:2','Landscape 3:2'],['16:9','Wide 16:9']],{rp:1})}${RG('Frame width %','el','fw',{min:15,max:100})}`;
  if(el.cstyle==='coverflow')h+=RG('Side spacing','el','cstep',{min:.3,max:1.2,step:.01})+RG('Side size','el','scale',{min:.4,max:1,step:.01})+RG('Side darkness','el','dim',{min:0,max:.8,step:.01})+RG('3D tilt','el','tilt',{min:0,max:50});
  if(el.cstyle==='wheel')h+=RG('Fan angle','el','tilt',{min:5,max:45});
-  if(el.cstyle==='continuous')h+=N('Scrolling speed (px/sec)','el','flowSpeed',{min:0,max:300,step:5})+SEL('Direction','el','flowDir',[['left','Moves left →'],['right','Moves right ←'],['up','Moves up ↑'],['down','Moves down ↓']])+`<label class="f"><span>▶ Putar semua video yang terlihat (muted)</span><input type="checkbox" data-o="el" data-p="carAllVideos" data-t="b" data-rp="1" ${el.carAllVideos!==false?'checked':''}></label><div class="hint">ON: semua video yang terlihat berjalan bersamaan, tanpa suara dan berulang. Kartu di luar layar dijeda agar HP tidak berat. OFF: mode lama, hanya video di tengah yang diputar. YouTube memakai IFrame API (memerlukan internet dan izin embed); browser dapat membatasi autoplay. Tautan yang rusak perlu diganti.</div><div class="hint">Bergerak otomatis di Preview dan HTML export. Drag dengan mouse atau swipe jari. Foto, teks, dan shape bisa diedit di Slides.</div>`;
+ if(el.cstyle==='arc3d')h+=RG('Card spacing','el','cstep',{min:.65,max:1.5,step:.01})+RG('Center size','el','arcCenterScale',{min:.6,max:1.15,step:.01})+RG('Side size','el','arcSideScale',{min:.7,max:1.3,step:.01})+RG('3D depth','el','arcDepth',{min:0,max:320})+RG('3D tilt','el','arcTilt',{min:0,max:40})+RG('Side darkness','el','dim',{min:0,max:.3,step:.01});
+  if(['continuous','arc3d'].includes(el.cstyle))h+=N('Scrolling speed (px/sec)','el','flowSpeed',{min:0,max:300,step:5})+SEL('Direction','el','flowDir',el.cstyle==='arc3d'?[['left','Moves left →'],['right','Moves right ←']]:[['left','Moves left →'],['right','Moves right ←'],['up','Moves up ↑'],['down','Moves down ↓']])+`<label class="f"><span>▶ Putar semua video yang terlihat (muted)</span><input type="checkbox" data-o="el" data-p="carAllVideos" data-t="b" data-rp="1" ${el.carAllVideos!==false?'checked':''}></label><div class="hint">ON: semua video yang terlihat berjalan bersamaan, tanpa suara dan berulang. Kartu di luar layar dijeda agar HP tidak berat. OFF: mode lama, hanya video di tengah yang diputar. YouTube memakai IFrame API (memerlukan internet dan izin embed); browser dapat membatasi autoplay. Tautan yang rusak perlu diganti.</div><div class="hint">Bergerak otomatis di Preview dan HTML export. Drag dengan mouse atau swipe jari. Foto, teks, dan shape bisa diedit di Slides.</div>`;
  if(['slide','film','peek','vertical','stack'].includes(el.cstyle))h+=N('Gap (px)','el','gap',{min:0,max:80});
  if(el.fshape==='rounded')h+=N('Corner radius','el','rad',{min:0,max:200});
  h+=SEL('Photo fit','el','fit',[['cover','Fill (crop)'],['contain','Show whole photo']])+N('Border width','el','bw',{min:0,max:30})+(el.bw?CL('Border color','el','bc'):'')+CB('Drop shadow','el','shadow');
- h+=`<div class="lbl">Behaviour</div>${CB('Autoplay','el','auto')}${el.auto&&el.cstyle!=='continuous'?N('Time per slide (ms)','el','int',{min:800,max:15000,step:100}):''}${el.cstyle!=='continuous'?N('Slide speed (ms)','el','trans',{min:0,max:2000,step:50}):''}${CB('Loop','el','loop')}${CB('Pause on hover','el','pauseHover')}${CB('Arrows','el','arrows',{rp:1})}${el.arrows?CL('Arrow color','el','abg')+CL('Arrow icon','el','ac'):''}${CB('Dots','el','dots',{rp:1})}${el.dots?dotsFields(el):''}${N('Slide shown in editor (0 = first)','el','cur',{min:0,max:Math.max(sl.length-1,0)})}`;
+ h+=`<div class="lbl">Behaviour</div>${CB('Autoplay','el','auto')}${el.auto&&!['continuous','arc3d'].includes(el.cstyle)?N('Time per slide (ms)','el','int',{min:800,max:15000,step:100}):''}${!['continuous','arc3d'].includes(el.cstyle)?N('Slide speed (ms)','el','trans',{min:0,max:2000,step:50}):''}${CB('Loop','el','loop')}${CB('Pause on hover','el','pauseHover')}${!['continuous','arc3d'].includes(el.cstyle)?CB('Arrows','el','arrows',{rp:1})+(el.arrows?CL('Arrow color','el','abg')+CL('Arrow icon','el','ac'):'')+CB('Dots','el','dots',{rp:1})+(el.dots?dotsFields(el):''):''}${N('Slide shown in editor (0 = first)','el','cur',{min:0,max:Math.max(sl.length-1,0)})}`;
  h+=`<div class="lbl">Slides (${sl.length})</div><div class="row" style="margin:6px 0"><button class="btn sm" data-a="at191-car-audit" type="button">🔎 Cek Slides</button></div><div class="row" style="margin-bottom:6px"><button class="btn sm pri" data-a="car-upload">📷 Upload photos</button><button class="btn sm pri" data-a="car-video-upload">🎬 Upload video</button><button class="btn sm" data-a="at65-video-url-open" data-v="carousel">🔗 Video dari URL / YouTube</button><button class="btn sm" data-a="car-all" ${S.assets.length?'':'disabled'}>Use all uploads</button><button class="btn sm" data-a="car-add">+ Empty</button><button class="btn sm" data-a="a3211-add-text">+ Teks</button><button class="btn sm" data-a="a3212-add-shape">+ Shape</button></div>`;
  h+=sl.map((s,i)=>`<div class="navitem ${i===sel?'on':''}"><div class="nh"><span data-a="car-sel" data-i="${i}" style="display:flex;align-items:center;gap:8px"><i style="width:34px;height:26px;border-radius:5px;background:#e4e7ee center/cover no-repeat;${s.asset&&assetSrc(s.asset)?`background-image:url('${assetSrc(s.asset)}')`:''};display:inline-flex;align-items:center;justify-content:center;font-size:18px">${s.a3212Kind==='shape'?'◇':s.a3211Kind==='text'?'T':(s.videoAsset||s.videoUrl)?'🎬':''}</i>Slide ${i+1}${s.a3212Kind==='shape'?' · Shape':s.a3211Kind==='text'?' · Teks':(s.videoAsset||s.videoUrl)?' · Video':''}</span><button class="ib" data-a="car-up" data-i="${i}" title="Move up">↑</button><button class="ib" data-a="car-down" data-i="${i}" title="Move down">↓</button><button class="ib" data-a="car-del" data-i="${i}" title="Remove">✕</button></div></div>`).join('');
  if(cu){
@@ -5286,42 +5306,96 @@ function carouselPanel(el){
    --------------------------------------------------------------------- */
 const MUS_ICONS={speaker:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>',note:'<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',headphones:'<path d="M4 15v-3a8 8 0 0116 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>',vinyl:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 019 9"/>',equalizer:'<path d="M5 20V10M10 20V4M15 20v-9M20 20V7"/>'};
 const musicSrc=m=>m.src==='url'?driveFix(m.url,'audio'):(S.music?(window.MZX&&MZX.on?MZX.token('m','music',S.music.data):S.music.data):'');
+function musicResponsiveSizes(m){
+  const base=Math.max(28,Math.min(120,Number(m.size)||46));
+  const iconBase=Math.max(20,Math.min(100,Number(m.isz)||52));
+  const raw=m.sizes&&typeof m.sizes==='object'?m.sizes:{};
+  const rawIcons=m.iconSizes&&typeof m.iconSizes==='object'?m.iconSizes:{};
+  const pick=(value,fallback,min,max)=>{
+    const n=Number(value);
+    return Number.isFinite(n)&&n>0?Math.max(min,Math.min(max,n)):fallback;
+  };
+  const sizes={
+    d:pick(raw.d,base,28,120),
+    t:pick(raw.t,Math.round(base*.90),28,120),
+    m:pick(raw.m,Math.round(base*.82),28,120)
+  };
+  const iconSizes={
+    d:pick(rawIcons.d,iconBase,20,100),
+    t:pick(rawIcons.t,iconBase,20,100),
+    m:pick(rawIcons.m,iconBase,20,100)
+  };
+  m.sizes=sizes;
+  m.iconSizes=iconSizes;
+  return {sizes,iconSizes};
+}
 function musicBtnHTML(m,preview){
- const size=m.size||46,ox=m.ox??18,oy=m.oy??18,pos=m.pos||'br',pv=preview?'':'';
- const h=pos.endsWith('c')?`left:calc(50% - ${size/2}px + ${ox-18}px)`:pos.includes('l')?`left:${ox}px`:`right:${ox}px`;
- const v=pos.startsWith('t')?`top:${oy}px`:`bottom:${oy}px`;
- const radius=m.shape==='square'?'6px':m.shape==='rounded'?'14px':'50%';
- const bg=m.nobg?'transparent':col(m.bg);
- let inner;
- const slash='<svg class="off slash" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16"/></svg>';
- if(m.icon==='custom'&&assetSrc(m.iconAsset)){
-  const on=assetSrc(m.iconAsset),off=assetSrc(m.iconOffAsset);
-  inner=`<img class="on" src="${on}" alt="">${off?`<img class="off" src="${off}" alt="">`:`<img class="off dim" src="${on}" alt="">${slash}`}`}
- else{const p=MUS_ICONS[m.icon]||MUS_ICONS.speaker;
-  inner=`<svg class="on" viewBox="0 0 24 24" aria-hidden="true">${p}</svg><svg class="off" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>${slash}`}
- const shadow=m.nobg?'':'box-shadow:0 4px 14px rgba(0,0,0,.25);';
- return `<button type="button" class="mus muted${preview?' musprev':''}"${preview?'':' id="musbtn"'} aria-label="Turn music on" aria-pressed="false" style="${h};${v};width:${size}px;height:${size}px;border-radius:${radius};background:${bg};color:${col(m.color)};--isz:${m.isz||52}%;${shadow}">${inner}</button>` }
+  const responsive=musicResponsiveSizes(m);
+  const bp=preview&&['d','t','m'].includes(S.bp)?S.bp:'d';
+  const size=responsive.sizes[bp],iconSize=responsive.iconSizes[bp];
+  const ox=m.ox??18,oy=m.oy??18,pos=m.pos||'br';
+  const h=pos.endsWith('c')?`left:calc(50% - ${size/2}px + ${ox-18}px)`:pos.includes('l')?`left:${ox}px`:`right:${ox}px`;
+  const v=pos.startsWith('t')?`top:${oy}px`:`bottom:${oy}px`;
+  const radius=m.shape==='square'?'6px':m.shape==='rounded'?'14px':'50%';
+  const bg=m.nobg?'transparent':col(m.bg);
+  let inner;
+  const slash='<svg class="off slash" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16"/></svg>';
+  if(m.icon==='custom'&&assetSrc(m.iconAsset)){
+    const on=assetSrc(m.iconAsset),off=assetSrc(m.iconOffAsset);
+    inner=`<img class="on" src="${on}" alt="">${off?`<img class="off" src="${off}" alt="">`:`<img class="off dim" src="${on}" alt="">${slash}`}`;
+  }else{
+    const p=MUS_ICONS[m.icon]||MUS_ICONS.speaker;
+    inner=`<svg class="on" viewBox="0 0 24 24" aria-hidden="true">${p}</svg><svg class="off" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>${slash}`;
+  }
+  const shadow=m.nobg?'':'box-shadow:0 4px 14px rgba(0,0,0,.25);';
+  return `<button type="button" class="mus muted${preview?' musprev':''}"${preview?'':' id="musbtn"'} aria-label="Turn music on" aria-pressed="false" style="${h};${v};width:${size}px;height:${size}px;border-radius:${radius};background:${bg};color:${col(m.color)};--isz:${iconSize}%;${shadow}">${inner}</button>`;
+}
+function musicResponsiveCss(m){
+  const {sizes,iconSizes}=musicResponsiveSizes(m);
+  return `<style id="mz-music-responsive">
+#musbtn.mus{width:${sizes.d}px!important;height:${sizes.d}px!important;--isz:${iconSizes.d}%}
+@media (min-width:641px) and (max-width:1024px){#musbtn.mus{width:${sizes.t}px!important;height:${sizes.t}px!important;--isz:${iconSizes.t}%}}
+@media (max-width:640px){#musbtn.mus{width:${sizes.m}px!important;height:${sizes.m}px!important;--isz:${iconSizes.m}%}}
+</style>`;
+}
 function musicHTML(doc){
- const m=doc.music;if(!m||!m.on)return '';const src=musicSrc(m);if(!src)return musicBtnHTML(m,false).replace('id="musbtn"','id="musbtn" data-missing-audio="1" title="Musik aktif, tetapi file/URL audio belum diatur"');
- return `<audio id="bgm" src="${esc(src)}" preload="auto" ${m.autoplay?'autoplay':''} ${m.loop?'loop':''} playsinline data-vol="${m.vol}" data-auto="${m.autoplay?1:0}"></audio>\n${musicBtnHTML(m,false)}` }
+  const m=doc.music;if(!m||!m.on)return '';
+  const responsiveCss=musicResponsiveCss(m),src=musicSrc(m);
+  if(!src)return responsiveCss+musicBtnHTML(m,false).replace('id="musbtn"','id="musbtn" data-missing-audio="1" title="Musik aktif, tetapi file/URL audio belum diatur"');
+  return responsiveCss+`<audio id="bgm" src="${esc(src)}" preload="auto" ${m.autoplay?'autoplay':''} ${m.loop?'loop':''} playsinline data-vol="${m.vol}" data-auto="${m.autoplay?1:0}"></audio>\n${musicBtnHTML(m,false)}`;
+}
 function musicPanel(){
- const m=S.doc.music||(S.doc.music=defMusic());Object.assign(m,Object.assign(defMusic(),m));
- let h=CB('Play background music','doc','music.on',{rp:1});
- if(!m.on)return h+'<div class="hint">Adds a button to the published site so visitors can turn the music off.</div>';
- h+=SEG('doc','music.src',[['upload','Upload file'],['url','Audio URL']]);
- h+=m.src==='url'?X('Audio URL','doc','music.url',{ph:'https://…/song.mp3'}):`<div class="row" style="margin:6px 0"><button class="btn sm" data-a="music-upload">${S.music?'Replace audio':'Upload audio'}</button>${S.music?'<button class="btn sm dng" data-a="music-del">Remove</button>':''}</div>${S.music?`<div class="hint">${esc(S.music.name)} · ${Math.round(S.music.data.length*.75/1024)} KB</div>`:'<div class="hint">MP3, OGG, WAV or M4A, up to about 3 MB.</div>'}`;
- h+=CB('Autoplay','doc','music.autoplay')+CB('Loop','doc','music.loop')+RG('Volume','doc','music.vol',{min:0,max:1,step:.01});
- h+=`<div class="lbl">Button icon</div>${SEL('Icon','doc','music.icon',[...Object.keys(MUS_ICONS).map(k=>[k,cap(k)]),['custom','My own icon (upload)']],{rp:1})}`;
- if(m.icon==='custom'){
-  h+=`<div class="row" style="margin:6px 0"><button class="btn sm pri" data-a="music-icon-upload">${m.iconAsset?'Replace icon':'Upload icon'}</button><button class="btn sm" data-a="music-icon-off-upload">${m.iconOffAsset?'Replace "off" icon':'Upload "off" icon'}</button></div>`;
-  h+=S.assets.length?`<div class="hint">Or pick from your uploads (icon when music plays):</div><div class="palrow" style="gap:6px">${mzPerfPropertyAssets(S.assets,m.iconAsset).map(a=>`<div class="sw" style="width:40px;height:34px;${a.id===m.iconAsset?'outline:2px solid var(--acc)':''}" data-a="music-icon-pick" data-aid="${a.id}"><img src="${a.data}" style="width:100%;height:100%;object-fit:contain" alt=""></div>`).join('')}</div>`:'';
-  h+='<div class="hint" style="margin-top:4px">No "off" icon? The same icon is shown grayed with a slash.</div>'}
- h+=`<div class="lbl">Size & position</div>${RG('Button size','doc','music.size',{min:28,max:120})}${RG('Icon size inside','doc','music.isz',{min:20,max:100})}${SEL('Button shape','doc','music.shape',[['circle','Circle'],['rounded','Rounded square'],['square','Square']])}${CB('No background (icon only)','doc','music.nobg',{rp:1})}${m.nobg?'':CL('Button color','doc','music.bg')}${CL('Icon color','doc','music.color')}${SEL('Corner','doc','music.pos',[['br','Bottom right'],['bl','Bottom left'],['bc','Bottom center'],['tr','Top right'],['tl','Top left'],['tc','Top center']])}${RG('Distance from the side','doc','music.ox',{min:0,max:300})}${RG('Distance from top/bottom','doc','music.oy',{min:0,max:400})}`;
- return h+'<div class="hint" style="margin-top:6px">A preview of the button shows on the canvas. When Autoplay is on, the published page tries to start music on load. If Safari or another browser blocks sound, the first tap, click, or key press anywhere on the page retries playback. The speaker button still controls pause and resume.</div>' }
-Object.assign(ACT,{
- 'music-icon-upload':()=>pickFile('micon'),'music-icon-off-upload':()=>pickFile('micoff'),
- 'music-icon-pick':b=>{commit(discrete());S.doc.music.iconAsset=b.dataset.aid;S.doc.music.icon='custom';renderCanvas();renderRight()}});
-
+  const m=S.doc.music||(S.doc.music=defMusic());
+  Object.assign(m,Object.assign(defMusic(),m));
+  musicResponsiveSizes(m);
+  let h=CB('Play background music','doc','music.on',{rp:1});
+  if(!m.on)return h+'<div class="hint">Adds a button to the published site so visitors can turn the music off.</div>';
+  h+=SEG('doc','music.src',[['upload','Upload file'],['url','Audio URL']]);
+  h+=m.src==='url'?X('Audio URL','doc','music.url',{ph:'https://…'}):`<div class="row" style="margin:6px 0"><button class="btn sm" data-a="music-upload">${S.music?'Replace audio':'Upload audio'}</button>${S.music?'<button class="btn sm dng" data-a="music-del">Remove</button>':''}</div>${S.music?`<div class="hint">${esc(S.music.name)} · ${Math.round(S.music.data.length*.75/1024)} KB</div>`:'<div class="hint">MP3, OGG, WAV or M4A, up to about 3 MB.</div>'}`;
+  h+=CB('Autoplay','doc','music.autoplay')+CB('Loop','doc','music.loop')+RG('Volume','doc','music.vol',{min:0,max:1,step:.01});
+  h+=`<div class="lbl">Button icon</div>${SEL('Icon','doc','music.icon',[...Object.keys(MUS_ICONS).map(k=>[k,cap(k)]),['custom','My own icon (upload)']],{rp:1})}`;
+  if(m.icon==='custom'){
+    h+=`<div class="row" style="margin:6px 0"><button class="btn sm pri" data-a="music-icon-upload">${m.iconAsset?'Replace icon':'Upload icon'}</button><button class="btn sm" data-a="music-icon-off-upload">${m.iconOffAsset?'Replace "off" icon':'Upload "off" icon'}</button></div>`;
+    h+=S.assets.length?`<div class="hint">Or pick from your uploads (icon when music plays):</div><div class="palrow" style="gap:6px">${mzPerfPropertyAssets(S.assets,m.iconAsset).map(a=>`<div class="sw" style="width:40px;height:34px;${a.id===m.iconAsset?'outline:2px solid var(--acc)':''}" data-a="music-icon-pick" data-aid="${a.id}"><img src="${a.data}" style="width:100%;height:100%;object-fit:contain" alt=""></div>`).join('')}</div>`:'';
+    h+='<div class="hint" style="margin-top:4px">No "off" icon? The same icon is shown grayed with a slash.</div>';
+  }
+  h+=`<div class="lbl">Speaker button size per device (px)</div>
+  <div class="hint">Atur ukuran tombol secara terpisah. Perubahan Desktop tidak mengubah Tablet atau Mobile.</div>
+  ${RG('Desktop','doc','music.sizes.d',{min:28,max:120})}
+  ${RG('Tablet','doc','music.sizes.t',{min:28,max:120})}
+  ${RG('Mobile','doc','music.sizes.m',{min:28,max:120})}
+  <div class="lbl">Icon size inside per device (%)</div>
+  ${RG('Desktop icon','doc','music.iconSizes.d',{min:20,max:100})}
+  ${RG('Tablet icon','doc','music.iconSizes.t',{min:20,max:100})}
+  ${RG('Mobile icon','doc','music.iconSizes.m',{min:20,max:100})}
+  ${SEL('Button shape','doc','music.shape',[['circle','Circle'],['rounded','Rounded square'],['square','Square']])}
+  ${CB('No background (icon only)','doc','music.nobg',{rp:1})}
+  ${m.nobg?'':CL('Button color','doc','music.bg')}${CL('Icon color','doc','music.color')}
+  ${SEL('Corner','doc','music.pos',[['br','Bottom right'],['bl','Bottom left'],['bc','Bottom center'],['tr','Top right'],['tl','Top left'],['tc','Top center']])}
+  ${RG('Distance from the side','doc','music.ox',{min:0,max:300})}
+  ${RG('Distance from top/bottom','doc','music.oy',{min:0,max:400})}`;
+  return h+'<div class="hint" style="margin-top:6px">Ukuran speaker dan ikon mengikuti Desktop (>1024px), Tablet (641–1024px), dan Mobile (≤640px). Preview memakai perangkat yang sedang dipilih. Project lama tetap kompatibel.</div>';
+}
 /* ---------------------------------------------------------------------
    MAGIC GRAB — separate the subject of a photo into its own layer
    --------------------------------------------------------------------- */
@@ -6944,7 +7018,10 @@ Object.assign(ACT,{
 /* ---------- carousel: dots below the image, dot styles, hero preset ---------- */
 Object.assign(ACT,{'car-dh':()=>{const el=T('el');if(!el||el.type!=='carousel')return;commit(discrete());
  Object.assign(el,{name:'Digital Haus · Continuous Carousel',cstyle:'continuous',carAllVideos:true,flowSpeed:50,flowDir:'left',ratio:'',fw:25,auto:true,loop:true,arrows:false,dots:false,fit:'cover',fshape:'rounded',rad:16,shadow:false});
- renderCanvas();renderRight();toast('Continuous carousel active — test in Preview',2600)}});
+ renderCanvas();renderRight();toast('Continuous carousel active — test in Preview',2600)},
+ 'car-arc3d':()=>{const el=T('el');if(!el||el.type!=='carousel')return;commit(discrete());
+ Object.assign(el,{name:'Digital Haus · 3D Curved Carousel',cstyle:'arc3d',carAllVideos:true,flowSpeed:34,flowDir:'left',ratio:'',fw:18,cstep:1.08,arcCenterScale:.84,arcSideScale:1.10,arcDepth:150,arcTilt:18,dim:.08,auto:true,loop:true,arrows:false,dots:false,fit:'cover',fshape:'rounded',rad:16,shadow:false});
+ renderCanvas();renderRight();toast('3D Curved Carousel aktif — cek Preview di Desktop, Tablet, dan Mobile',4000)}});
 Object.assign(ACT,{'car-hero':()=>{const el=T('el');if(!el||el.type!=='carousel')return;commit(discrete());
  Object.assign(el,{cstyle:'slide',fw:100,gap:0,dots:true,dpos:'below',dstyle:'dots',arrows:false,loop:true,auto:true,int:4500,fit:'contain',fshape:'rounded',rad:0,trans:550,cbg:'#f3f3f3',dc:'#c8c8c8',da:'#6d1a1a',shadow:false,bw:0,ratio:''});
  renderCanvas();renderRight();toast('Full-width slider with dots below',2400)}});
@@ -6953,7 +7030,7 @@ Object.assign(ACT,{'car-hero':()=>{const el=T('el');if(!el||el.type!=='carousel'
    Converts selected photo elements (or one Gallery) into a continuously moving
    photo strip. The original editable elements are preserved for restoration.
    No Backblaze files or other project assets are deleted. */
-function a329BuildPhotoFlow(){
+function a329BuildPhotoFlow(style='continuous'){
  const selected=selIds();
  const refs=selected.map(findEl);
  if(!refs.length||refs.some(f=>!f)){toast('Pilih satu foto, beberapa foto, atau satu Gallery dahulu.');return}
@@ -6963,33 +7040,50 @@ function a329BuildPhotoFlow(){
  if(refs.some(f=>f.el.locked)){toast('Buka Lock foto terlebih dahulu.');return}
  if(refs.length>1&&refs.some(f=>f.el.type!=='image')){toast('Pilih hanya elemen foto.');return}
  if(refs.length===1&&!['image','gallery'].includes(refs[0].el.type)){
-  toast('Pilih elemen Image atau Gallery.');return;
+  toast('Pilih elemen Image atau Gallery dahulu.');return;
  }
  const ids=refs.length===1&&refs[0].el.type==='gallery'?(refs[0].el.imgs||[]):refs.map(f=>f.el.asset);
  const photos=ids.filter(id=>id&&asset(id));
  if(!photos.length){toast('Foto belum terpasang atau asetnya tidak tersedia di project ini.');return}
  const srcs=refs.map(f=>f.el),list=refs[0].list;
- const bb=bboxOf(srcs,'d');
- const x=Math.max(0,Math.min(1200-420,bb.x));
- const w=Math.min(1200-x,Math.max(540,Math.min(960,bb.w)));
- const h=Math.max(290,Math.min(600,bb.h||360));
+ // Snapshot the selected content's effective bounds independently at each breakpoint.
+ // This prevents the new carousel from inheriting only Desktop geometry.
+ const boxes={d:bboxOf(srcs,'d'),t:bboxOf(srcs,'t'),m:bboxOf(srcs,'m')};
+ const fitBox=(box,bp)=>{
+  const viewport=BP[bp]||1200;
+  const rawW=Math.max(1,Number(box.w)||viewport*.8);
+  const w=Math.min(viewport,rawW);
+  const x=Math.max(0,Math.min(viewport-w,Number(box.x)||0));
+  const y=Math.max(0,Number(box.y)||0);
+  const h=Math.max(100,Math.min(900,Number(box.h)||360));
+  return {x,y,w,h};
+ };
+ const d=fitBox(boxes.d,'d'),t=fitBox(boxes.t,'t'),m=fitBox(boxes.m,'m');
  const originals=srcs.map(el=>({element:clone(el),index:list.indexOf(el)})).sort((a,b)=>a.index-b.index);
- const photoSlides=photos.map((assetId,i)=>({id:uid('s'),asset:assetId,text:asset(assetId)?.name||`Foto ${i+1}`}));
+ const photoSlides=photos.map((assetId,i)=>({id:uid('s'),asset:asset(assetId)?.id||assetId,text:asset(assetId)?.name||`Foto ${i+1}`}));
+ const isArc=style==='arc3d';
  const flow=newEl('carousel',{
-  name:'Digital Haus · Continuous Photos',x,y:bb.y,w,h,
-  cstyle:'continuous',flowSpeed:45,flowDir:'left',ratio:'',fw:26,
+  name:isArc?'Digital Haus · 3D Curved Photos':'Digital Haus · Continuous Photos',
+  x:d.x,y:d.y,w:d.w,h:d.h,
+  cstyle:isArc?'arc3d':'continuous',
+  flowSpeed:isArc?34:45,flowDir:'left',ratio:'',
+  fw:isArc?18:26,cstep:isArc?1.08:.72,
+  arcCenterScale:.84,arcSideScale:1.10,arcDepth:150,arcTilt:18,dim:isArc?.08:.4,
   auto:true,loop:true,pauseHover:false,arrows:false,dots:false,
   fit:'cover',fshape:'rounded',rad:14,shadow:false,
   slides:photoSlides,cur:0,
   a329Originals:originals
  });
+ flow.bp=flow.bp||{};
+ flow.bp.t={...(flow.bp.t||{}),...t};
+ flow.bp.m={...(flow.bp.m||{}),...m};
  commit(discrete());
  const insertAt=Math.min(...originals.map(o=>o.index));
  srcs.slice().sort((a,b)=>list.indexOf(b)-list.indexOf(a)).forEach(el=>list.splice(list.indexOf(el),1));
  list.splice(insertAt,0,flow);
  S.sel={k:'el',id:flow.id};S.multi=[];
  afterEdit();scheduleSave();
- toast('✦ Efek foto mengalir aktif! Coba di Preview. Edit foto lewat Slides; gunakan Undo atau "Kembalikan foto".',6500);
+ toast(isArc?'✦ 3D Curved Gallery aktif! Ukuran Desktop, Tablet, dan Mobile dipertahankan. Coba Preview.':'✦ Efek foto mengalir aktif! Ukuran Desktop, Tablet, dan Mobile dipertahankan. Coba Preview.',6500);
 }
 function a329RestorePhotoFlow(){
  const f=S.sel?.k==='el'?findEl(S.sel.id):null;
@@ -7003,7 +7097,7 @@ function a329RestorePhotoFlow(){
  afterEdit();scheduleSave();
  toast('Foto asli sudah dikembalikan ke kanvas.');
 }
-Object.assign(ACT,{'a329-photo-flow':a329BuildPhotoFlow,'a329-flow-restore':a329RestorePhotoFlow});
+Object.assign(ACT,{'a329-photo-flow':()=>a329BuildPhotoFlow('continuous'),'a329-photo-arc':()=>a329BuildPhotoFlow('arc3d'),'a329-flow-restore':a329RestorePhotoFlow});
 
 /* === v30.21.11 · Digital Haus Continuous for images and editable text ===
    No asset is deleted; original canvas elements are stored for Restore/Undo.
